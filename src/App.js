@@ -13,6 +13,7 @@ import HabitPage from './components/pages/HabitPage';
 import JournalPage from './components/pages/JournalPage';
 import StatsPage from './components/pages/StatsPage';
 import BadHabitPage from './components/pages/BadHabitPage';
+import SkillPage from './components/pages/SkillPage';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
               <Route path="/badHabit" element={<BadHabitPage/>}/>
               <Route path="/journal" element={<JournalPage/>}/>
               <Route path="/stats" element={<StatsPage/>}/>
+              <Route path="/skills" element={<SkillPage/>}/>
               <Route path="/signup" element={<SignupPage/>}/>
               <Route path="/admin" element={<AdminPage/>}/>
             </Routes>

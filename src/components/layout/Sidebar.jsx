@@ -39,7 +39,7 @@ const Sidebar = ({children}) => {
       icon:<GiSkills/>
     },
     {
-      path:"/skill",
+      path:"/skills",
       name:"Skill Trees",
       icon:<BiLibrary/>
     },

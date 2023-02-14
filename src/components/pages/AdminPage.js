@@ -4,7 +4,8 @@ import { getTotalTasks,getTotalHabits,createTaskType,
   createHabitType,deleteTaskType,deleteHabitType,
   editTaskType,editHabitType,getTotalJournals,createJournalType,
   deleteJournalType,editJournalType,getTotalStats,createStatsType,
-  editStatsType,deleteStatsType
+  editStatsType,deleteStatsType,getTotalSkills,createSkillType,
+  editSkillType,deleteSkillType
  } from '../api/AdminAPI';
 import AdminList from '../misc/Admin/AdminList';
 import { UserContext } from '../../context/UserContext';
@@ -16,6 +17,7 @@ const AdminPage = (props) => {
     const [habitOptions,setHabitOptions] = useState([]);
     const [journalOptions, setJournalOptions] = useState([]);
     const [statsOptions, setStatsOptions] = useState([]);
+    const [skillOptions,setSkillOptions] = useState([]);
     const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
 
@@ -29,10 +31,12 @@ const AdminPage = (props) => {
       const {habit,habitOptions} = await getTotalHabits(backend_url,bearerToken,userId);
       const {journal,journalOptions} = await getTotalJournals(backend_url,bearerToken,userId);
       const {stats,statsOptions} = await getTotalStats(backend_url,bearerToken,userId);
+      const {skill,skillOptions} = await getTotalSkills(backend_url,bearerToken,userId);
       setTaskOptions(taskOptions);  
       setHabitOptions(habitOptions);
       setJournalOptions(journalOptions);
       setStatsOptions(statsOptions);
+      setSkillOptions(skillOptions);
     }
 
 
@@ -64,6 +68,12 @@ const AdminPage = (props) => {
           createFunction={createStatsType} 
           refreshFunction={refreshAdminPage} 
           deleteFunction={deleteStatsType} editFunction={editStatsType}/>
+				</div>
+        <div className='col-sm'>
+					<AdminList name="Skill Types" records={skillOptions} 
+          createFunction={createSkillType} 
+          refreshFunction={refreshAdminPage} 
+          deleteFunction={deleteSkillType} editFunction={editSkillType}/>
 				</div>
 		  </div>
     </div>
