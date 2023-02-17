@@ -1,6 +1,6 @@
 import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createTask } from '../../api/TaskAPI';
+import { createRootTask } from '../../api/TaskAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
 import Checkbox from '@mui/material/Checkbox';
@@ -35,9 +35,9 @@ const AddTaskForm = (props) => {
 	const onSubmit =async () =>{
 		console.log(weekDays);
 
-		await createTask(config, 'Bearer '+user.accessToken,user.id,name,
+		await createRootTask(config, 'Bearer '+user.accessToken,name,
 		startDate,timeTaken,dueDate,every,scheduleType,props.name,daysOfWeek);
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
 	

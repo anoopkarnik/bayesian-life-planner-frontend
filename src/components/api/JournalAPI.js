@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getJournals = async(backend_url,bearerToken,userId,journalTypeName) =>{
-    const res = await fetch(backend_url+'/api/journal?userId='+userId+'&journalTypeName='+journalTypeName,{
+export const getJournals = async(backend_url,bearerToken,journalTypeName) =>{
+    const res = await fetch(backend_url+'/api/journal?journalTypeName='+journalTypeName,{
         method: 'GET',
         headers:{
           'Authorization':bearerToken
@@ -16,7 +16,7 @@ export const getJournals = async(backend_url,bearerToken,userId,journalTypeName)
       return data
 }
 
-export const createJournal= async(backend_url,bearerToken,userId,name,
+export const createJournal= async(backend_url,bearerToken,name,
   journalTypeName,text,hidden)=>{
 
       const res = await fetch(backend_url+'/api/journal', {
@@ -25,7 +25,7 @@ export const createJournal= async(backend_url,bearerToken,userId,name,
             'Content-Type': 'application/json',
             'Authorization':bearerToken
           },
-          body: JSON.stringify({userId,name,
+          body: JSON.stringify({name,
             journalTypeName,text,hidden}),
         })
         const data = await res.json()

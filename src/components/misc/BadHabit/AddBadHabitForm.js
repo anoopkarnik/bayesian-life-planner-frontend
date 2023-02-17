@@ -1,6 +1,6 @@
 import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createBadHabit } from '../../api/BadHabitAPI';
+import { createRootBadHabit } from '../../api/BadHabitAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
 
@@ -14,9 +14,9 @@ const AddBadHabitForm = (props) => {
 
 	const onSubmit =async () =>{
 
-		await createBadHabit(config, 'Bearer '+user.accessToken,user.id,name,
+		await createRootBadHabit(config, 'Bearer '+user.accessToken,name,
 		startDate,props.name);
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
 	const onStartDateChange = async(date) =>{

@@ -8,11 +8,10 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import { deleteStats,addStatsValue} from '../../api/StatsAPI';
 import StatsDescription from './StatsDescription';
-import ChildStatsItem from './ChildStatsItem';
 import AddChildStatsForm from './AddChildStatsForm';
 
 
-const StatsItem = (props) => {
+const ChildStatsItem = (props) => {
 
 	const [value,setValue] = useState(props.record.value);
 	const [isEditing,setIsEditing] = useState(false);
@@ -20,7 +19,7 @@ const StatsItem = (props) => {
 	const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
 	const [showChildStats, setShowChildStats] = useState(false);
-	const [showAddStat, setShowAddStat] = useState(false);
+	const [showAddStat,setShowAddStat] = useState(false);
 
 	const onDelete = async() =>{
 		await deleteStats(config,'Bearer '+user.accessToken,props.record.id)
@@ -33,11 +32,6 @@ const StatsItem = (props) => {
       		await props.refreshFunction(config,'Bearer '+user.accessToken)
 		}
 		setIsEditing(!isEditing);
-	}
-
-	const onRefresh = async() =>{
-		setShowAddStat(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
 	}
 
 	const onShowDescription = async() =>{
@@ -65,9 +59,9 @@ const StatsItem = (props) => {
 	<div>
     <li className='list-group-item d-flex justify-content-between align-items-center'>
 		<div>
-		{showChildStats?
+		{/* {showChildStats?
 					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>}
+					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>} */}
 			{props.record.name}
 		</div>
 		
@@ -83,7 +77,6 @@ const StatsItem = (props) => {
 			
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 			<FiExternalLink size='1em' onClick={onShowDescription}/>
-			&nbsp;&nbsp;{showChildStats?<div onClick={()=>{setShowAddStat(!showAddStat)}} className='btn btn-secondary btn-sm'>Add</div>:null}
 			{
 				showDescription?<StatsDescription refreshFunction={props.refreshFunction}
 				open={showDescription} hide={onHideDescription} 
@@ -104,7 +97,7 @@ const StatsItem = (props) => {
 			</ul>:
 		null}
 		{showAddStat?
-			<AddChildStatsForm refreshFunction={onRefresh} 
+			<AddChildStatsForm refreshFunction={props.refreshFunction} 
      			name={props.record.name} type={props.record.statsTypeName} 
 				open={onshowAddStat} hide={onHideAddStat}
        		/>:
@@ -113,4 +106,4 @@ const StatsItem = (props) => {
   )
 }
 
-export default StatsItem
+export default ChildStatsItem

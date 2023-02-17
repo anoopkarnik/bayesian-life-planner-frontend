@@ -24,11 +24,11 @@ const HabitPage = (props) => {
 
 
     useEffect(() => {
-        refreshHabitPage(user.id,config,'Bearer '+user.accessToken);
+        refreshHabitPage(config,'Bearer '+user.accessToken);
       }, []);
 
-    const refreshHabitPage = async(userId,backend_url,bearerToken) =>{
-      const {habit,habitOptions} = await getTotalHabits(backend_url,bearerToken,userId);
+    const refreshHabitPage = async(backend_url,bearerToken) =>{
+      const {habit,habitOptions} = await getTotalHabits(backend_url,bearerToken);
       setHabits(habit);
     }
 

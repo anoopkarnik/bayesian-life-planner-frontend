@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getSkills = async(backend_url,bearerToken,skillTypeName) =>{
-    const res = await fetch(backend_url+'/api/skill?skillTypeName='+skillTypeName,{
+export const getGoals = async(backend_url,bearerToken,goalTypeName) =>{
+    const res = await fetch(backend_url+'/api/goal?goalTypeName='+goalTypeName,{
         method: 'GET',
         headers:{
           'Authorization':bearerToken
@@ -16,40 +16,40 @@ export const getSkills = async(backend_url,bearerToken,skillTypeName) =>{
       return data
 }
 
-export const createRootSkill = async(backend_url,bearerToken,name,
-  skillTypeName,timeTaken)=>{
+export const createRootGoal = async(backend_url,bearerToken,name,
+  goalTypeName,timeTaken)=>{
 
-      const res = await fetch(backend_url+'/api/skill/root', {
+      const res = await fetch(backend_url+'/api/goal/root', {
         method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization':bearerToken
           },
           body: JSON.stringify({name,
-            skillTypeName,timeTaken}),
+            goalTypeName,timeTaken}),
         })
         const data = await res.json()
       return data
     }
 
-export const createChildSkill = async(backend_url,bearerToken,name,
-      skillTypeName,timeTaken,parentSkillName)=>{
+export const createChildGoal = async(backend_url,bearerToken,name,
+      goalTypeName,timeTaken,parentGoalName)=>{
     
-          const res = await fetch(backend_url+'/api/skill/child', {
+          const res = await fetch(backend_url+'/api/goal/child', {
             method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
                 'Authorization':bearerToken
               },
               body: JSON.stringify({name,
-                skillTypeName,timeTaken,parentSkillName}),
+                goalTypeName,timeTaken,parentGoalName}),
             })
             const data = await res.json()
           return data
         }
 
-export const addSkillDescription = async(backend_url,bearerToken,id,description)=>{
-  await fetch(backend_url+'/api/skill/description', {
+export const addGoalDescription = async(backend_url,bearerToken,id,description)=>{
+  await fetch(backend_url+'/api/goal/description', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
@@ -59,13 +59,13 @@ export const addSkillDescription = async(backend_url,bearerToken,id,description)
     })
 }
 
-export const deleteSkill= async(backend_url,bearerToken,id) =>{
-    await axios.delete(backend_url+'/api/skill?id='+id,{
+export const deleteGoal= async(backend_url,bearerToken,id) =>{
+    await axios.delete(backend_url+'/api/goal?id='+id,{
         headers:{Authorization:bearerToken}
       })
 }
-export const completeSkill = async(backend_url,bearerToken,id) =>{
-  await fetch(backend_url+'/api/skill/complete?id='+id,{
+export const completeGoal = async(backend_url,bearerToken,id) =>{
+  await fetch(backend_url+'/api/goal/complete?id='+id,{
       method: 'PUT',
       headers:{
         'Authorization':bearerToken

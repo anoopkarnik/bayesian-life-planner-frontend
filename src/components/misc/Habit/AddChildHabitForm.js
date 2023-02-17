@@ -1,6 +1,6 @@
 import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createRootHabit } from '../../api/HabitAPI';
+import { createChildHabit } from '../../api/HabitAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
 import Checkbox from '@mui/material/Checkbox';
@@ -8,7 +8,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 
-const AddHabitForm = (props) => {
+const AddChildHabitForm = (props) => {
 
 	const [name, setName] = useState('');
 	const [timeTaken, setTimeTaken] = useState('');
@@ -32,8 +32,8 @@ const AddHabitForm = (props) => {
 	const onSubmit =async () =>{
 		console.log(weekDays);
 
-		await createRootHabit(config, 'Bearer '+user.accessToken,name,
-		startDate,timeTaken,dueDate,every,scheduleType,props.name,daysOfWeek);
+		await createChildHabit(config, 'Bearer '+user.accessToken,name,
+		startDate,timeTaken,dueDate,every,scheduleType,props.type,daysOfWeek,props.name);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -170,4 +170,4 @@ const AddHabitForm = (props) => {
 	);
 };
 
-export default AddHabitForm;
+export default AddChildHabitForm;

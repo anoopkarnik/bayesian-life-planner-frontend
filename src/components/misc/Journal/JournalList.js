@@ -14,12 +14,12 @@ const JournalList = (props) => {
     const [showAddJournal, setShowAddJournal] = useState(false);
 
     useEffect(() => {
-      refreshJournal(user.id,config,'Bearer '+user.accessToken,props.journal)
+      refreshJournal(config,'Bearer '+user.accessToken,props.journal)
     }, []);
 
-    const refreshJournal = async(userId,backend_url,bearerToken,journal) =>{
-      // await props.refreshFunction(userId,backend_url,bearerToken,habit)
-      const record = await getJournals(config,bearerToken,userId,props.journal);
+    const refreshJournal = async(backend_url,bearerToken,journal) =>{
+      // await props.refreshFunction(backend_url,bearerToken,habit)
+      const record = await getJournals(config,bearerToken,props.journal);
       setRecords(record);
       setShowAddJournal(false)
 

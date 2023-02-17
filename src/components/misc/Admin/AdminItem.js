@@ -13,14 +13,14 @@ const AdminItem = (props) => {
 	const onEdit = async() =>{
         if(isEditing){
             await props.editFunction(config,'Bearer '+user.accessToken,props.record.id,name)
-		    await props.refreshFunction(user.id,config,'Bearer '+user.accessToken)
+		    await props.refreshFunction(config,'Bearer '+user.accessToken)
         }
         setIsEditing(!isEditing);
 	}
 
 	const onDelete = async() =>{
         await props.deleteFunction(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken)
+		await props.refreshFunction(config,'Bearer '+user.accessToken)
 	}
 
     

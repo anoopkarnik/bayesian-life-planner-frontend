@@ -7,10 +7,9 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import { completeTask, deleteTask, getSubTasks } from '../../api/TaskAPI';
 import TaskDescription from './TaskDescription';
-import ChildTaskItem from './ChildTaskItem';
 import AddChildTaskForm from './AddChildTaskForm';
 
-const TaskItem = (props) => {
+const ChildTaskItem = (props) => {
 
 	const [name,setName] = useState(props.record.name);
 	const {user} = useContext(UserContext);
@@ -36,11 +35,6 @@ const TaskItem = (props) => {
 		await props.refreshFunction(config,'Bearer '+ user.accessToken)
 	}
 
-	const onRefresh = async() =>{
-		setShowAddTask(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
-	}
-
 	const onShowDescription = async() =>{
 		setShowDescription(true);
 	}
@@ -61,16 +55,11 @@ const TaskItem = (props) => {
 		setShowAddTask(false);
 	  }
 
-
     
   return (
 	<div>
     <li style={daysLeft<=0?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
 		<div>
-		{showChildTasks?
-					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>
-			}
 			{props.record.name}
 		</div>
 		<div>
@@ -78,11 +67,11 @@ const TaskItem = (props) => {
 				
 			</span>
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
-			<MdDone size='1.5em' onClick={onComplete}/>			
-			<FiExternalLink size='1em' onClick={onShowDescription}/>
-			&nbsp;&nbsp;{showChildTasks?<div onClick={()=>{setShowAddTask(!showAddTask)}} className='btn btn-secondary btn-sm'>Add</div>:null}
+			<MdDone size='1.5em' onClick={onComplete}/>
+				<FiExternalLink size='1em' onClick={onShowDescription}/>
 				{
-					showDescription?<TaskDescription record={props.record} 
+					showDescription?<TaskDescription 
+					record={props.record}
 					refreshFunction={props.refreshFunction}
 					open={showDescription} hide={onHideDescription} />:null
 				}
@@ -98,12 +87,10 @@ const TaskItem = (props) => {
 							refreshFunction={props.refreshFunction}/>
 					</li>
 				))}
-
-
 			</ul>:
 		null}
 		{showAddTask?
-			<AddChildTaskForm refreshFunction={onRefresh} 
+			<AddChildTaskForm refreshFunction={props.refreshFunction} 
      			name={props.record.name} type={props.record.taskTypeName} 
 				open={onshowAddTask} hide={onHideAddTask}
        		/>:
@@ -112,4 +99,4 @@ const TaskItem = (props) => {
   )
 }
 
-export default TaskItem
+export default ChildTaskItem;

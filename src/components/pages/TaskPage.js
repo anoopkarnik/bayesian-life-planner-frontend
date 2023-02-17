@@ -24,11 +24,11 @@ const TaskPage = (props) => {
     }
 
     useEffect(() => {
-        refreshTaskPage(user.id,config,'Bearer '+user.accessToken);
+        refreshTaskPage(config,'Bearer '+user.accessToken);
       }, []);
 
-    const refreshTaskPage = async(userId,backend_url,bearerToken) =>{
-      const {task,taskOptions} = await getTotalTasks(backend_url,bearerToken,userId);
+    const refreshTaskPage = async(backend_url,bearerToken) =>{
+      const {task,taskOptions} = await getTotalTasks(backend_url,bearerToken);
       setTasks(task);
     }
 

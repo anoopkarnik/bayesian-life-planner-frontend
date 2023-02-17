@@ -24,11 +24,11 @@ const StatsPage = (props) => {
 
 
     useEffect(() => {
-        refreshStatsPage(user.id,config,'Bearer '+user.accessToken);
+        refreshStatsPage(config,'Bearer '+user.accessToken);
       }, []);
 
-    const refreshStatsPage = async(userId,backend_url,bearerToken) =>{
-      const {stats,statsOptions} = await getTotalStats(backend_url,bearerToken,userId);
+    const refreshStatsPage = async(backend_url,bearerToken) =>{
+      const {stats,statsOptions} = await getTotalStats(backend_url,bearerToken);
       setStats(stats);
     }
 

@@ -1,6 +1,6 @@
-import React, { useState,useContext } from 'react';
+import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createSubTask } from '../../api/TaskAPI';
+import { createChildTask } from '../../api/TaskAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
 import Checkbox from '@mui/material/Checkbox';
@@ -8,7 +8,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 
-const AddSubTaskForm = (props) => {
+const AddChildTaskForm = (props) => {
 
 	const [name, setName] = useState('');
 	const [timeTaken, setTimeTaken] = useState('');
@@ -22,26 +22,22 @@ const AddSubTaskForm = (props) => {
 	const {config} = useContext(ConfigContext);
 	const [scheduleTypes,setScheduleTypes] = useState(['onetime','daily','weekly',
 'monthly','yearly']);
-	const [weekDays,setWeekDays] = useState({
-		MONDAY:false,TUESDAY:false,WEDNESDAY:false,THURSDAY:false,
-		FRIDAY:false,SATURDAY:false,SUNDAY:false})
-	
-	const {MONDAY,TUESDAY,WEDNESDAY,THURSDAY,
-	FRIDAY,SATURDAY,SUNDAY} = weekDays;
+	const weekDays = [
+		{value:'MONDAY',label:'M'},
+		{value:'TUESDAY',label:'T'},
+		{value:'WEDNESDAY',label:'W'},
+		{value:'THURSDAY',label:'T'},
+		{value:'FRIDAY',label:'F'},
+		{value:'SATURDAY',label:'S'},
+		{value:'SUNDAY',label:'S'},
+	]
 
 	const onSubmit =async () =>{
-		let weekDaysList = [];
-		if(weekDays.MONDAY){weekDaysList.push("MONDAY")};
-		if(weekDays.TUESDAY){weekDaysList.push("TUESDAY")};
-		if(weekDays.WEDNESDAY){weekDaysList.push("WEDNESDAY")};
-		if(weekDays.THURSDAY){weekDaysList.push("THURSDAY")};
-		if(weekDays.FRIDAY){weekDaysList.push("FRIDAY")};
-		if(weekDays.SATURDAY){weekDaysList.push("SATURDAY")};
-		if(weekDays.SUNDAY){weekDaysList.push("SUNDAY")};
-		setDaysOfWeek(weekDaysList);
-		await createSubTask(config, 'Bearer '+user.accessToken,user.id,name,
-		startDate,timeTaken,dueDate,every,scheduleType,props.taskId,daysOfWeek);
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken);
+		console.log(weekDays);
+
+		await createChildTask(config, 'Bearer '+user.accessToken,name,
+		startDate,timeTaken,dueDate,every,scheduleType,props.type,daysOfWeek,props.name);
+		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
 	
@@ -64,10 +60,17 @@ const AddSubTaskForm = (props) => {
 		}
 	}
 
-	const handleWeekDaysChange = (event) =>{
-		console.log(event.target.name);
-		setWeekDays({...weekDays,[event.target.name]:event.target.checked});
+	const onhandleWeekDayChange = (e) =>{
+		const {value,checked} = e.target;
+		if(checked){
+			setDaysOfWeek((prev) => [...prev,value])
+		}
+		else{
+			setDaysOfWeek((prev)=> prev.filter((x)=> x!==value));
+		}
 	}
+
+
 
 
 	return (
@@ -113,49 +116,16 @@ const AddSubTaskForm = (props) => {
 			</div>
 			{showDays?
 			<div className='row'>
-				
-				<FormGroup >
 				<div className='col-sm'>
-					<FormControlLabel 
-						control={
-							<Checkbox checked={MONDAY} onChange={handleWeekDaysChange} 
-							name="MONDAY"/>} label="M"
-					/>
-					<FormControlLabel 
-						control={
-							<Checkbox checked={TUESDAY} onChange={handleWeekDaysChange} 
-							name="TUESDAY"/>} label="T"
-					/>
-					<FormControlLabel 
-						control={
-							<Checkbox checked={WEDNESDAY} onChange={handleWeekDaysChange} 
-							name="WEDNESDAY"/>} label="W"
-					/>
-					<FormControlLabel 
-						control={
-							<Checkbox checked={THURSDAY} onChange={handleWeekDaysChange} 
-							name="THURSDAY"/>} label="T"
-					/>
-					</div>
-					<div className='col-sm'>
-					<FormControlLabel 
-						control={
-							<Checkbox checked={FRIDAY} onChange={handleWeekDaysChange} 
-							name="FRIDAY"/>} label="F"
-					/>
-					<FormControlLabel 
-						control={
-							<Checkbox checked={SATURDAY} onChange={handleWeekDaysChange} 
-							name="SATURDAY"/>} label="S"
-					/>
-					<FormControlLabel 
-						control={
-							<Checkbox checked={SUNDAY} onChange={handleWeekDaysChange} 
-							name="SUNDAY"/>} label="S"
-					/>
-					</div>
-
-				</FormGroup>
+					{weekDays.map((x,i)=>(
+						<label key={i}>
+							<input type="checkbox" name="day" value={x.value} 
+							onChange={onhandleWeekDayChange}/>
+							{' '}
+							{x.label}
+						</label>
+					))}
+				</div>
 			</div>:null}
 			<div className='row'>
 				<div className='col-sm text-center'>
@@ -168,4 +138,4 @@ const AddSubTaskForm = (props) => {
 	);
 };
 
-export default AddSubTaskForm;
+export default AddChildTaskForm;

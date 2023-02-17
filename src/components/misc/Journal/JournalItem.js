@@ -18,7 +18,7 @@ const JournalItem = (props) => {
 
 	const onDelete = async() =>{
 		await deleteJournal(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken)
+		await props.refreshFunction(config,'Bearer '+user.accessToken)
 	}
 
 	const onShowDescription = async() =>{

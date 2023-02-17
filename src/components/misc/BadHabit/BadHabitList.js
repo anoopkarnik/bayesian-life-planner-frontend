@@ -14,12 +14,12 @@ const BadHabitList = (props) => {
     const [showAddBadHabit, setShowAddBadHabit] = useState(false);
 
     useEffect(() => {
-      refreshBadHabit(user.id,config,'Bearer '+user.accessToken,props.habit)
+      refreshBadHabit(config,'Bearer '+user.accessToken,props.badHabit)
     }, []);
 
-    const refreshBadHabit = async(userId,backend_url,bearerToken,habit) =>{
-      // await props.refreshFunction(userId,backend_url,bearerToken,habit)
-      const record = await getBadHabits(config,bearerToken,userId,props.habit);
+    const refreshBadHabit = async(backend_url,bearerToken,habit) =>{
+      // await props.refreshFunction(backend_url,bearerToken,habit)
+      const record = await getBadHabits(config,bearerToken,props.badHabit);
       setRecords(record);
       setShowAddBadHabit(false)
 
@@ -29,7 +29,7 @@ const BadHabitList = (props) => {
     
   return (
     <ul className='list-group'>
-      <h3 onClick={()=>setShowBadHabit(!showBadHabit)} className='btn btn-secondary btn-lg'>{props.habit}</h3>
+      <h3 onClick={()=>setShowBadHabit(!showBadHabit)} className='btn btn-secondary btn-lg'>{props.badHabit}</h3>
       {showBadHabit?<>
       <div>
       {records.map((record) => (
@@ -38,7 +38,7 @@ const BadHabitList = (props) => {
       ))}</div>
        <h3 onClick={()=>{setShowAddBadHabit(!showAddBadHabit)}} className='mt-3 text-center'><div className='btn btn-secondary btn-lg'>Add Bad Habit</div></h3>
       {showAddBadHabit?<AddBadHabitForm refreshFunction={refreshBadHabit} 
-      name={props.habit}
+      name={props.badHabit}
        />:null}</>:null}
     </ul>
   )

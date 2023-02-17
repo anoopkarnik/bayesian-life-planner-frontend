@@ -16,9 +16,9 @@ const AddJournalForm = (props) => {
 
 	const onSubmit =async () =>{
 		console.log(name,text,hidden);
-		await createJournal(config, 'Bearer '+user.accessToken,user.id,name,
+		await createJournal(config, 'Bearer '+user.accessToken,name,
 		props.name,text,hidden);
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
 	const handleRadio= async(event) =>{

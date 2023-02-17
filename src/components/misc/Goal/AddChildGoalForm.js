@@ -1,12 +1,12 @@
 import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createChildSkill } from '../../api/SkillAPI';
+import { createChildGoal } from '../../api/GoalAPI';
 import { ConfigContext } from '../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
 
 
 
-const AddChildSkillForm = (props) => {
+const AddChildGoalForm = (props) => {
 
 	const [name, setName] = useState('');
 	const {user, setUser} = useContext(UserContext);
@@ -14,7 +14,7 @@ const AddChildSkillForm = (props) => {
 	const {config} = useContext(ConfigContext);
 
 	const onSubmit =async () =>{
-		await createChildSkill(config, 'Bearer '+user.accessToken,name,
+		await createChildGoal(config, 'Bearer '+user.accessToken,name,
 		props.type,timeTaken,props.name);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
@@ -43,4 +43,4 @@ const AddChildSkillForm = (props) => {
 	);
 };
 
-export default AddChildSkillForm;
+export default AddChildGoalForm;

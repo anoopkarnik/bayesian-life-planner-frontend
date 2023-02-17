@@ -1,23 +1,21 @@
 import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createRootStats } from '../../api/StatsAPI';
+import { createRootGoal } from '../../api/GoalAPI';
 import { ConfigContext } from '../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
 
 
 
-const AddStatsForm = (props) => {
+const AddGoalForm = (props) => {
 
 	const [name, setName] = useState('');
 	const {user, setUser} = useContext(UserContext);
-	const [description, setDescription] = useState('');
-	const [value, setValue] = useState(0);
+	const [timeTaken, setTimeTaken] = useState('');
 	const {config} = useContext(ConfigContext);
 
 	const onSubmit =async () =>{
-		console.log(name,description,value);
-		await createRootStats(config, 'Bearer '+user.accessToken,name,
-		props.name,value,description);
+		await createRootGoal(config, 'Bearer '+user.accessToken,name,
+		props.name,timeTaken);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -31,20 +29,9 @@ const AddStatsForm = (props) => {
 					onChange={(event) => setName(event.target.value)}></input>
 				</div>
 				<div className='col-sm'>
-					<input required='required' Name='value' className='form-control'
-					id='value' placeholder='value' value={value} 
-					onChange={(event) => setValue(event.target.value)}></input>
-				</div>
-			</div>
-			<div className='row'>
-				<div className='col-sm'>
-					<textarea rows="15" cols="30" required='required' 
-					Name='description' 
-					className='form-control'
-					id='description' placeholder='description' value={description} 
-					onChange={(event) => setDescription(event.target.value)}>
-						<>{description}</>
-					</textarea>
+					<input required='required' Name='Time Taken' className='form-control'
+					id='timeTaken' placeholder='timeTaken' value={timeTaken} 
+					onChange={(event) => setTimeTaken(event.target.value)}></input>
 				</div>
 			</div>
 			<div className='row'>
@@ -58,4 +45,4 @@ const AddStatsForm = (props) => {
 	);
 };
 
-export default AddStatsForm;
+export default AddGoalForm;

@@ -14,12 +14,12 @@ const TaskList = (props) => {
     const [showAddTask, setShowAddTask] = useState(false);
 
     useEffect(() => {
-      refreshTask(user.id,config,'Bearer '+user.accessToken,props.task);
+      refreshTask(config,'Bearer '+user.accessToken,props.task);
     }, []);
 
-    const refreshTask = async(userId,backend_url,bearerToken,task) =>{
-      await props.refreshFunction(userId,backend_url,bearerToken)
-      const record = await getTasks(backend_url,bearerToken,userId,props.task);
+    const refreshTask = async(backend_url,bearerToken,task) =>{
+      await props.refreshFunction(backend_url,bearerToken)
+      const record = await getTasks(backend_url,bearerToken,props.task);
       setRecords(record);
       setShowAddTask(false);
     }

@@ -22,7 +22,12 @@ const ChildSkillItem = (props) => {
 
 	const onDelete = async() =>{
 		await deleteSkill(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken)
+		await props.refreshFunction(config,'Bearer '+user.accessToken)
+	}
+
+	const onRefresh = async() =>{
+		setShowAddSkill(false);
+		await props.refreshFunction(config,'Bearer '+user.accessToken)
 	}
 
 	const onShowDescription = async() =>{
@@ -47,7 +52,7 @@ const ChildSkillItem = (props) => {
 	
 	  const onComplete = async() => {
 		await completeSkill(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(user.id,config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken)
 	}
 
    
@@ -61,7 +66,6 @@ const ChildSkillItem = (props) => {
 				}
 				{props.record.name}
 			</div>
-			<h5 onClick={()=>{setShowAddSkill(!showAddSkill)}} className='mt-3 text-center'><div className='btn btn-secondary btn-sm'>Add Subskill</div></h5>
 			<div>
 				<span className='badge-primary badge-pill mr-3'>
 				</span>
@@ -69,6 +73,7 @@ const ChildSkillItem = (props) => {
 				<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 				<MdDone size='1.5em' onClick={onComplete}/>
 				<FiExternalLink size='1em' onClick={onShowDescription}/>
+				&nbsp;&nbsp;{showChildSkills?<div onClick={()=>{setShowAddSkill(!showAddSkill)}} className='btn btn-secondary btn-sm'>Add</div>:null}
 				{
 					showDescription?<SkillDescription refreshFunction={props.refreshFunction}
 					open={showDescription} hide={onHideDescription} 
@@ -86,7 +91,7 @@ const ChildSkillItem = (props) => {
 				))}
 			</ul>:null}
 			{showAddSkill?
-					<AddChildSkillForm refreshFunction={props.refreshFunction} 
+					<AddChildSkillForm refreshFunction={onRefresh} 
      				 	name={props.record.name} type={props.record.skillTypeName} open={onshowAddSkill} hide={onHideAddSkill}
        				/>:null}
 	</div>

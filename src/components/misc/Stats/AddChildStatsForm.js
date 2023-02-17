@@ -1,12 +1,12 @@
 import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createRootStats } from '../../api/StatsAPI';
+import { createChildStats } from '../../api/StatsAPI';
 import { ConfigContext } from '../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
 
 
 
-const AddStatsForm = (props) => {
+const AddChildStatsForm = (props) => {
 
 	const [name, setName] = useState('');
 	const {user, setUser} = useContext(UserContext);
@@ -16,8 +16,8 @@ const AddStatsForm = (props) => {
 
 	const onSubmit =async () =>{
 		console.log(name,description,value);
-		await createRootStats(config, 'Bearer '+user.accessToken,name,
-		props.name,value,description);
+		await createChildStats(config, 'Bearer '+user.accessToken,name,
+		props.type,value,description,props.name);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -58,4 +58,4 @@ const AddStatsForm = (props) => {
 	);
 };
 
-export default AddStatsForm;
+export default AddChildStatsForm;

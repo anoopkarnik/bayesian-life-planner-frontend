@@ -6,30 +6,29 @@ import {ImPlus} from 'react-icons/im'
 import {FiExternalLink} from 'react-icons/fi';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
-import { deleteSkill} from '../../api/SkillAPI';
-import SkillDescription from './SkillDescription';
-import ChildSkillItem from './ChildSkillItem';
-import AddChildSkillForm from './AddChildSkillForm';
-import { completeSkill } from '../../api/SkillAPI';
+import { deleteGoal} from '../../api/GoalAPI';
+import GoalDescription from './GoalDescription';
+import ChildGoalItem from './ChildGoalItem';
+import AddChildGoalForm from './AddChildGoalForm';
+import { completeGoal } from '../../api/GoalAPI';
 
 
-const SkillItem = (props) => {
+const GoalItem = (props) => {
 
 	const [value,setValue] = useState(props.record.value);
 	const [isEditing,setIsEditing] = useState(false);
 	const [showDescription, setShowDescription] =useState(false);
 	const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
-	const [showChildSkills, setShowChildSkills] = useState(false);
-	const [showAddSkill, setShowAddSkill] = useState(false);
+	const [showChildGoals, setShowChildGoals] = useState(false);
+	const [showAddGoal, setShowAddGoal] = useState(false);
 
 	const onDelete = async() =>{
-		await deleteSkill(config,'Bearer '+user.accessToken,props.record.id)
+		await deleteGoal(config,'Bearer '+user.accessToken,props.record.id)
 		await props.refreshFunction(config,'Bearer '+user.accessToken)
 	}
-
 	const onRefresh = async() =>{
-		setShowAddSkill(false);
+		setShowAddGoal(false);
 		await props.refreshFunction(config,'Bearer '+user.accessToken)
 	}
 
@@ -41,19 +40,19 @@ const SkillItem = (props) => {
 		setShowDescription(false);
 	}
 	const onShow = async() => {
-		setShowChildSkills(!showChildSkills)
+		setShowChildGoals(!showChildGoals)
 	}
 
-	const onshowAddSkill = async() =>{
-		setShowAddSkill(true);
+	const onshowAddGoal = async() =>{
+		setShowAddGoal(true);
 	  }
 	
-	  const onHideAddSkill= async() =>{
-		setShowAddSkill(false);
+	  const onHideAddGoal= async() =>{
+		setShowAddGoal(false);
 	  }
 
 	const onComplete = async() => {
-		await completeSkill(config,'Bearer '+user.accessToken,props.record.id)
+		await completeGoal(config,'Bearer '+user.accessToken,props.record.id)
 		await props.refreshFunction(config,'Bearer '+ user.accessToken)
 	}
 
@@ -62,7 +61,7 @@ const SkillItem = (props) => {
 	<div>
     	<li className='list-group-item d-flex justify-content-between align-items-center'>
 			<div>
-				{showChildSkills?
+				{showChildGoals?
 					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
 					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>}
 					{props.record.name}
@@ -76,19 +75,19 @@ const SkillItem = (props) => {
 				<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 				<MdDone size='1.5em' onClick={onComplete}/>
 				<FiExternalLink size='1em' onClick={onShowDescription}/>
-				&nbsp;&nbsp;{showChildSkills?<div onClick={()=>{setShowAddSkill(!showAddSkill)}} className='btn btn-secondary btn-sm'>Add</div>:null}
+				&nbsp;&nbsp;{showChildGoals?<div onClick={()=>{setShowAddGoal(!showAddGoal)}} className='btn btn-secondary btn-sm'>Add</div>:null}
 				{
-					showDescription?<SkillDescription refreshFunction={props.refreshFunction}
+					showDescription?<GoalDescription refreshFunction={props.refreshFunction}
 					open={showDescription} hide={onHideDescription} 
 					record={props.record}/>:null
 				}
 			</div>
     	</li>
-		{showChildSkills?
+		{showChildGoals?
 			<ul >
-				{props.record.skillResponses.map((record)=>(
+				{props.record.goalResponses.map((record)=>(
 					<li>
-						<ChildSkillItem record={record} 
+						<ChildGoalItem record={record} 
 							refreshFunction={props.refreshFunction}/>
 					</li>
 				))}
@@ -96,13 +95,13 @@ const SkillItem = (props) => {
 
 			</ul>:
 		null}
-		{showAddSkill?
-			<AddChildSkillForm refreshFunction={onRefresh} 
-     			name={props.record.name} type={props.record.skillTypeName} open={onshowAddSkill} hide={onHideAddSkill}
+		{showAddGoal?
+			<AddChildGoalForm refreshFunction={onRefresh} 
+     			name={props.record.name} type={props.record.goalTypeName} open={onshowAddGoal} hide={onHideAddGoal}
        		/>:
 		null}
 	</div>
   )
 }
 
-export default SkillItem
+export default GoalItem

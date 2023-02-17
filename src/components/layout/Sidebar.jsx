@@ -50,7 +50,7 @@ const Sidebar = ({children}) => {
     },
     {
       path:"/admin",
-      name:"Admin",
+      name:"Configure",
       icon:<FaAdn/>
     }
   ]

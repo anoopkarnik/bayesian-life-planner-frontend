@@ -24,11 +24,11 @@ const JournalPage = (props) => {
 
 
     useEffect(() => {
-        refreshJournalPage(user.id,config,'Bearer '+user.accessToken);
+        refreshJournalPage(config,'Bearer '+user.accessToken);
       }, []);
 
-    const refreshJournalPage = async(userId,backend_url,bearerToken) =>{
-      const {journal,journalOptions} = await getTotalJournals(backend_url,bearerToken,userId);
+    const refreshJournalPage = async(backend_url,bearerToken) =>{
+      const {journal,journalOptions} = await getTotalJournals(backend_url,bearerToken);
       setJournals(journal);
     }
 

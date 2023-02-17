@@ -28,7 +28,7 @@ const HabitDescription = (props) => {
 	const {config} = useContext(ConfigContext);
 
     const onUpdateDescription = async() =>{
-        await props.refreshFunction(user.id,config,'Bearer '+ user.accessToken)
+        await props.refreshFunction(config,'Bearer '+ user.accessToken)
         await addHabitDescription(config, 'Bearer '+user.accessToken,props.record.id,description);
         setIsEditing(false);
     };

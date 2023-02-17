@@ -14,12 +14,12 @@ const HabitList = (props) => {
     const [showAddHabit, setShowAddHabit] = useState(false);
 
     useEffect(() => {
-      refreshHabit(user.id,config,'Bearer '+user.accessToken,props.habit)
+      refreshHabit(config,'Bearer '+user.accessToken,props.habit)
     }, []);
 
-    const refreshHabit = async(userId,backend_url,bearerToken,habit) =>{
-      // await props.refreshFunction(userId,backend_url,bearerToken,habit)
-      const record = await getHabits(config,bearerToken,userId,props.habit);
+    const refreshHabit = async(backend_url,bearerToken,habit) =>{
+      // await props.refreshFunction(backend_url,bearerToken,habit)
+      const record = await getHabits(config,bearerToken,props.habit);
       setRecords(record);
       setShowAddHabit(false)
 

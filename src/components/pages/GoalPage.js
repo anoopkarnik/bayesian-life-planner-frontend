@@ -1,16 +1,16 @@
 import React,{useState,useEffect,useContext} from 'react'
 import "react-datepicker/dist/react-datepicker.css";
-import { getTotalBadHabits
+import { getTotalGoals
  } from '../api/AdminAPI';
-import BadHabitList from '../misc/BadHabit/BadHabitList';
+import GoalList from '../misc/Goal/GoalList';
 import { UserContext } from '../../context/UserContext';
 import { ConfigContext } from '../../context/ConfigContext';
 import { useAsyncError } from 'react-router-dom';
 
-const BadHabitPage = (props) => {
+const GoalPage = (props) => {
 
 	
-    const [badHabits,setBadHabits] = useState([]);
+    const [goals,setGoals] = useState([]);
     const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
 
@@ -24,21 +24,21 @@ const BadHabitPage = (props) => {
 
 
     useEffect(() => {
-        refreshBadHabitPage(config,'Bearer '+user.accessToken);
+        refreshGoalPage(config,'Bearer '+user.accessToken);
       }, []);
 
-    const refreshBadHabitPage = async(backend_url,bearerToken) =>{
-      const {badHabits,badHabitOptions} = await getTotalBadHabits(backend_url,bearerToken);
-      setBadHabits(badHabits);
+    const refreshGoalPage = async(backend_url,bearerToken) =>{
+      const {goals,goalOptions} = await getTotalGoals(backend_url,bearerToken);
+      setGoals(goals);
     }
 
   return (
-    chunkArray(badHabits, 3).map(
-      badHabits =>
+    chunkArray(goals, 3).map(
+      goals =>
         <div className="row mt-3">
-          {badHabits.map(badHabit =>
+          {goals.map(goal =>
             <div className="col-sm">
-              <BadHabitList badHabit={badHabit} refreshFunction={refreshBadHabitPage}/>
+              <GoalList goal={goal} refreshFunction={refreshGoalPage}/>
             </div>
           )}
         </div>
@@ -46,4 +46,4 @@ const BadHabitPage = (props) => {
   );
 }
 
-export default BadHabitPage
+export default GoalPage

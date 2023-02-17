@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getBadHabits = async(backend_url,bearerToken,userId,habitTypeName) =>{
-    const res = await fetch(backend_url+'/api/badHabit?userId='+userId+'&habitTypeName='+habitTypeName,{
+export const getBadHabits = async(backend_url,bearerToken,habitTypeName) =>{
+    const res = await fetch(backend_url+'/api/badHabit?habitTypeName='+habitTypeName,{
         method: 'GET',
         headers:{
           'Authorization':bearerToken
@@ -16,22 +16,36 @@ export const getBadHabits = async(backend_url,bearerToken,userId,habitTypeName) 
       return data
 }
 
-export const createBadHabit= async(backend_url,bearerToken,userId,name,startDate,
+export const createRootBadHabit= async(backend_url,bearerToken,name,startDate,
   habitTypeName)=>{
-      const res = await fetch(backend_url+'/api/badHabit', {
+      const res = await fetch(backend_url+'/api/badHabit/root', {
         method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization':bearerToken
           },
-          body: JSON.stringify({userId,name,startDate,habitTypeName}),
+          body: JSON.stringify({name,startDate,habitTypeName}),
         })
         const data = await res.json()
       return data     
     }
 
-export const carriedOutBadHabit = async(backend_url,bearerToken,id,userId)=>{
-    await fetch(backend_url+'/api/badHabit?userId='+userId+'&id='+id, {
+export const createChildBadHabit= async(backend_url,bearerToken,name,startDate,
+      habitTypeName,parentBadHabitName)=>{
+  const res = await fetch(backend_url+'/api/badHabit/child', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':bearerToken
+        },
+        body: JSON.stringify({name,startDate,habitTypeName,parentBadHabitName}),
+        })
+  const data = await res.json()
+  return data     
+}
+
+export const carriedOutBadHabit = async(backend_url,bearerToken,id)=>{
+    await fetch(backend_url+'/api/badHabit?id='+id, {
         method: 'PATCH',
         headers:{
           'Authorization':bearerToken

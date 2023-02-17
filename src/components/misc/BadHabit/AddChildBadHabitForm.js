@@ -1,38 +1,41 @@
 import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
-import { createRootSkill } from '../../api/SkillAPI';
+import { createChildBadHabit } from '../../api/BadHabitAPI';
+import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
-import SlidingPane from "react-sliding-pane";
 
 
-
-const AddSkillForm = (props) => {
+const AddChildBadHabitForm = (props) => {
 
 	const [name, setName] = useState('');
+	const [startDate, setStartDate] = useState(new Date());
 	const {user, setUser} = useContext(UserContext);
-	const [timeTaken, setTimeTaken] = useState('');
 	const {config} = useContext(ConfigContext);
 
 	const onSubmit =async () =>{
-		await createRootSkill(config, 'Bearer '+user.accessToken,name,
-		props.name,timeTaken);
+
+		await createChildBadHabit(config, 'Bearer '+user.accessToken,name,
+		startDate,props.type,props.name);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
+	const onStartDateChange = async(date) =>{
+		setStartDate(date)
+	}
 
 	return (
-		<form className='text-center'>
+		<form className='text-center' onSubmit={onSubmit}>
 			<div className='row'>
 				<div className='col-sm'>
-					<input required='required' Name='name' className='form-control'
-					id='name' placeholder='name' value={name} 
+					<input required='required' Name='text' className='form-control'
+					id='name' placeholder='Name' value={name} 
 					onChange={(event) => setName(event.target.value)}></input>
 				</div>
-				<div className='col-sm'>
-					<input required='required' Name='Time Taken' className='form-control'
-					id='timeTaken' placeholder='timeTaken' value={timeTaken} 
-					onChange={(event) => setTimeTaken(event.target.value)}></input>
-				</div>
+				<div className='col-sm'> 
+					<label for='startDate'></label>
+						<DatePicker selected={startDate}  className='form-control'
+						onChange={onStartDateChange}/>
+                	</div>
 			</div>
 			<div className='row'>
 				<div className='col-sm text-center'>
@@ -45,4 +48,4 @@ const AddSkillForm = (props) => {
 	);
 };
 
-export default AddSkillForm;
+export default AddChildBadHabitForm;

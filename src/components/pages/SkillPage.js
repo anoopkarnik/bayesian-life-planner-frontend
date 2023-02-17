@@ -24,11 +24,11 @@ const SkillPage = (props) => {
 
 
     useEffect(() => {
-        refreshSkillPage(user.id,config,'Bearer '+user.accessToken);
+        refreshSkillPage(config,'Bearer '+user.accessToken);
       }, []);
 
-    const refreshSkillPage = async(userId,backend_url,bearerToken) =>{
-      const {skills,skillOptions} = await getTotalSkills(backend_url,bearerToken,userId);
+    const refreshSkillPage = async(backend_url,bearerToken) =>{
+      const {skills,skillOptions} = await getTotalSkills(backend_url,bearerToken);
       setSkills(skills);
     }
 

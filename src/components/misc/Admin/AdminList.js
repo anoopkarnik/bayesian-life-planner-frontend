@@ -12,8 +12,8 @@ const AdminList = (props) => {
 
 
   const onCreate = async() =>{
-    await props.createFunction(config,'Bearer '+user.accessToken,newName,user.id)
-    await props.refreshFunction(user.id,config,'Bearer '+user.accessToken)
+    await props.createFunction(config,'Bearer '+user.accessToken,newName)
+    await props.refreshFunction(config,'Bearer '+user.accessToken)
     setKey('Add '+props.name);
 }
 

@@ -8,17 +8,16 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import {  carriedOutBadHabit, deleteBadHabit} from '../../api/BadHabitAPI';
 import BadHabitDescription from './BadHabitDescription';
-import ChildBadHabitItem from './ChildBadHabitItem';
 import AddChildBadHabitForm from './AddChildBadHabitForm';
 
-const BadHabitItem = (props) => {
+const ChildBadHabitItem = (props) => {
 
 	const [name,setName] = useState(props.record.name);
 	const [showDescription, setShowDescription] =useState(false);
-	const [showChildBadHabits, setShowChildBadHabits] = useState(false);
-	const [showAddBadHabit,setShowAddBadHabit] = useState(false);
 	const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
+	const [showChildBadHabits, setShowChildBadHabits] = useState(false);
+	const [showAddBadHabit, setShowAddBadHabit] = useState(false);
 	const SECOND = 1000;
 	const MINUTE = SECOND*60;
 	const HOUR = MINUTE*60;
@@ -35,11 +34,6 @@ const BadHabitItem = (props) => {
 		await carriedOutBadHabit(config,'Bearer '+user.accessToken,props.record.id)
 		await props.refreshFunction(config,'Bearer '+ user.accessToken)
 		setTime(Date.now() - Date.parse(props.record.updatedAt));
-	}
-
-	const onRefresh = async() =>{
-		setShowAddBadHabit(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
 	}
 
 	const onShowDescription = async() =>{
@@ -75,50 +69,48 @@ const BadHabitItem = (props) => {
 	<div>
     	<li className='list-group-item d-flex justify-content-between align-items-center'>
 			<div>
-				{showChildBadHabits?
+			{/* {showChildBadHabits?
 					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>}
-				{props.record.name}
-			</div>
-			<div>
-				<span className='badge-primary badge-pill mr-3'>
-					{`${Math.floor(time/DAY)}`.padStart(2, "0")}:
-					{`${Math.floor(time/HOUR)%24}`.padStart(2, "0")}:
-					{`${Math.floor(time/MINUTE)%60}`.padStart(2, "0")}:
-					{`${Math.floor(time/SECOND)%60}`.padStart(2, "0")}
-				</span>
-				&nbsp;&nbsp;&nbsp;
-				<ImPlus size='0.9em' onClick={onComplete}/>
-				<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
-				<FiExternalLink size='1em' onClick={onShowDescription}/>
-				&nbsp;&nbsp;{showChildBadHabits?<div onClick={()=>{setShowAddBadHabit(!showAddBadHabit)}} className='btn btn-secondary btn-sm'>Add</div>:null}
-				{
-					showDescription?<BadHabitDescription refreshFunction={props.refreshFunction}
-					open={showDescription} hide={onHideDescription} 
-					record={props.record}/>:null
-				}
-			</div>
-    	</li>
-		{showChildBadHabits?
-			<ul >
+					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>
+				} */}
+			{props.record.name}
+		</div>
+
+			
+		<div>
+			<span className='badge-primary badge-pill mr-3'>
+			{`${Math.floor(time/DAY)}`.padStart(2, "0")}:
+			{`${Math.floor(time/HOUR)%24}`.padStart(2, "0")}:
+			{`${Math.floor(time/MINUTE)%60}`.padStart(2, "0")}:
+			{`${Math.floor(time/SECOND)%60}`.padStart(2, "0")}
+			</span>
+			&nbsp;&nbsp;&nbsp;
+			<ImPlus size='0.9em' onClick={onComplete}/>
+			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
+			<FiExternalLink size='1em' onClick={onShowDescription}/>
+			{
+				showDescription?<BadHabitDescription refreshFunction={props.refreshFunction}
+				open={showDescription} hide={onHideDescription} 
+				record={props.record}/>:null
+			}
+		</div>
+    </li>
+	{showChildBadHabits?
+			<ul>
 				{props.record.badHabitResponses.map((record)=>(
 					<li>
 						<ChildBadHabitItem record={record} 
 							refreshFunction={props.refreshFunction}/>
 					</li>
 				))}
-
-
-			</ul>:
-		null}
-		{showAddBadHabit?
-			<AddChildBadHabitForm refreshFunction={onRefresh} 
-     			name={props.record.name} type={props.record.badHabitTypeName} 
-				open={onshowAddBadHabit} hide={onHideAddBadHabit}
-       		/>:
-		null}
+			</ul>:null}
+			{showAddBadHabit?
+					<AddChildBadHabitForm refreshFunction={props.refreshFunction} 
+     				 	name={props.record.name} type={props.record.badHabitTypeName} 
+						open={onshowAddBadHabit} hide={onHideAddBadHabit}
+       				/>:null}
 	</div>
   )
 }
 
-export default BadHabitItem
+export default ChildBadHabitItem

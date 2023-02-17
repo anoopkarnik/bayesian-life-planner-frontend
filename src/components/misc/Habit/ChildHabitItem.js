@@ -8,16 +8,15 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import { completeHabit, deleteHabit} from '../../api/HabitAPI';
 import HabitDescription from './HabitDescription';
-import ChildHabitItem from '../Habit/ChildHabitItem';
-import AddChildHabitForm from '../Habit/AddChildHabitForm';
+import AddChildHabitForm from './AddChildHabitForm';
 
-const HabitItem = (props) => {
+const ChildHabitItem = (props) => {
 
 	var one_day = 1000*60*60*24
 	const [name,setName] = useState(props.record.name);
 	const [showDescription, setShowDescription] =useState(false);
-	const [showChildHabits, setShowChildHabits] = useState(false);
-	const [showAddHabit,setShowAddHabit] = useState(false);
+	const [showChildHabits, setShowChildHabits] =useState(false);
+	const [showAddHabit, setShowAddHabit] = useState(false);
 	const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
 	const urgent ={backgroundColor:"#F2A10F"}
@@ -37,11 +36,6 @@ const HabitItem = (props) => {
 		await props.refreshFunction(config,'Bearer '+ user.accessToken)
 	}
 
-	const onRefresh = async() =>{
-		setShowAddHabit(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
-	}
-
 	const onShowDescription = async() =>{
 		setShowDescription(true);
 	}
@@ -49,7 +43,7 @@ const HabitItem = (props) => {
 	const onHideDescription = async() =>{
 		setShowDescription(false);
 	}
-
+	
 	const onShow = async() => {
 		setShowChildHabits(!showChildHabits)
 	}
@@ -60,7 +54,7 @@ const HabitItem = (props) => {
 	
 	  const onHideAddHabit= async() =>{
 		setShowAddHabit(false);
-	  }
+	  }	
 
  
     
@@ -68,10 +62,10 @@ const HabitItem = (props) => {
 	<div>
     <li style={daysLeft<1?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
 		<div>
-			{showChildHabits?
+			{/* {showChildHabits?
 					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
 					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>
-			}
+				} */}
 			{props.record.name}
 		</div>
 			{props.record.streak}
@@ -84,7 +78,6 @@ const HabitItem = (props) => {
 
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 			<FiExternalLink size='1em' onClick={onShowDescription}/>
-			&nbsp;&nbsp;{showChildHabits?<div onClick={()=>{setShowAddHabit(!showAddHabit)}} className='btn btn-secondary btn-sm'>Add</div>:null}
 			{
 				showDescription?<HabitDescription refreshFunction={props.refreshFunction}
 				open={showDescription} hide={onHideDescription} 
@@ -93,25 +86,21 @@ const HabitItem = (props) => {
 		</div>
     </li>
 	{showChildHabits?
-			<ul >
+			<ul>
 				{props.record.habitResponses.map((record)=>(
 					<li>
 						<ChildHabitItem record={record} 
 							refreshFunction={props.refreshFunction}/>
 					</li>
 				))}
-
-
-			</ul>:
-		null}
-		{showAddHabit?
-			<AddChildHabitForm refreshFunction={onRefresh} 
-     			name={props.record.name} type={props.record.habitTypeName} 
-				open={onshowAddHabit} hide={onHideAddHabit}
-       		/>:
-		null}
+			</ul>:null}
+			{showAddHabit?
+					<AddChildHabitForm refreshFunction={props.refreshFunction} 
+     				 	name={props.record.name} type={props.record.habitTypeName} 
+						open={onshowAddHabit} hide={onHideAddHabit}
+       				/>:null}
 	</div>
   )
 }
 
-export default HabitItem
+export default ChildHabitItem

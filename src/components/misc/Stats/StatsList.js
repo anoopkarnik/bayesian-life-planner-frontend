@@ -14,12 +14,12 @@ const StatsList = (props) => {
     const [showAddStats, setShowAddStats] = useState(false);
 
     useEffect(() => {
-      refreshStats(user.id,config,'Bearer '+user.accessToken,props.stat)
+      refreshStats(config,'Bearer '+user.accessToken,props.stat)
     }, []);
 
-    const refreshStats = async(userId,backend_url,bearerToken,stat) =>{
-      // await props.refreshFunction(userId,backend_url,bearerToken,habit)
-      const record = await getStats(config,bearerToken,userId,props.stat);
+    const refreshStats = async(backend_url,bearerToken,stat) =>{
+      // await props.refreshFunction(backend_url,bearerToken,habit)
+      const record = await getStats(config,bearerToken,props.stat);
       setRecords(record);
       setShowAddStats(false)
 

@@ -16,7 +16,7 @@ const JournalDescription = (props) => {
 	  const {config} = useContext(ConfigContext);
 
     const onUpdateText= async() =>{
-        await props.refreshFunction(user.id,config,'Bearer '+ user.accessToken)
+        await props.refreshFunction(config,'Bearer '+ user.accessToken)
         await addJournalDescription(config, 'Bearer '+user.accessToken,props.record.id,text);
         setIsEditing(false);
     };
