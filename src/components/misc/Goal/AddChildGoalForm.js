@@ -3,6 +3,7 @@ import { UserContext } from '../../../context/UserContext';
 import { createChildGoal } from '../../api/GoalAPI';
 import { ConfigContext } from '../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
+import DatePicker from "react-datepicker";
 
 
 
@@ -10,13 +11,17 @@ const AddChildGoalForm = (props) => {
 
 	const [name, setName] = useState('');
 	const {user, setUser} = useContext(UserContext);
-	const [timeTaken, setTimeTaken] = useState('');
+	const [dueDate, setDueDate] = useState(new Date());
 	const {config} = useContext(ConfigContext);
 
 	const onSubmit =async () =>{
 		await createChildGoal(config, 'Bearer '+user.accessToken,name,
-		props.type,timeTaken,props.name);
+		props.type,dueDate,props.name);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
+	}
+
+	const onDueDateChange = async(date) =>{
+		setDueDate(date)
 	}
 
 
@@ -29,9 +34,9 @@ const AddChildGoalForm = (props) => {
 					onChange={(event) => setName(event.target.value)}></input>
 				</div>
 				<div className='col-3'>
-					<input required='required' Name='Time Taken' className='form-control'
-					id='time' placeholder='time' value={timeTaken} 
-					onChange={(event) => setTimeTaken(event.target.value)}></input>
+				<label for='dueDate'></label>
+					<DatePicker selected={dueDate}  className='form-control'
+					onChange={onDueDateChange}/>
 				</div>
 				<div className='col-3 text-center'>
 					<div onClick={onSubmit} type='submit' className='btn btn-secondary form-control'>

@@ -1,10 +1,13 @@
-import React, { Component, useState,useContext } from "react";
+import React, { Component, useState,useContext,useEffect } from "react";
 import { render } from "react-dom";
 import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
 import { addGoalDescription } from "../../api/GoalAPI";
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import RuleList from "./RuleList";
+import { getTaskRules,getHabitRules,getBadHabitRules,
+getSkillRules,getStatRules } from "../../api/RuleAPI";
 
 const GoalDescription = (props) => {
 
@@ -27,12 +30,16 @@ const GoalDescription = (props) => {
     const [isEditing,setIsEditing] = useState(false);
     const {user, setUser} = useContext(UserContext);
 	  const {config} = useContext(ConfigContext);
-
+    const [showRules,setShowRules] = useState(false);
+    const [showAddRule,setShowAddRule] = useState(false);
     const onUpdateDescription= async() =>{
         await props.refreshFunction(config,'Bearer '+ user.accessToken)
         await addGoalDescription(config, 'Bearer '+user.accessToken,props.record.id,description);
         setIsEditing(false);
     };
+
+
+
 
   return (
     <div>
@@ -45,13 +52,18 @@ const GoalDescription = (props) => {
         width="500px"
       >
         <b>Name</b> - {props.record.name} <br/>
-        <b>Time Taken</b> - {props.record.timeTaken} mins <br/>
         <b>Created Date</b> - {formatDate(new Date(props.record.createdAt))} <br/>
         <b>Updated Date</b> - {formatDate(new Date(props.record.updatedAt))} <br/>
+        <b>Due Date</b> - {formatDate(new Date(props.record.dueDate))} <br/>
         <b>Goal Type</b> - {props.record.goalTypeName} <br/>
         <b>Completed</b> - {props.record.completed.toString()} <br/>
+        <b>Completed Percentage</b> - {props.record.completedPercentage} % <br/>
+        <b>Child Completed Percentage</b> - {props.childCompletedPercentage} % <br/>
+        <b>Work Percentage</b> - {props.workPercentage} % <br/>
         {/* <b>Sub Goals</b> - {props.record.goalResponses}<br/> */}
-        <br/><br/><br/><br/>
+        <br/><br/>
+        <RuleList record={props.record}/>
+        <br/><br/>
         <div className="text-center"> 
             <b>Description</b>
             <div >

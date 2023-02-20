@@ -3,6 +3,7 @@ import { UserContext } from '../../../context/UserContext';
 import { createRootGoal } from '../../api/GoalAPI';
 import { ConfigContext } from '../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
+import DatePicker from "react-datepicker";
 
 
 
@@ -10,13 +11,17 @@ const AddGoalForm = (props) => {
 
 	const [name, setName] = useState('');
 	const {user, setUser} = useContext(UserContext);
-	const [timeTaken, setTimeTaken] = useState('');
+	const [dueDate, setDueDate] = useState(new Date());
 	const {config} = useContext(ConfigContext);
 
 	const onSubmit =async () =>{
 		await createRootGoal(config, 'Bearer '+user.accessToken,name,
-		props.name,timeTaken);
+		props.name,dueDate);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
+	}
+
+	const onDueDateChange = async(date) =>{
+		setDueDate(date)
 	}
 
 
@@ -29,9 +34,9 @@ const AddGoalForm = (props) => {
 					onChange={(event) => setName(event.target.value)}></input>
 				</div>
 				<div className='col-sm'>
-					<input required='required' Name='Time Taken' className='form-control'
-					id='timeTaken' placeholder='timeTaken' value={timeTaken} 
-					onChange={(event) => setTimeTaken(event.target.value)}></input>
+				<label for='dueDate'></label>
+					<DatePicker selected={dueDate}  className='form-control'
+					onChange={onDueDateChange}/>
 				</div>
 			</div>
 			<div className='row'>

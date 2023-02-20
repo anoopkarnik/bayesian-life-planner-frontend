@@ -17,7 +17,7 @@ export const getGoals = async(backend_url,bearerToken,goalTypeName) =>{
 }
 
 export const createRootGoal = async(backend_url,bearerToken,name,
-  goalTypeName,timeTaken)=>{
+  goalTypeName,dueDate)=>{
 
       const res = await fetch(backend_url+'/api/goal/root', {
         method: 'POST',
@@ -26,14 +26,14 @@ export const createRootGoal = async(backend_url,bearerToken,name,
             'Authorization':bearerToken
           },
           body: JSON.stringify({name,
-            goalTypeName,timeTaken}),
+            goalTypeName,dueDate}),
         })
         const data = await res.json()
       return data
     }
 
 export const createChildGoal = async(backend_url,bearerToken,name,
-      goalTypeName,timeTaken,parentGoalName)=>{
+      goalTypeName,dueDate,parentGoalName)=>{
     
           const res = await fetch(backend_url+'/api/goal/child', {
             method: 'POST',
@@ -42,7 +42,7 @@ export const createChildGoal = async(backend_url,bearerToken,name,
                 'Authorization':bearerToken
               },
               body: JSON.stringify({name,
-                goalTypeName,timeTaken,parentGoalName}),
+                goalTypeName,dueDate,parentGoalName}),
             })
             const data = await res.json()
           return data

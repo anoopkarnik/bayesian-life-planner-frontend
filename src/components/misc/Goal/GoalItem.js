@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import {AiOutlinePlusCircle,AiOutlineMinusCircle} from 'react-icons/ai'
 import { TiDelete } from 'react-icons/ti';
 import {MdDone} from 'react-icons/md'
@@ -22,6 +22,7 @@ const GoalItem = (props) => {
     const {config} = useContext(ConfigContext);
 	const [showChildGoals, setShowChildGoals] = useState(false);
 	const [showAddGoal, setShowAddGoal] = useState(false);
+	const [childCompletedPercentage,setChildCompletedPercentage] = useState(0);
 
 	const onDelete = async() =>{
 		await deleteGoal(config,'Bearer '+user.accessToken,props.record.id)
@@ -30,6 +31,7 @@ const GoalItem = (props) => {
 	const onRefresh = async() =>{
 		setShowAddGoal(false);
 		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		
 	}
 
 	const onShowDescription = async() =>{
@@ -56,6 +58,21 @@ const GoalItem = (props) => {
 		await props.refreshFunction(config,'Bearer '+ user.accessToken)
 	}
 
+	const getChildCompletedPercentages = async() =>{
+		let childCompletedPercentage1 = 0.00;
+		if (props.record.goalResponses.length>0){
+			for(let response of props.record.goalResponses){
+				childCompletedPercentage1+=response.completedPercentage;
+			}
+			childCompletedPercentage1 = childCompletedPercentage1/props.record.goalResponses.length
+		}
+		console.log(childCompletedPercentage1);
+		setChildCompletedPercentage(childCompletedPercentage1);
+	}
+
+	useEffect(() => {
+		getChildCompletedPercentages()
+	  }, []);
    
   return (
 	<div>
@@ -69,7 +86,8 @@ const GoalItem = (props) => {
 			<div>
 
 				<span className='badge-primary badge-pill mr-3'>
-
+					{props.record.completedPercentage==0?
+					parseFloat(childCompletedPercentage).toFixed(2):parseFloat(props.record.completedPercentage).toFixed(2)}%
 				</span>
 			
 				<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
@@ -79,7 +97,7 @@ const GoalItem = (props) => {
 				{
 					showDescription?<GoalDescription refreshFunction={props.refreshFunction}
 					open={showDescription} hide={onHideDescription} 
-					record={props.record}/>:null
+					record={props.record} childCompletedPercentage={childCompletedPercentage}/>:null
 				}
 			</div>
     	</li>
