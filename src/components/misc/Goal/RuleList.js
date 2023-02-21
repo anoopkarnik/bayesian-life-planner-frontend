@@ -13,8 +13,8 @@ const RuleList = (props) => {
 
     const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
-    const [completedRecords, setCompletedRecords] = useState([]);
-    const [workRecords, setWorkRecords] = useState([]);
+    const [completedRecords, setCompletedRecords] = useState(props.completedRecords);
+    const [workRecords, setWorkRecords] = useState(props.workRecords);
     const [showCompletedRule, setShowCompletedRule] = useState(false);
     const [showAddCompletedRule,setShowAddCompletedRule] = useState(false);
     const [showWorkRule, setShowWorkRule] = useState(false);

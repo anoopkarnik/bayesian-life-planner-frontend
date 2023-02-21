@@ -74,12 +74,13 @@ const BadHabitItem = (props) => {
   return (
 	<div>
     	<li className='list-group-item d-flex justify-content-between align-items-center'>
-			<div>
+		<div>{props.record.badHabitResponses.length>0?<>
 				{showChildBadHabits?
-					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>}
+					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
+					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
+				}</>:<>&emsp;</>}
 				{props.record.name}
-			</div>
+		</div>
 			<div>
 				<span className='badge-primary badge-pill mr-3'>
 					{`${Math.floor(time/DAY)}`.padStart(2, "0")}:
@@ -91,7 +92,10 @@ const BadHabitItem = (props) => {
 				<ImPlus size='0.9em' onClick={onComplete}/>
 				<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 				<FiExternalLink size='1em' onClick={onShowDescription}/>
-				&nbsp;&nbsp;{showChildBadHabits?<div onClick={()=>{setShowAddBadHabit(!showAddBadHabit)}} className='btn btn-secondary btn-sm'>Add</div>:null}
+				&nbsp;&nbsp;
+				<div onClick={()=>{setShowAddBadHabit(!showAddBadHabit)}} 
+				className='btn btn-sm'>
+				<AiOutlinePlusCircle size='1.5em'/></div>
 				{
 					showDescription?<BadHabitDescription refreshFunction={props.refreshFunction}
 					open={showDescription} hide={onHideDescription} 

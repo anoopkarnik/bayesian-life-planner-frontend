@@ -66,12 +66,12 @@ const TaskItem = (props) => {
   return (
 	<div>
     <li style={daysLeft<=0?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
-		<div>
-		{showChildTasks?
-					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>
-			}
-			{props.record.name}
+		<div>{props.record.taskResponses.length>0?<>
+				{showChildTasks?
+					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
+					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
+				}</>:<>&emsp;</>}
+				{props.record.name}
 		</div>
 		<div>
 			<span className='badge-primary badge-pill mr-3'>
@@ -80,7 +80,10 @@ const TaskItem = (props) => {
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 			<MdDone size='1.5em' onClick={onComplete}/>			
 			<FiExternalLink size='1em' onClick={onShowDescription}/>
-			&nbsp;&nbsp;{showChildTasks?<div onClick={()=>{setShowAddTask(!showAddTask)}} className='btn btn-secondary btn-sm'>Add</div>:null}
+			&nbsp;&nbsp;
+			<div onClick={()=>{setShowAddTask(!showAddTask)}} 
+			className='btn btn-sm'>
+				<AiOutlinePlusCircle size='1.5em'/></div>
 				{
 					showDescription?<TaskDescription record={props.record} 
 					refreshFunction={props.refreshFunction}

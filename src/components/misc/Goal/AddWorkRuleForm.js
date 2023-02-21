@@ -66,10 +66,10 @@ const AddWorkRuleForm = (props) => {
 		setNames(data);
 	}
 
-	const onSubmit =async () =>{
+	const onSubmit =async() =>{
 		await createWorkRule(config,'Bearer '+user.accessToken,
 		ruleType,name,id,props.id,value,conditionType,weightage);
-		await props.refreshFunction(config,'Bearer '+user.accessToken,props.id);
+		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken);
 	}
 
 	

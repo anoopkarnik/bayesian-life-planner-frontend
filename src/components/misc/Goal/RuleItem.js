@@ -40,6 +40,7 @@ const RuleItem = (props) => {
 			<span className='badge-primary badge-pill mr-3'>
 				
 			</span>
+			{props.record.weightage}
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 		</div>
     </li>

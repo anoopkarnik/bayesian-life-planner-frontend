@@ -82,7 +82,7 @@ const AddCompletedRuleForm = (props) => {
 	const onSubmit =async () =>{
 		await createCompletedRule(config,'Bearer '+user.accessToken,
 		ruleType,name,id,props.id,value,conditionType,weightage);
-		await props.refreshFunction(config,'Bearer '+user.accessToken,props.id);
+		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken);
 	}
 
 	

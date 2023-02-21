@@ -20,7 +20,12 @@ const ChildGoalItem = (props) => {
 	const [showChildGoals, setShowChildGoals] = useState(false);
 	const [showAddGoal,setShowAddGoal] = useState(false);
 	const [childCompletedPercentage,setChildCompletedPercentage] = useState(0);
-
+	// const width = Math.round(props.record.completedPercentage).toString()+"%"
+	// console.log(width)
+	// const completedStyle = {
+	// 	width:width,
+	// 	backgroundColor:'green'
+	// }
 	const onDelete = async() =>{
 		await deleteGoal(config,'Bearer '+user.accessToken,props.record.id)
 		await props.refreshFunction(config,'Bearer '+user.accessToken)
@@ -76,23 +81,27 @@ const ChildGoalItem = (props) => {
   return (
 	<div>
     	<li className='list-group-item d-flex justify-content-between align-items-center'>
-			<div>
+			<div>{props.record.goalResponses.length>0?<>
 				{showChildGoals?
-					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>
-				}
+					<AiOutlineMinusCircle size='0.8em' onClick={onShow}/>:
+					<AiOutlinePlusCircle size='0.8em' onClick={onShow}/>
+				}</>:<>&ensp;</>}
 				{props.record.name}
+				
 			</div>
+			{Math.round(props.record.completedPercentage)==0 ?null:<>Lv{Math.round(props.record.completedPercentage)}</>}
 			<div>
 				<span className='badge-primary badge-pill mr-3'>
-				{props.record.completedPercentage==0?
-					parseFloat(childCompletedPercentage).toFixed(2):parseFloat(props.record.completedPercentage).toFixed(2)}%
+				
 				</span>
 				
 				<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 				<MdDone size='1.5em' onClick={onComplete}/>
 				<FiExternalLink size='1em' onClick={onShowDescription}/>
-				&nbsp;&nbsp;<div onClick={()=>{setShowAddGoal(!showAddGoal)}} className='btn btn-secondary btn-sm'>Add</div>
+				&nbsp;&nbsp;
+				<div onClick={()=>{setShowAddGoal(!showAddGoal)}} 
+				className='btn btn-sm'>
+				<AiOutlinePlusCircle size='1.5em'/></div>
 				{
 					showDescription?<GoalDescription refreshFunction={props.refreshFunction}
 					open={showDescription} hide={onHideDescription} 

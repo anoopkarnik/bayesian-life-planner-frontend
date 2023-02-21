@@ -6,10 +6,10 @@ import { addGoalDescription } from "../../api/GoalAPI";
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import RuleList from "./RuleList";
-import { getTaskRules,getHabitRules,getBadHabitRules,
-getSkillRules,getStatRules } from "../../api/RuleAPI";
+import { getAllCompletedRules,getAllWorkRules } from '../../api/RuleAPI';
 
 const GoalDescription = (props) => {
+  
 
   function formatDate(newDate) {
     const months = {0: 'January',1: 'February',2: 'March',3: 'April',
@@ -32,11 +32,27 @@ const GoalDescription = (props) => {
 	  const {config} = useContext(ConfigContext);
     const [showRules,setShowRules] = useState(false);
     const [showAddRule,setShowAddRule] = useState(false);
+    const [completedRecords, setCompletedRecords] = useState([]);
+    const [workRecords, setWorkRecords] = useState([]);
     const onUpdateDescription= async() =>{
         await props.refreshFunction(config,'Bearer '+ user.accessToken)
         await addGoalDescription(config, 'Bearer '+user.accessToken,props.record.id,description);
         setIsEditing(false);
     };
+
+    const refreshRules = async(backend_url,bearerToken,id) => {
+      const completedRecord = await getAllCompletedRules(config,'Bearer '+user.accessToken,
+      props.record.id);
+      const workRecord = await getAllWorkRules(config,'Bearer '+user.accessToken,
+      props.record.id);
+      setCompletedRecords(completedRecord);
+      setWorkRecords(workRecord);
+    }
+
+    useEffect(() => {
+      refreshRules(config,'Bearer '+user.accessToken,
+      props.record.id);
+    }, []);
 
 
 
@@ -57,12 +73,13 @@ const GoalDescription = (props) => {
         <b>Due Date</b> - {formatDate(new Date(props.record.dueDate))} <br/>
         <b>Goal Type</b> - {props.record.goalTypeName} <br/>
         <b>Completed</b> - {props.record.completed.toString()} <br/>
-        <b>Completed Percentage</b> - {props.record.completedPercentage} % <br/>
-        <b>Child Completed Percentage</b> - {props.childCompletedPercentage} % <br/>
-        <b>Work Percentage</b> - {props.workPercentage} % <br/>
+        <b>Current Level</b> - Lv {Math.round(props.record.completedPercentage)} <br/>
+        <b>Aggregated SubGoals Level</b> - Lv {Math.round(props.childCompletedPercentage)} <br/>
+        <b>Expected Level</b> - Lv {Math.round(props.record.workPercentage)} <br/>
         {/* <b>Sub Goals</b> - {props.record.goalResponses}<br/> */}
         <br/><br/>
-        <RuleList record={props.record}/>
+        <RuleList record={props.record} completedRecords={completedRecords} 
+        workRecords={workRecords}/>
         <br/><br/>
         <div className="text-center"> 
             <b>Description</b>

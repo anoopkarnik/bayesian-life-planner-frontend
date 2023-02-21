@@ -59,8 +59,12 @@ const ChildTaskItem = (props) => {
   return (
 	<div>
     <li style={daysLeft<=0?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
-		<div>
-			{props.record.name}
+		<div>{props.record.taskResponses.length>0?<>
+				{showChildTasks?
+					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
+					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
+				}</>:<>&emsp;</>}
+				{props.record.name}
 		</div>
 		<div>
 			<span className='badge-primary badge-pill mr-3'>

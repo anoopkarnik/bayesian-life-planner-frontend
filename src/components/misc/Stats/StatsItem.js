@@ -64,11 +64,12 @@ const StatsItem = (props) => {
   return (
 	<div>
     <li className='list-group-item d-flex justify-content-between align-items-center'>
-		<div>
-		{showChildStats?
-					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>}
-			{props.record.name}
+		<div>{props.record.statsResponses.length>0?<>
+				{showChildStats?
+					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
+					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
+				}</>:<>&emsp;</>}
+				{props.record.name}
 		</div>
 		
 		<div>
@@ -83,7 +84,10 @@ const StatsItem = (props) => {
 			
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 			<FiExternalLink size='1em' onClick={onShowDescription}/>
-			&nbsp;&nbsp;{showChildStats?<div onClick={()=>{setShowAddStat(!showAddStat)}} className='btn btn-secondary btn-sm'>Add</div>:null}
+			&nbsp;&nbsp;
+			<div onClick={()=>{setShowAddStat(!showAddStat)}} 
+			className='btn btn-sm'>
+				<AiOutlinePlusCircle size='1.5em'/></div>
 			{
 				showDescription?<StatsDescription refreshFunction={props.refreshFunction}
 				open={showDescription} hide={onHideDescription} 

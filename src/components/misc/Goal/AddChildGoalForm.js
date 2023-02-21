@@ -28,12 +28,12 @@ const AddChildGoalForm = (props) => {
 	return (
 		<form className='text-center'>
 			<div className='row'>
-				<div className='col-6'>
+				<div className='col-5'>
 					<input required='required' Name='name' className='form-control'
 					id='name' placeholder='name' value={name} 
 					onChange={(event) => setName(event.target.value)}></input>
 				</div>
-				<div className='col-3'>
+				<div className='col-4'>
 				<label for='dueDate'></label>
 					<DatePicker selected={dueDate}  className='form-control'
 					onChange={onDueDateChange}/>

@@ -67,12 +67,12 @@ const HabitItem = (props) => {
   return (
 	<div>
     <li style={daysLeft<1?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
-		<div>
-			{showChildHabits?
-					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>
-			}
-			{props.record.name}
+		<div>{props.record.habitResponses.length>0?<>
+				{showChildHabits?
+					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
+					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
+				}</>:<>&emsp;</>}
+				{props.record.name}
 		</div>
 			{props.record.streak}
 			<ImPlus size='0.9em' onClick={onComplete}/>
@@ -84,7 +84,10 @@ const HabitItem = (props) => {
 
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 			<FiExternalLink size='1em' onClick={onShowDescription}/>
-			&nbsp;&nbsp;{showChildHabits?<div onClick={()=>{setShowAddHabit(!showAddHabit)}} className='btn btn-secondary btn-sm'>Add</div>:null}
+			&nbsp;&nbsp;
+			<div onClick={()=>{setShowAddHabit(!showAddHabit)}} 
+				className='btn btn-sm'>
+				<AiOutlinePlusCircle size='1.5em'/></div>
 			{
 				showDescription?<HabitDescription refreshFunction={props.refreshFunction}
 				open={showDescription} hide={onHideDescription} 

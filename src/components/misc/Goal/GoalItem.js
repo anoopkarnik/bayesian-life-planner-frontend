@@ -11,6 +11,7 @@ import GoalDescription from './GoalDescription';
 import ChildGoalItem from './ChildGoalItem';
 import AddChildGoalForm from './AddChildGoalForm';
 import { completeGoal } from '../../api/GoalAPI';
+import {BsCircleFill} from 'react-icons/bs';
 
 
 const GoalItem = (props) => {
@@ -77,23 +78,27 @@ const GoalItem = (props) => {
   return (
 	<div>
     	<li className='list-group-item d-flex justify-content-between align-items-center'>
-			<div>
+			<div>{props.record.goalResponses.length>0?<>
 				{showChildGoals?
-					<AiOutlineMinusCircle size='1.5em' onClick={onShow}/>:
-					<AiOutlinePlusCircle size='1.5em' onClick={onShow}/>}
-					{props.record.name}
+					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
+					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
+				}</>:<>&emsp;</>}
+				{props.record.name}
+				
 			</div>
 			<div>
 
 				<span className='badge-primary badge-pill mr-3'>
-					{props.record.completedPercentage==0?
-					parseFloat(childCompletedPercentage).toFixed(2):parseFloat(props.record.completedPercentage).toFixed(2)}%
+
 				</span>
 			
 				<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 				<MdDone size='1.5em' onClick={onComplete}/>
 				<FiExternalLink size='1em' onClick={onShowDescription}/>
-				&nbsp;&nbsp;{showChildGoals?<div onClick={()=>{setShowAddGoal(!showAddGoal)}} className='btn btn-secondary btn-sm'>Add</div>:null}
+				&nbsp;&nbsp;
+				<div onClick={()=>{setShowAddGoal(!showAddGoal)}} 
+				className='btn btn-sm'>
+				<AiOutlinePlusCircle size='1.5em'/></div>
 				{
 					showDescription?<GoalDescription refreshFunction={props.refreshFunction}
 					open={showDescription} hide={onHideDescription} 
