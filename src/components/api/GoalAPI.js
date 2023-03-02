@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getGoals = async(backend_url,bearerToken,goalTypeName) =>{
-    const res = await fetch(backend_url+'/api/goal?goalTypeName='+goalTypeName,{
+export const getGoals = async(backend_url,bearerToken,goalTypeName,active) =>{
+    const res = await fetch(backend_url+'/api/goal?goalTypeName='+goalTypeName+'&active='+active,{
         method: 'GET',
         headers:{
           'Authorization':bearerToken
@@ -17,7 +17,7 @@ export const getGoals = async(backend_url,bearerToken,goalTypeName) =>{
 }
 
 export const createRootGoal = async(backend_url,bearerToken,name,
-  goalTypeName,dueDate)=>{
+  goalTypeName,dueDate,active)=>{
 
       const res = await fetch(backend_url+'/api/goal/root', {
         method: 'POST',
@@ -26,14 +26,14 @@ export const createRootGoal = async(backend_url,bearerToken,name,
             'Authorization':bearerToken
           },
           body: JSON.stringify({name,
-            goalTypeName,dueDate}),
+            goalTypeName,dueDate,active}),
         })
         const data = await res.json()
       return data
     }
 
 export const createChildGoal = async(backend_url,bearerToken,name,
-      goalTypeName,dueDate,parentGoalName)=>{
+      goalTypeName,dueDate,parentGoalName,active)=>{
     
           const res = await fetch(backend_url+'/api/goal/child', {
             method: 'POST',
@@ -42,20 +42,24 @@ export const createChildGoal = async(backend_url,bearerToken,name,
                 'Authorization':bearerToken
               },
               body: JSON.stringify({name,
-                goalTypeName,dueDate,parentGoalName}),
+                goalTypeName,dueDate,parentGoalName,active}),
             })
             const data = await res.json()
           return data
         }
 
-export const addGoalDescription = async(backend_url,bearerToken,id,description)=>{
-  await fetch(backend_url+'/api/goal/description', {
+export const modifyGoalParams = async(backend_url,bearerToken,id,
+  name,startDate,description,active,hidden,completed,
+  dueDate,timeTaken)=>{
+  await fetch(backend_url+'/api/goal/modifyParams', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,description}),
+      body: JSON.stringify({id,
+        name,startDate,description,active,hidden,completed,
+        dueDate,timeTaken}),
     })
 }
 

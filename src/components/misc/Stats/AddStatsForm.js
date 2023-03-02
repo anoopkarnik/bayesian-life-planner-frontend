@@ -13,11 +13,17 @@ const AddStatsForm = (props) => {
 	const [description, setDescription] = useState('');
 	const [value, setValue] = useState(0);
 	const {config} = useContext(ConfigContext);
+	const [active, setActive] = useState(true);
+	const handleRadio= async(event) =>{
+		const active = event.target.value === 'true' ? true: false;
+		console.log('handle', active);
+		setActive(active);
+	  }
 
 	const onSubmit =async () =>{
 		console.log(name,description,value);
 		await createRootStats(config, 'Bearer '+user.accessToken,name,
-		props.name,value,description);
+		props.name,value,description,active);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -46,6 +52,22 @@ const AddStatsForm = (props) => {
 						<>{description}</>
 					</textarea>
 				</div>
+			</div>
+			<div className='row'>
+				<div className='col-sm' onChange={(event) => setActive(event.target.value)}>
+        			Active <br/>
+					<label>
+						<input type="radio" value="true" name="active"
+						onChange={handleRadio}/> 
+						Yes
+					</label>
+					<t/>
+					<label>
+						<input type="radio" value="false" name="active"
+						onChange={handleRadio}/> 
+						No
+					</label>
+      			</div>
 			</div>
 			<div className='row'>
 				<div className='col-sm text-center'>

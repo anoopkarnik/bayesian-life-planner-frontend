@@ -13,15 +13,19 @@ const SigninPage = (props) => {
 	const {config} = useContext(ConfigContext);
 
     const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('password');
 	const {setUser} = useAuth();
 
-
     const onSubmit = async()=>{
-      const user = await signin(config,name,password)
-	  setUser(user);
-	  setLoggedIn(true);
-      navigate('/task');
+		try{
+      		const user = await signin(config,name,password)
+	  		setUser(user);
+	  		setLoggedIn(true);
+      		navigate('/task');
+		}
+		catch{
+			alert("Username/Password not found")
+		}
     }
     const onSignup = async()=>{
       navigate('/signup');
@@ -49,6 +53,7 @@ const SigninPage = (props) => {
 					<input
 						required='required'
 						Name='text'
+						type="password"
 						className='form-control'
 						id='password'
 						placeholder='Password'
@@ -70,6 +75,29 @@ const SigninPage = (props) => {
 				</div>
 			</div>
 		</form>
+		<br/>
+		<h4>Select Existing Profiles</h4>
+		<div className='col-sm'>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("God")}>
+		 God</div>
+	<div className='btn btn-outline-dark mt-3' onClick={()=>setName("HarryPotter")}>
+		Harry Potter</div>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("MarkZuckerburg")}>
+		Mark Zuckerburg</div>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("ARRahman")}>
+		 AR Rahman</div>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("MichaelJackson")}>
+		 Michael Jackson</div>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("GeorgeRRMartin")}>
+		 George RR Martin</div>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("MotherTeresa")}>
+		 Mother Teresa</div>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("APJAbdulKalam")}>
+		 APJ Abdul Kalam</div>
+	<div className='btn btn-outline-dark  mt-3' onClick={()=>setName("JackieChan")}>
+		 Jackie Chan</div>
+		 </div>
+		 
     </div>
   )
 }

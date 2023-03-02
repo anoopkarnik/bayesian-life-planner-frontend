@@ -2,6 +2,7 @@ import React,{useState,useContext,useEffect} from 'react'
 import BadHabitItem from './BadHabitItem';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import AddBadHabitForm from './AddBadHabitForm';
 import { getBadHabits } from '../../api/BadHabitAPI';
 
@@ -12,14 +13,16 @@ const BadHabitList = (props) => {
     const [records, setRecords] = useState([]);
     const [showBadHabit, setShowBadHabit] = useState(false);
     const [showAddBadHabit, setShowAddBadHabit] = useState(false);
+    const {active} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshBadHabit(config,'Bearer '+user.accessToken,props.badHabit)
-    }, []);
+      refreshBadHabit(config,'Bearer '+user.accessToken,props.badHabit,
+      active)
+    }, [active]);
 
-    const refreshBadHabit = async(backend_url,bearerToken,habit) =>{
+    const refreshBadHabit = async(backend_url,bearerToken,habit,active) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getBadHabits(config,bearerToken,props.badHabit);
+      const record = await getBadHabits(config,bearerToken,props.badHabit,active);
       setRecords(record);
       setShowAddBadHabit(false)
 

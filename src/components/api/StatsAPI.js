@@ -17,7 +17,7 @@ export const getStats = async(backend_url,bearerToken,statsTypeName) =>{
 }
 
 export const createRootStats= async(backend_url,bearerToken,name,
-  statsTypeName,value,description)=>{
+  statsTypeName,value,description,active)=>{
 
       const res = await fetch(backend_url+'/api/stats/root', {
         method: 'POST',
@@ -26,14 +26,14 @@ export const createRootStats= async(backend_url,bearerToken,name,
             'Authorization':bearerToken
           },
           body: JSON.stringify({name,
-            statsTypeName,value,description}),
+            statsTypeName,value,description,active}),
         })
         const data = await res.json()
       return data
     }
 
 export const createChildStats= async(backend_url,bearerToken,name,
-      statsTypeName,value,description,parentStatsName)=>{
+      statsTypeName,value,description,parentStatsName,active)=>{
     
           const res = await fetch(backend_url+'/api/stats/child', {
             method: 'POST',
@@ -42,21 +42,25 @@ export const createChildStats= async(backend_url,bearerToken,name,
                 'Authorization':bearerToken
               },
               body: JSON.stringify({name,
-                statsTypeName,value,description,parentStatsName}),
+                statsTypeName,value,description,parentStatsName,active}),
             })
             const data = await res.json()
           return data
         }
 
 
-export const addStatsDescription = async(backend_url,bearerToken,id,description)=>{
-  await fetch(backend_url+'/api/stats/description', {
+export const modifyStatsParams = async(backend_url,bearerToken,id,
+  name,startDate,description,active,hidden,completed,
+  value)=>{
+  await fetch(backend_url+'/api/stats/modifyParams', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,description}),
+      body: JSON.stringify({id,
+        name,startDate,description,active,hidden,completed,
+        value}),
     })
 }
 export const addStatsValue = async(backend_url,bearerToken,id,value)=>{

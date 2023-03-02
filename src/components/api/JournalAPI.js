@@ -33,14 +33,18 @@ export const createJournal= async(backend_url,bearerToken,name,
     }
 
 
-export const addJournalDescription = async(backend_url,bearerToken,id,text)=>{
-  await fetch(backend_url+'/api/journal/description', {
+export const modifyJournalParams = async(backend_url,bearerToken,id,
+  name,startDate,description,active,hidden,completed,
+  text)=>{
+  await fetch(backend_url+'/api/journal/modifyParams', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,text}),
+      body: JSON.stringify({id,
+        name,startDate,description,active,hidden,completed,
+        text}),
     })
 }
 

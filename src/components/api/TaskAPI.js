@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getTasks = async(backend_url,bearerToken,taskTypeName) =>{
-    const res = await fetch(backend_url+'/api/task?taskTypeName='+taskTypeName,{
+export const getTasks = async(backend_url,bearerToken,taskTypeName,active) =>{
+    const res = await fetch(backend_url+'/api/task?taskTypeName='+taskTypeName+'&active='+active,{
         method: 'GET',
         headers:{
           'Authorization':bearerToken
@@ -17,7 +17,7 @@ export const getTasks = async(backend_url,bearerToken,taskTypeName) =>{
 }
 
 export const createRootTask = async(backend_url,bearerToken,name,startDate,
-  timeTaken,dueDate,every,scheduleType,taskTypeName,daysOfWeek)=>{
+  timeTaken,dueDate,every,scheduleType,taskTypeName,daysOfWeek,active)=>{
     if (scheduleType=="weekly"){
       const res = await fetch(backend_url+'/api/task/root', {
         method: 'POST',
@@ -26,7 +26,8 @@ export const createRootTask = async(backend_url,bearerToken,name,startDate,
             'Authorization':bearerToken
           },
           body: JSON.stringify({name,startDate,
-            timeTaken,dueDate,every,scheduleType,taskTypeName,daysOfWeek}),
+            timeTaken,dueDate,every,scheduleType,taskTypeName,daysOfWeek,
+          active}),
         })
         const data = await res.json()
       return data
@@ -39,7 +40,7 @@ export const createRootTask = async(backend_url,bearerToken,name,startDate,
             'Authorization':bearerToken
           },
           body: JSON.stringify({name,startDate,
-            timeTaken,dueDate,every,scheduleType,taskTypeName}),
+            timeTaken,dueDate,every,scheduleType,taskTypeName,active}),
         })
         const data = await res.json()
       return data
@@ -49,7 +50,7 @@ export const createRootTask = async(backend_url,bearerToken,name,startDate,
 
 export const createChildTask = async(backend_url,bearerToken,name,startDate,
       timeTaken,dueDate,every,scheduleType,taskTypeName,daysOfWeek,
-      parentTaskName)=>{
+      parentTaskName,active)=>{
         if (scheduleType=="weekly"){
           const res = await fetch(backend_url+'/api/task/child', {
             method: 'POST',
@@ -59,7 +60,7 @@ export const createChildTask = async(backend_url,bearerToken,name,startDate,
               },
               body: JSON.stringify({name,startDate,
                 timeTaken,dueDate,every,scheduleType,taskTypeName,daysOfWeek,
-                parentTaskName}),
+                parentTaskName,active}),
             })
             const data = await res.json()
           return data
@@ -72,7 +73,8 @@ export const createChildTask = async(backend_url,bearerToken,name,startDate,
                 'Authorization':bearerToken
               },
               body: JSON.stringify({name,startDate,
-                timeTaken,dueDate,every,scheduleType,taskTypeName,parentTaskName}),
+                timeTaken,dueDate,every,scheduleType,taskTypeName,
+                parentTaskName,active}),
             })
             const data = await res.json()
           return data
@@ -90,14 +92,18 @@ export const completeTask = async(backend_url,bearerToken,id)=>{
       })
 }
 
-export const addTaskDescription = async(backend_url,bearerToken,id,description)=>{
-  await fetch(backend_url+'/api/task/description', {
+export const modifyTaskParams= async(backend_url,bearerToken,id,
+  name,startDate,description,active,hidden,completed,
+  dueDate,timeTaken)=>{
+  await fetch(backend_url+'/api/task/modifyParams', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,description}),
+      body: JSON.stringify({id,
+        name,startDate,description,active,hidden,completed,
+        dueDate,timeTaken}),
     })
 }
 

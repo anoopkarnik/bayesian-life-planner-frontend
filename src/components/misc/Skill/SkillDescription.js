@@ -2,9 +2,11 @@ import React, { Component, useState,useContext } from "react";
 import { render } from "react-dom";
 import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
-import { addSkillDescription } from "../../api/SkillAPI";
+import { modifySkillParams } from "../../api/SkillAPI";
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import {AiFillEdit} from 'react-icons/ai';
+import DatePicker from "react-datepicker";
 
 const SkillDescription = (props) => {
 
@@ -27,10 +29,24 @@ const SkillDescription = (props) => {
     const [isEditing,setIsEditing] = useState(false);
     const {user, setUser} = useContext(UserContext);
 	  const {config} = useContext(ConfigContext);
+    const [name,setName] = useState(props.record.name);
+    const [startDate,setStartDate] = useState(props.record.startDate);
+    const [active, setActive] =useState(props.record.active);
+    const [hidden, setHidden] = useState(props.record.hidden);
+    const [completed,setCompleted] = useState(props.record.completed);
+    const [dueDate,setDueDate] = useState(props.record.dueDate);
+    const [timeTaken,setTimeTaken] = useState(props.record.timeTaken);
+    const options = [
+      {value:'true' ,label:'True'},
+      {value:'false',label:'False'},
+      {value:null,label:null}
+    ]
 
-    const onUpdateDescription= async() =>{
+    const onUpdate = async() =>{
         await props.refreshFunction(config,'Bearer '+ user.accessToken)
-        await addSkillDescription(config, 'Bearer '+user.accessToken,props.record.id,description);
+        await modifySkillParams(config, 'Bearer '+user.accessToken,props.record.id,
+        name,startDate,description,active,hidden,completed,
+        dueDate,timeTaken);
         setIsEditing(false);
     };
 
@@ -44,31 +60,50 @@ const SkillDescription = (props) => {
         onRequestClose={props.hide}
         width="500px"
       >
-        <b>Name</b> - {props.record.name} <br/>
-        <b>Time Taken</b> - {props.record.timeTaken} mins <br/>
+        <button className='btn btn-secondary mt-3' 
+                onClick={()=>setIsEditing(!isEditing)}>Edit Item</button>
+        &emsp;<button onClick={onUpdate} className='btn btn-secondary mt-3'>Update</button><br/><br/>
+        <b>Skill Type</b> - {props.record.skillTypeName} <br/>
         <b>Created Date</b> - {formatDate(new Date(props.record.createdAt))} <br/>
         <b>Updated Date</b> - {formatDate(new Date(props.record.updatedAt))} <br/>
-        <b>Skill Type</b> - {props.record.skillTypeName} <br/>
-        <b>Completed</b> - {props.record.completed.toString()} <br/>
-        {/* <b>Sub Skills</b> - {props.record.skillResponses}<br/> */}
-        <br/><br/><br/><br/>
-        <div className="text-center"> 
-            <b>Description</b>
-            <div >
-                {isEditing?
-				          <textarea rows="15" cols="30" required='required' 
-                  Name='description' id='text' placeholder='Please add the description'
-                  value={description} 
-                	onChange={(event) => setDescription(event.target.value)}>
-                  
-                  </textarea>:
+        <b>Name</b> - {isEditing?
+          <input value={name} onChange={(event)=>setName(event.target.value)}>
+          </input>:<>{name}</>} <br/>
+        <b>Active</b> - {isEditing?
+        <select onChange={(event)=>setActive(event.target.value)} value={String(active)}>
+          {options.map(item=>(
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+          </select>
+        :String(active)} <br/>
+        <b>Hidden</b> - {isEditing?
+        <select onChange={(event)=>setHidden(event.target.value)} value={String(hidden)}>
+          {options.map(item=>(
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+          </select>
+        :String(hidden)} <br/>
+        <b>Completed</b> - {isEditing?
+        <select onChange={(event)=>setCompleted(event.target.value)} value={String(completed)}>
+          {options.map(item=>(
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+          </select>
+        :String(completed)} <br/>
+        <b>Description</b>
+        {isEditing?
+				<textarea rows="15" cols="30" required='required' Name='text' id='description' placeholder='Please add the description' value={description} 
+						onChange={(event) => setDescription(event.target.value)}>
+				</textarea>:
                 <>{description}</>
 			    }
-            </div>
-            <button className='btn btn-secondary mt-3' 
-                onClick={()=>setIsEditing(!isEditing)}>Edit Description</button>
-            &emsp;<button onClick={onUpdateDescription} className='btn btn-secondary mt-3'>Update Description</button>
-        </div>
+          <br/>
       </SlidingPane>
     </div>
   );

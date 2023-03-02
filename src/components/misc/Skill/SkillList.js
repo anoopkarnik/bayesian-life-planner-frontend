@@ -2,6 +2,7 @@ import React,{useState,useContext,useEffect} from 'react'
 import SkillItem from './SkillItem';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import AddSkillForm from './AddSkillForm';
 import { getSkills } from '../../api/SkillAPI';
 
@@ -12,14 +13,15 @@ const SkillList = (props) => {
     const [records, setRecords] = useState([]);
     const [showSkill, setShowSkill] = useState(false);
     const [showAddSkill, setShowAddSkill] = useState(false);
+    const {active} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshSkill(config,'Bearer '+user.accessToken,props.skill)
-    }, []);
+      refreshSkill(config,'Bearer '+user.accessToken,props.skill,active)
+    }, [active]);
 
-    const refreshSkill = async(backend_url,bearerToken,skill) =>{
+    const refreshSkill = async(backend_url,bearerToken,skill,active) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getSkills(config,bearerToken,props.skill);
+      const record = await getSkills(config,bearerToken,props.skill,active);
       setRecords(record);
       setShowAddSkill(false)
 

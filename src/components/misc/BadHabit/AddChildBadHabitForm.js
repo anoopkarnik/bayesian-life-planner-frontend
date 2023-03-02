@@ -11,11 +11,17 @@ const AddChildBadHabitForm = (props) => {
 	const [startDate, setStartDate] = useState(new Date());
 	const {user, setUser} = useContext(UserContext);
 	const {config} = useContext(ConfigContext);
+	const [active, setActive] = useState(true);
+	const handleRadio= async(event) =>{
+		const active = event.target.value === 'true' ? true: false;
+		console.log('handle', active);
+		setActive(active);
+	  }
 
 	const onSubmit =async () =>{
 
 		await createChildBadHabit(config, 'Bearer '+user.accessToken,name,
-		startDate,props.type,props.name);
+		startDate,props.type,props.name,active);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -36,6 +42,22 @@ const AddChildBadHabitForm = (props) => {
 						<DatePicker selected={startDate}  className='form-control'
 						onChange={onStartDateChange}/>
                 	</div>
+			</div>
+			<div className='row'>
+				<div className='col-sm' onChange={(event) => setActive(event.target.value)}>
+        			Active <br/>
+					<label>
+						<input type="radio" value="true" name="active"
+						onChange={handleRadio}/> 
+						Yes
+					</label>
+					<t/>
+					<label>
+						<input type="radio" value="false" name="active"
+						onChange={handleRadio}/> 
+						No
+					</label>
+      			</div>
 			</div>
 			<div className='row'>
 				<div className='col-sm text-center'>

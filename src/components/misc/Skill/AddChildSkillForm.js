@@ -12,10 +12,16 @@ const AddChildSkillForm = (props) => {
 	const {user, setUser} = useContext(UserContext);
 	const [timeTaken, setTimeTaken] = useState('');
 	const {config} = useContext(ConfigContext);
+	const [active, setActive] = useState(true);
+	const handleRadio= async(event) =>{
+		const active = event.target.value === 'true' ? true: false;
+		console.log('handle', active);
+		setActive(active);
+	  }
 
 	const onSubmit =async () =>{
 		await createChildSkill(config, 'Bearer '+user.accessToken,name,
-		props.type,timeTaken,props.name);
+		props.type,timeTaken,props.name,active);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -38,6 +44,22 @@ const AddChildSkillForm = (props) => {
 						Save
 					</div>
 				</div>
+			</div>
+			<div className='row'>
+				<div className='col-sm' onChange={(event) => setActive(event.target.value)}>
+        			Active <br/>
+					<label>
+						<input type="radio" value="true" name="active"
+						onChange={handleRadio}/> 
+						Yes
+					</label>
+					<t/>
+					<label>
+						<input type="radio" value="false" name="active"
+						onChange={handleRadio}/> 
+						No
+					</label>
+      			</div>
 			</div>
 		</form>
 	);

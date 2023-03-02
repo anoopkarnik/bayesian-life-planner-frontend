@@ -42,8 +42,6 @@ export const createCompletedRule = async(backend_url,bearerToken,ruleType,name,
           body: JSON.stringify({ruleType,name,id, goalId,
             value,conditionType,weightage,ruleCategory}),
         })
-        const data = await res.json()
-      return data
 }
 export const createWorkRule = async(backend_url,bearerToken,ruleType,name,
   id,goalId,value,conditionType,weightage)=>{
@@ -57,8 +55,6 @@ export const createWorkRule = async(backend_url,bearerToken,ruleType,name,
           body: JSON.stringify({ruleType,name,id, goalId,
             value,conditionType,weightage,ruleCategory}),
         })
-        const data = await res.json()
-      return data
 }
 export const deleteRule = async(backend_url,bearerToken,ruleType,id)=>{
   await axios.delete(backend_url+'/api/rule?id='+id+'&ruleType='+ruleType,{

@@ -2,6 +2,7 @@ import React,{useState,useContext,useEffect} from 'react'
 import GoalItem from './GoalItem';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import AddGoalForm from './AddGoalForm';
 import { getGoals } from '../../api/GoalAPI';
 
@@ -12,14 +13,18 @@ const GoalList = (props) => {
     const [records, setRecords] = useState([]);
     const [showGoal, setShowGoal] = useState(false);
     const [showAddGoal, setShowAddGoal] = useState(false);
+    const {active} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshGoal(config,'Bearer '+user.accessToken,props.goal)
-    }, []);
+      refreshGoal(config,'Bearer '+user.accessToken,props.goal,active)
+    }, [active]);
 
-    const refreshGoal = async(backend_url,bearerToken,goal) =>{
+    const refreshGoal = async(backend_url,bearerToken,goal,currentActive) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getGoals(config,bearerToken,props.goal);
+      if (currentActive==null){
+        currentActive=active;
+      }
+      const record = await getGoals(config,bearerToken,props.goal,currentActive);
       setRecords(record);
       setShowAddGoal(false)
 

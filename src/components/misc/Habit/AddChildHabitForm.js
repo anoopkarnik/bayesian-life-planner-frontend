@@ -20,6 +20,12 @@ const AddChildHabitForm = (props) => {
 	const [showDays, setShowDays] = useState(false);
 	const {user, setUser} = useContext(UserContext);
 	const {config} = useContext(ConfigContext);
+	const [active, setActive] = useState(true);
+	const handleRadio= async(event) =>{
+		const active = event.target.value === 'true' ? true: false;
+		console.log('handle', active);
+		setActive(active);
+	  }
 	const [scheduleTypes,setScheduleTypes] = useState(['daily','weekly',
 'monthly','yearly']);
 	const [weekDays,setWeekDays] = useState({
@@ -33,7 +39,8 @@ const AddChildHabitForm = (props) => {
 		console.log(weekDays);
 
 		await createChildHabit(config, 'Bearer '+user.accessToken,name,
-		startDate,timeTaken,dueDate,every,scheduleType,props.type,daysOfWeek,props.name);
+		startDate,timeTaken,dueDate,every,scheduleType,props.type,daysOfWeek,props.name
+		,active);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -159,6 +166,22 @@ const AddChildHabitForm = (props) => {
 
 				</FormGroup>
 			</div>:null}
+			<div className='row'>
+				<div className='col-sm' onChange={(event) => setActive(event.target.value)}>
+        			Active <br/>
+					<label>
+						<input type="radio" value="true" name="active"
+						onChange={handleRadio}/> 
+						Yes
+					</label>
+					<t/>
+					<label>
+						<input type="radio" value="false" name="active"
+						onChange={handleRadio}/> 
+						No
+					</label>
+      			</div>
+			</div>
 			<div className='row'>
 				<div className='col-sm text-center'>
 					<div onClick={onSubmit} type='submit' className='btn btn-secondary mt-3'>

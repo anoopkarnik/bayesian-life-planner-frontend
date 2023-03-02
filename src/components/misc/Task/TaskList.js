@@ -2,6 +2,7 @@ import React,{useState,useContext,useEffect} from 'react'
 import TaskItem from './TaskItem';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import AddTaskForm from './AddTaskForm';
 import { getTasks } from '../../api/TaskAPI';
 
@@ -12,14 +13,15 @@ const TaskList = (props) => {
     const [records, setRecords] = useState([]);
     const [showTask, setShowTask] = useState(false);
     const [showAddTask, setShowAddTask] = useState(false);
+    const {active} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshTask(config,'Bearer '+user.accessToken,props.task);
-    }, []);
+      refreshTask(config,'Bearer '+user.accessToken,props.task,active);
+    }, [active]);
 
-    const refreshTask = async(backend_url,bearerToken,task) =>{
+    const refreshTask = async(backend_url,bearerToken,task,active) =>{
       await props.refreshFunction(backend_url,bearerToken)
-      const record = await getTasks(backend_url,bearerToken,props.task);
+      const record = await getTasks(backend_url,bearerToken,props.task,active);
       setRecords(record);
       setShowAddTask(false);
     }

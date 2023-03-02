@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getBadHabits = async(backend_url,bearerToken,habitTypeName) =>{
-    const res = await fetch(backend_url+'/api/badHabit?habitTypeName='+habitTypeName,{
+export const getBadHabits = async(backend_url,bearerToken,habitTypeName,active) =>{
+    const res = await fetch(backend_url+'/api/badHabit?habitTypeName='+habitTypeName+'&active='+active,{
         method: 'GET',
         headers:{
           'Authorization':bearerToken
@@ -17,28 +17,29 @@ export const getBadHabits = async(backend_url,bearerToken,habitTypeName) =>{
 }
 
 export const createRootBadHabit= async(backend_url,bearerToken,name,startDate,
-  habitTypeName)=>{
+  habitTypeName,active)=>{
       const res = await fetch(backend_url+'/api/badHabit/root', {
         method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization':bearerToken
           },
-          body: JSON.stringify({name,startDate,habitTypeName}),
+          body: JSON.stringify({name,startDate,habitTypeName,active}),
         })
         const data = await res.json()
       return data     
     }
 
 export const createChildBadHabit= async(backend_url,bearerToken,name,startDate,
-      habitTypeName,parentBadHabitName)=>{
+      habitTypeName,parentBadHabitName,active)=>{
   const res = await fetch(backend_url+'/api/badHabit/child', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization':bearerToken
         },
-        body: JSON.stringify({name,startDate,habitTypeName,parentBadHabitName}),
+        body: JSON.stringify({name,startDate,habitTypeName,
+          parentBadHabitName,active}),
         })
   const data = await res.json()
   return data     
@@ -53,14 +54,18 @@ export const carriedOutBadHabit = async(backend_url,bearerToken,id)=>{
       })
 }
 
-export const addBadHabitDescription = async(backend_url,bearerToken,id,description)=>{
-  await fetch(backend_url+'/api/badHabit/description', {
+export const modifyBadHabitParams = async(backend_url,bearerToken,id,
+  name,startDate,description,active,hidden,completed,
+  totalTimes)=>{
+  await fetch(backend_url+'/api/badHabit/modifyParams', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,description}),
+      body: JSON.stringify({id,
+        name,startDate,description,active,hidden,completed,
+        totalTimes}),
     })
 }
 

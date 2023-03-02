@@ -13,10 +13,16 @@ const AddGoalForm = (props) => {
 	const {user, setUser} = useContext(UserContext);
 	const [dueDate, setDueDate] = useState(new Date());
 	const {config} = useContext(ConfigContext);
+	const [active, setActive] = useState(true);
+	const handleRadio= async(event) =>{
+		const active = event.target.value === 'true' ? true: false;
+		console.log('handle', active);
+		setActive(active);
+	  }
 
 	const onSubmit =async () =>{
 		await createRootGoal(config, 'Bearer '+user.accessToken,name,
-		props.name,dueDate);
+		props.name,dueDate,active);
 		await props.refreshFunction(config,'Bearer '+user.accessToken);
 	}
 
@@ -38,6 +44,22 @@ const AddGoalForm = (props) => {
 					<DatePicker selected={dueDate}  className='form-control'
 					onChange={onDueDateChange}/>
 				</div>
+			</div>
+			<div className='row'>
+				<div className='col-sm' onChange={(event) => setActive(event.target.value)}>
+        			Active <br/>
+					<label>
+						<input type="radio" value="true" name="active"
+						onChange={handleRadio}/> 
+						Yes
+					</label>
+					<t/>
+					<label>
+						<input type="radio" value="false" name="active"
+						onChange={handleRadio}/> 
+						No
+					</label>
+      			</div>
 			</div>
 			<div className='row'>
 				<div className='col-sm text-center'>

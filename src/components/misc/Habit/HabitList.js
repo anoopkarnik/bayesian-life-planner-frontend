@@ -2,6 +2,7 @@ import React,{useState,useContext,useEffect} from 'react'
 import HabitItem from './HabitItem';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import AddHabitForm from './AddHabitForm';
 import { getHabits } from '../../api/HabitAPI';
 
@@ -12,14 +13,15 @@ const HabitList = (props) => {
     const [records, setRecords] = useState([]);
     const [showHabit, setShowHabit] = useState(false);
     const [showAddHabit, setShowAddHabit] = useState(false);
+    const {active} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshHabit(config,'Bearer '+user.accessToken,props.habit)
-    }, []);
+      refreshHabit(config,'Bearer '+user.accessToken,props.habit,active)
+    }, [active]);
 
-    const refreshHabit = async(backend_url,bearerToken,habit) =>{
+    const refreshHabit = async(backend_url,bearerToken,habit,active) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getHabits(config,bearerToken,props.habit);
+      const record = await getHabits(config,bearerToken,props.habit,active);
       setRecords(record);
       setShowAddHabit(false)
 

@@ -5,6 +5,7 @@ import { UserContext } from './context/UserContext';
 import SigninPage from './components/pages/SigninPage';
 import SignupPage from './components/pages/SignupPage';
 import { ConfigContext } from './context/ConfigContext';
+import { ActiveContext } from './context/ActiveContext';
 import React,{useEffect, useState} from 'react'
 import Layout from './components/layout/Layout';
 import AdminPage from './components/pages/AdminPage';
@@ -15,11 +16,16 @@ import StatsPage from './components/pages/StatsPage';
 import BadHabitPage from './components/pages/BadHabitPage';
 import SkillPage from './components/pages/SkillPage';
 import GoalPage from './components/pages/GoalPage';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { Switch } from '@mui/material';
+
 
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
 	const [config,setConfig] = useState('http://localhost:8083')
+  const [active,setActive] = useState(true);
 
 	const setUserInfo = (data) =>{
 		localStorage.setItem("user", JSON.stringify(data));
@@ -28,8 +34,12 @@ function App() {
   return (
     <BrowserRouter>
       <ConfigContext.Provider value={{config,setConfig}}>
+        <ActiveContext.Provider value={{active,setActive}}>
         <UserContext.Provider value={{user,setUser: setUserInfo}}>
           <Layout>
+          <FormGroup>
+            <FormControlLabel control={<Switch defaultChecked onChange={()=>setActive(!active)} />} label="active" />
+          </FormGroup>
             <Routes>
               <Route path="/" element={<SigninPage/>}/>
               <Route path="/task" element={<TaskPage/>}/>
@@ -44,6 +54,7 @@ function App() {
             </Routes>
           </Layout>
         </UserContext.Provider>
+        </ActiveContext.Provider>
       </ConfigContext.Provider>
     </BrowserRouter>
   );
