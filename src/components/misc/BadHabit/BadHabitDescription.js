@@ -42,7 +42,7 @@ const BadHabitDescription = (props) => {
 
 
     const onUpdate = async() =>{
-        await props.refreshFunction(config,'Bearer '+ user.accessToken)
+        // await props.refreshFunction(config,'Bearer '+ user.accessToken)
         await modifyBadHabitParams(config, 'Bearer '+user.accessToken,
         props.record.id,name,startDate,description,active,hidden,completed,
         totalTimes);

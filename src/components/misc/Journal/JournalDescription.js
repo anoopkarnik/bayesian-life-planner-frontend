@@ -44,7 +44,7 @@ const JournalDescription = (props) => {
     ]
 
     const onUpdate= async() =>{
-        await props.refreshFunction(config,'Bearer '+ user.accessToken)
+        // await props.refreshFunction(config,'Bearer '+ user.accessToken)
         await modifyJournalParams(config, 'Bearer '+user.accessToken,props.record.id,
         name,startDate,description,active,hidden,
         completed,text);

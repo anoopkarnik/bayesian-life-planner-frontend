@@ -13,16 +13,16 @@ const BadHabitList = (props) => {
     const [records, setRecords] = useState([]);
     const [showBadHabit, setShowBadHabit] = useState(false);
     const [showAddBadHabit, setShowAddBadHabit] = useState(false);
-    const {active} = useContext(ActiveContext);
+    const {showActive} = useContext(ActiveContext);
 
     useEffect(() => {
       refreshBadHabit(config,'Bearer '+user.accessToken,props.badHabit,
-      active)
-    }, [active]);
+      showActive)
+    }, [showActive]);
 
-    const refreshBadHabit = async(backend_url,bearerToken,habit,active) =>{
+    const refreshBadHabit = async(backend_url,bearerToken,habit,showActive) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getBadHabits(config,bearerToken,props.badHabit,active);
+      const record = await getBadHabits(config,bearerToken,props.badHabit,showActive);
       setRecords(record);
       setShowAddBadHabit(false)
 

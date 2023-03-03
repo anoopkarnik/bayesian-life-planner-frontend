@@ -6,7 +6,6 @@ import {ImPlus} from 'react-icons/im'
 import {FiExternalLink} from 'react-icons/fi';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
-import { ActiveContext } from '../../../context/ActiveContext';
 import { deleteGoal} from '../../api/GoalAPI';
 import GoalDescription from './GoalDescription';
 import ChildGoalItem from './ChildGoalItem';

@@ -48,9 +48,16 @@ const GoalDescription = (props) => {
       {value:'false',label:'False'},
       {value:null,label:null}
     ]
-
+    if(startDate!==null){
+      const total_completion_time = new Date(dueDate) - new Date(startDate)
+      const time_left = new Date(dueDate) - new Date()
+      var expected_level = time_left*100/total_completion_time;
+    }
+    else{
+      var expected_level=0
+    }
     const onUpdate= async() =>{
-        await props.refreshFunction(config,'Bearer '+ user.accessToken,props.type)
+        // await props.refreshFunction(config,'Bearer '+ user.accessToken,props.type)
         await modifyGoalParams(config, 'Bearer '+user.accessToken,
         props.record.id,name,startDate,description,active,hidden,completed,
         dueDate,timeTaken);
@@ -84,6 +91,14 @@ const GoalDescription = (props) => {
         onRequestClose={props.hide}
         width="500px"
       >
+        <h4>Goal Success</h4>
+        <b>1. Best Case Scenario </b><br/>
+        Current Level = Working Level = Expected Level <br/>
+        <b>2. Current Level &gt; Expected Level &gt; Working Level</b> <br/>
+        Reduce Work Rules<br/>
+        <b>3. Expected Level &gt; Working Level &gt; Current Level</b> <br/>
+        Increase Work Rules so that working level go below current level<br/>
+      
         <button className='btn btn-secondary mt-3' 
                 onClick={()=>setIsEditing(!isEditing)}>Edit Item</button>
         &emsp;<button onClick={onUpdate} className='btn btn-secondary mt-3'>Update</button><br/><br/>
@@ -92,7 +107,8 @@ const GoalDescription = (props) => {
         <b>Updated Date</b> - {formatDate(new Date(props.record.updatedAt))} <br/>
         <b>Current Level</b> - Lv {Math.round(props.record.completedPercentage)} <br/>
         <b>Aggregated SubGoals Level</b> - Lv {Math.round(props.childCompletedPercentage)} <br/>
-        <b>Expected Level</b> - Lv {Math.round(props.record.workPercentage)} <br/>
+        <b>Working Level</b> - Lv {Math.round(props.record.workPercentage)} <br/>
+        <b>Expected Level</b> - Lv {Math.round(expected_level)} <br/>
         <b>Name</b> - {isEditing?
           <input value={name} onChange={(event)=>setName(event.target.value)}>
           </input>:<>{name}</>} <br/>

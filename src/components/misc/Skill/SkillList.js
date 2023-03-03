@@ -13,15 +13,15 @@ const SkillList = (props) => {
     const [records, setRecords] = useState([]);
     const [showSkill, setShowSkill] = useState(false);
     const [showAddSkill, setShowAddSkill] = useState(false);
-    const {active} = useContext(ActiveContext);
+    const {showActive} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshSkill(config,'Bearer '+user.accessToken,props.skill,active)
-    }, [active]);
+      refreshSkill(config,'Bearer '+user.accessToken,props.skill,showActive)
+    }, [showActive]);
 
-    const refreshSkill = async(backend_url,bearerToken,skill,active) =>{
+    const refreshSkill = async(backend_url,bearerToken,skill,showActive) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getSkills(config,bearerToken,props.skill,active);
+      const record = await getSkills(config,bearerToken,props.skill,showActive);
       setRecords(record);
       setShowAddSkill(false)
 

@@ -13,15 +13,15 @@ const TaskList = (props) => {
     const [records, setRecords] = useState([]);
     const [showTask, setShowTask] = useState(false);
     const [showAddTask, setShowAddTask] = useState(false);
-    const {active} = useContext(ActiveContext);
+    const {showActive} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshTask(config,'Bearer '+user.accessToken,props.task,active);
-    }, [active]);
+      refreshTask(config,'Bearer '+user.accessToken,props.task,showActive);
+    }, [showActive]);
 
-    const refreshTask = async(backend_url,bearerToken,task,active) =>{
+    const refreshTask = async(backend_url,bearerToken,task,showActive) =>{
       await props.refreshFunction(backend_url,bearerToken)
-      const record = await getTasks(backend_url,bearerToken,props.task,active);
+      const record = await getTasks(backend_url,bearerToken,props.task,showActive);
       setRecords(record);
       setShowAddTask(false);
     }

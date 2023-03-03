@@ -13,16 +13,16 @@ const GoalList = (props) => {
     const [records, setRecords] = useState([]);
     const [showGoal, setShowGoal] = useState(false);
     const [showAddGoal, setShowAddGoal] = useState(false);
-    const {active} = useContext(ActiveContext);
+    const {showActive} = useContext(ActiveContext);
 
     useEffect(() => {
-      refreshGoal(config,'Bearer '+user.accessToken,props.goal,active)
-    }, [active]);
+      refreshGoal(config,'Bearer '+user.accessToken,props.goal,showActive)
+    }, [showActive]);
 
     const refreshGoal = async(backend_url,bearerToken,goal,currentActive) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
       if (currentActive==null){
-        currentActive=active;
+        currentActive=showActive;
       }
       const record = await getGoals(config,bearerToken,props.goal,currentActive);
       setRecords(record);

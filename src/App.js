@@ -25,7 +25,7 @@ import { Switch } from '@mui/material';
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
 	const [config,setConfig] = useState('http://localhost:8083')
-  const [active,setActive] = useState(true);
+  const [showActive,setShowActive] = useState(true);
 
 	const setUserInfo = (data) =>{
 		localStorage.setItem("user", JSON.stringify(data));
@@ -34,11 +34,11 @@ function App() {
   return (
     <BrowserRouter>
       <ConfigContext.Provider value={{config,setConfig}}>
-        <ActiveContext.Provider value={{active,setActive}}>
+        <ActiveContext.Provider value={{showActive,setShowActive}}>
         <UserContext.Provider value={{user,setUser: setUserInfo}}>
           <Layout>
           <FormGroup>
-            <FormControlLabel control={<Switch defaultChecked onChange={()=>setActive(!active)} />} label="active" />
+            <FormControlLabel control={<Switch defaultChecked onChange={()=>setShowActive(!showActive)} />} label="active" />
           </FormGroup>
             <Routes>
               <Route path="/" element={<SigninPage/>}/>
