@@ -24,7 +24,7 @@ const GoalList = (props) => {
       if (currentActive==null){
         currentActive=showActive;
       }
-      const record = await getGoals(config,bearerToken,props.goal,currentActive);
+      const record = await getGoals(config,bearerToken,goal,currentActive);
       setRecords(record);
       setShowAddGoal(false)
 

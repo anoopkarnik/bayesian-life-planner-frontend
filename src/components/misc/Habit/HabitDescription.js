@@ -6,8 +6,10 @@ import "react-sliding-pane/dist/react-sliding-pane.css";
 import { modifyHabitParams } from "../../api/HabitAPI";
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
+import { modifyHabitSchedule } from "../../api/HabitAPI";
 
 
 const HabitDescription = (props) => {
@@ -36,6 +38,7 @@ const HabitDescription = (props) => {
     const [completed,setCompleted] = useState(props.record.completed);
     const [dueDate,setDueDate] = useState(props.record.dueDate);
     const [timeTaken,setTimeTaken] = useState(props.record.timeTaken);
+    const [timeOfDay,setTimeOfDay] = useState(props.record.timeOfDay);
     const [streak,setStreak] = useState(props.record.streak);
     const [totalTimes,setTotalTimes] = useState(props.record.totalTimes);
     const [totalTimeSpent,setTotalTimeSpent] = useState(props.record.totalTimeSpent);
@@ -44,13 +47,59 @@ const HabitDescription = (props) => {
       {value:'false',label:'False'},
       {value:null,label:null}
     ]
+
+    const [scheduleType,setScheduleType] = useState(props.record.scheduleType);
+    const [every,setEvery] = useState(1);
+    const [isScheduleEditing, setIsScheduleEditing] = useState(false);
+    const [daysOfWeek,setDaysOfWeek] = useState([]);
+    const [showDays, setShowDays] = useState(false);
+
+    const [scheduleTypes,setScheduleTypes] = useState(['onetime','daily','weekly',
+    'monthly','yearly']);
+    const weekDays = [
+      {value:'MONDAY',label:'M'},
+      {value:'TUESDAY',label:'T'},
+      {value:'WEDNESDAY',label:'W'},
+      {value:'THURSDAY',label:'T'},
+      {value:'FRIDAY',label:'F'},
+      {value:'SATURDAY',label:'S'},
+      {value:'SUNDAY',label:'S'},
+    ]
+    const handleScheduleTypeChange = async(event) =>{
+      console.log(event.target.value)
+      setScheduleType(event.target.value);
+      if(event.target.value==="weekly"){
+        setShowDays(true);
+      }
+      else{
+        setShowDays(false);
+      }
+    }
+  
+    const onhandleWeekDayChange = (e) =>{
+      const {value,checked} = e.target;
+      if(checked){
+        setDaysOfWeek((prev) => [...prev,value])
+      }
+      else{
+        setDaysOfWeek((prev)=> prev.filter((x)=> x!==value));
+      }
+    }
+    const {showActive} = useContext(ActiveContext);
     const onUpdate = async() =>{
         // await props.refreshFunction(config,'Bearer '+ user.accessToken)
         await modifyHabitParams(config, 'Bearer '+user.accessToken,
         props.record.id,name,startDate,description,active,hidden,completed,
-        dueDate,timeTaken,streak,totalTimes,totalTimeSpent);
+        dueDate,timeTaken,streak,totalTimes,totalTimeSpent,timeOfDay);
         setIsEditing(false);
     };
+
+    const onUpdateScheduleType = async() =>{
+      // await props.refreshFunction(config,'Bearer '+ user.accessToken)
+      await modifyHabitSchedule(config, 'Bearer '+user.accessToken,
+      props.record.id,scheduleType,every,daysOfWeek);
+      setIsScheduleEditing(false);
+  };
 
   return (
     <div>
@@ -62,19 +111,30 @@ const HabitDescription = (props) => {
         onRequestClose={props.hide}
         width="500px"
       >
-                <button className='btn btn-secondary mt-3' 
+          <button className='btn btn-secondary mt-3' 
                 onClick={()=>setIsEditing(!isEditing)}>Edit Item</button>
         &emsp;<button onClick={onUpdate} className='btn btn-secondary mt-3'>Update</button><br/><br/>
         <b>Habit Type</b> - {props.record.habitTypeName} <br/>
         <b>Created Date</b> - {formatDate(new Date(props.record.createdAt))} <br/>
         <b>Updated Date</b> - {formatDate(new Date(props.record.updatedAt))} <br/>
         <b>Schedule Type</b> - {props.record.scheduleType} <br/>
+        <b>Every </b> - {props.record.every} <br/>
+        <b>Week Days</b> - {props.record.daysOfWeek.length==0?"All days":String(props.record.daysOfWeek)} <br/>
         <b>Streak</b> - {isEditing?
           <input value={streak} onChange={(event)=>setStreak(event.target.value)}>
           </input>:<>{streak}</>} <br/>
         <b>Total Times</b> - {isEditing?
           <input value={totalTimes} onChange={(event)=>setTotalTimes(event.target.value)}>
           </input>:<>{totalTimes}</>} <br/>
+        <b>Total Time Spent</b> - {isEditing?
+          <input value={totalTimeSpent} onChange={(event)=>setTotalTimeSpent(event.target.value)}>
+          </input>:<>{totalTimeSpent}</>} <br/>
+        <b>Time Taken</b> - {isEditing?
+          <input value={timeTaken} onChange={(event)=>setTimeTaken(event.target.value)}>
+          </input>:<>{timeTaken}</>} <br/>
+        <b>Time Of Day</b> - {isEditing?
+          <input value={timeOfDay} onChange={(event)=>setTimeOfDay(event.target.value)}>
+          </input>:<>{timeOfDay}</>} <br/>
         <b>Name</b> - {isEditing?
           <input value={name} onChange={(event)=>setName(event.target.value)}>
           </input>:<>{name}</>} <br/>
@@ -121,7 +181,41 @@ const HabitDescription = (props) => {
 						onChange={(event) => setDescription(event.target.value)}>
 				</textarea>:
                 <>{description}</>
-			    }
+			    }<br/>
+        <button className='btn btn-secondary mt-3' 
+                onClick={()=>setIsScheduleEditing(!isScheduleEditing)}>Edit Schedule</button>
+        &emsp;
+        <button onClick={onUpdateScheduleType} className='btn btn-secondary mt-3'>Update</button><br/><br/>
+        {isScheduleEditing?<>
+          <div className='row'>
+				    <div className='col-sm'>
+              <select required='required' onChange={handleScheduleTypeChange} className='form-control'>
+						   <option value="" selected disabled hidden> Choose Schedule Type</option>
+                        {scheduleTypes.map((schedule)=>(
+                        <option value={schedule}>{schedule}</option>   
+                        ))}
+              </select>
+            </div>
+				    <div className='col-sm'>
+					    <input required='required' Name='text' className='form-control'
+					      id='every' placeholder='every' value={every} 
+					      onChange={(event) => setEvery(event.target.value)}></input>
+				    </div>
+			    </div>
+          {showDays?<>
+			      <div className='row'>
+				      <div className='col-sm'>
+					      {weekDays.map((x,i)=>(
+						      <label key={i}>
+							    <input type="checkbox" name="day" value={x.value} 
+							      onChange={onhandleWeekDayChange}/>
+							      {' '}
+							    {x.label}
+						      </label>
+					      ))}
+				      </div>
+			      </div></>:null}
+            </>:null}
       </SlidingPane>
     </div>
   );

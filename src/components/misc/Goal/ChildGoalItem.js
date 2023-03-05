@@ -9,7 +9,7 @@ import { ConfigContext } from '../../../context/ConfigContext';
 import { deleteGoal,completeGoal} from '../../api/GoalAPI';
 import GoalDescription from './GoalDescription';
 import AddChildGoalForm from './AddChildGoalForm';
-
+import { ActiveContext } from '../../../context/ActiveContext';
 
 const ChildGoalItem = (props) => {
 
@@ -26,14 +26,17 @@ const ChildGoalItem = (props) => {
 	// 	width:width,
 	// 	backgroundColor:'green'
 	// }
+	const {showActive} = useContext(ActiveContext);
 	const onDelete = async() =>{
-		await deleteGoal(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteGoal(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.goalTypeName,showActive)
+		}
 	}
 
 	const onRefresh = async() =>{
 		setShowAddGoal(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.goalTypeName,showActive)
 	}
 
 	const onShowDescription = async() =>{
@@ -58,7 +61,7 @@ const ChildGoalItem = (props) => {
 	
 	  const onComplete = async() => {
 		await completeGoal(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(user.id,config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.goalTypeName,showActive)
 	}
 
 	const getChildCompletedPercentages = async() =>{

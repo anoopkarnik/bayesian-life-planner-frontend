@@ -12,6 +12,7 @@ import ChildGoalItem from './ChildGoalItem';
 import AddChildGoalForm from './AddChildGoalForm';
 import { completeGoal } from '../../api/GoalAPI';
 import {BsCircleFill} from 'react-icons/bs';
+import { ActiveContext } from '../../../context/ActiveContext';
 
 
 const GoalItem = (props) => {
@@ -24,14 +25,16 @@ const GoalItem = (props) => {
 	const [showChildGoals, setShowChildGoals] = useState(false);
 	const [showAddGoal, setShowAddGoal] = useState(false);
 	const [childCompletedPercentage,setChildCompletedPercentage] = useState(0);
-
+	const {showActive} = useContext(ActiveContext);
 	const onDelete = async() =>{
-		await deleteGoal(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteGoal(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.goalTypeName,showActive)
+		}
 	}
 	const onRefresh = async() =>{
 		setShowAddGoal(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.goalTypeName,showActive)
 		
 	}
 

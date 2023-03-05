@@ -5,6 +5,7 @@ import {MdDone} from 'react-icons/md'
 import {FiExternalLink} from 'react-icons/fi';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import { completeTask, deleteTask, getSubTasks } from '../../api/TaskAPI';
 import TaskDescription from './TaskDescription';
 import ChildTaskItem from './ChildTaskItem';
@@ -25,15 +26,24 @@ const TaskItem = (props) => {
 	var dueDateTime = new Date(props.record.dueDate).getTime()
 	var currentTime = new Date().getTime()
 	const daysLeft = (dueDateTime-currentTime)/one_day
+	const {showActive} = useContext(ActiveContext);
 
 	const onDelete = async() =>{
-		await deleteTask(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(user.id,config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteTask(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.taskTypeName,showActive)
+		}
 	}
 
 	const onComplete = async() => {
 		await completeTask(config,'Bearer '+user.accessToken,props.record.id,user.id)
-		await props.refreshFunction(user.id,config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.taskTypeName,showActive)
+	}
+
+	const refreshChildTask = async() =>{
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.taskTypeName,showActive)
+		setShowChildTasks(true);
+		setShowAddTask(false);
 	}
 
 	const onShowDescription = async() =>{
@@ -74,7 +84,11 @@ const TaskItem = (props) => {
 			</span>
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 			<MdDone size='1.5em' onClick={onComplete}/>
-				<FiExternalLink size='1em' onClick={onShowDescription}/>
+			<FiExternalLink size='1em' onClick={onShowDescription}/>
+			&nbsp;&nbsp;
+			<div onClick={()=>{setShowAddTask(!showAddTask)}} 
+				className='btn btn-sm'>
+				<AiOutlinePlusCircle size='1.5em'/></div>
 				{
 					showDescription?<TaskDescription refreshFunction={props.refreshFunction} record={props.record}
 					open={showDescription} hide={onHideDescription} />:null
@@ -94,7 +108,7 @@ const TaskItem = (props) => {
 			</ul>:
 		null}
 		{showAddTask?
-			<AddChildTaskForm refreshFunction={props.refreshFunction} 
+			<AddChildTaskForm refreshFunction={refreshChildTask} 
      			name={props.record.name} type={props.record.taskTypeName} 
 				open={onshowAddTask} hide={onHideAddTask}
        		/>:

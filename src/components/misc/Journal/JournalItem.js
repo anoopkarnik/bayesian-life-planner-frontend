@@ -8,6 +8,7 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import { deleteJournal} from '../../api/JournalAPI';
 import JournalDescription from './JournalDescription';
+import { ActiveContext } from '../../../context/ActiveContext';
 
 const JournalItem = (props) => {
 
@@ -17,8 +18,10 @@ const JournalItem = (props) => {
     const {config} = useContext(ConfigContext);
 
 	const onDelete = async() =>{
-		await deleteJournal(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteJournal(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken)
+		}
 	}
 
 	const onShowDescription = async() =>{

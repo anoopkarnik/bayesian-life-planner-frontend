@@ -19,9 +19,9 @@ const SkillList = (props) => {
       refreshSkill(config,'Bearer '+user.accessToken,props.skill,showActive)
     }, [showActive]);
 
-    const refreshSkill = async(backend_url,bearerToken,skill,showActive) =>{
+    const refreshSkill = async(backend_url,bearerToken,skill,showCurrentActive) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getSkills(config,bearerToken,props.skill,showActive);
+      const record = await getSkills(config,bearerToken,skill,showCurrentActive);
       setRecords(record);
       setShowAddSkill(false)
 

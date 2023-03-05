@@ -4,6 +4,7 @@ import { createChildGoal } from '../../api/GoalAPI';
 import { ConfigContext } from '../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
 import DatePicker from "react-datepicker";
+import { ActiveContext } from '../../../context/ActiveContext';
 
 
 
@@ -19,11 +20,12 @@ const AddChildGoalForm = (props) => {
 		console.log('handle', active);
 		setActive(active);
 	  }
+	  const {showActive} = useContext(ActiveContext);
 
 	const onSubmit =async () =>{
 		await createChildGoal(config, 'Bearer '+user.accessToken,name,
 		props.type,dueDate,props.name,active);
-		await props.refreshFunction(config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.type,showActive);
 	}
 
 	const onDueDateChange = async(date) =>{

@@ -8,6 +8,7 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
+import { ActiveContext } from '../../../context/ActiveContext';
 
 const BadHabitDescription = (props) => {
 
@@ -39,6 +40,7 @@ const BadHabitDescription = (props) => {
       {value:'false',label:'False'},
       {value:null,label:null}
     ]
+    const {showActive} = useContext(ActiveContext);
 
 
     const onUpdate = async() =>{

@@ -17,28 +17,28 @@ export const getBadHabits = async(backend_url,bearerToken,habitTypeName,active) 
 }
 
 export const createRootBadHabit= async(backend_url,bearerToken,name,startDate,
-  habitTypeName,active)=>{
+  badHabitTypeName,active)=>{
       const res = await fetch(backend_url+'/api/badHabit/root', {
         method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization':bearerToken
           },
-          body: JSON.stringify({name,startDate,habitTypeName,active}),
+          body: JSON.stringify({name,startDate,badHabitTypeName,active}),
         })
         const data = await res.json()
       return data     
     }
 
 export const createChildBadHabit= async(backend_url,bearerToken,name,startDate,
-      habitTypeName,parentBadHabitName,active)=>{
+      badHabitTypeName,parentBadHabitName,active)=>{
   const res = await fetch(backend_url+'/api/badHabit/child', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization':bearerToken
         },
-        body: JSON.stringify({name,startDate,habitTypeName,
+        body: JSON.stringify({name,startDate,badHabitTypeName,
           parentBadHabitName,active}),
         })
   const data = await res.json()

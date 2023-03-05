@@ -2,6 +2,7 @@ import React, { useState,useContext,useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
 import { createChildSkill } from '../../api/SkillAPI';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import SlidingPane from "react-sliding-pane";
 
 
@@ -13,6 +14,7 @@ const AddChildSkillForm = (props) => {
 	const [timeTaken, setTimeTaken] = useState('');
 	const {config} = useContext(ConfigContext);
 	const [active, setActive] = useState(true);
+	const {showActive} = useContext(ActiveContext);
 	const handleRadio= async(event) =>{
 		const active = event.target.value === 'true' ? true: false;
 		console.log('handle', active);
@@ -22,7 +24,7 @@ const AddChildSkillForm = (props) => {
 	const onSubmit =async () =>{
 		await createChildSkill(config, 'Bearer '+user.accessToken,name,
 		props.type,timeTaken,props.name,active);
-		await props.refreshFunction(config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.type,showActive);
 	}
 
 

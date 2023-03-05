@@ -5,6 +5,7 @@ import "react-sliding-pane/dist/react-sliding-pane.css";
 import { modifySkillParams } from "../../api/SkillAPI";
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
 
@@ -41,6 +42,7 @@ const SkillDescription = (props) => {
       {value:'false',label:'False'},
       {value:null,label:null}
     ]
+    const {showActive} = useContext(ActiveContext);
 
     const onUpdate = async() =>{
         // await props.refreshFunction(config,'Bearer '+ user.accessToken)

@@ -2,6 +2,7 @@ import React,{useState,useContext,useEffect} from 'react'
 import JournalItem from './JournalItem';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+
 import AddJournalForm from './AddJournalForm';
 import { getJournals } from '../../api/JournalAPI';
 

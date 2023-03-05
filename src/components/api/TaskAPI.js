@@ -107,6 +107,19 @@ export const modifyTaskParams= async(backend_url,bearerToken,id,
     })
 }
 
+export const modifyTaskSchedule= async(backend_url,bearerToken,id,
+  scheduleType,every,daysOfWeek)=>{
+  await fetch(backend_url+'/api/task/modifyScheduleType', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({id,
+        scheduleType,every,daysOfWeek}),
+    })
+}
+
 export const deleteTask = async(backend_url,bearerToken,id) =>{
     await axios.delete(backend_url+'/api/task?id='+id,{
         headers:{Authorization:bearerToken}

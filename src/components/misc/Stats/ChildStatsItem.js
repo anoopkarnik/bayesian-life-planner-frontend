@@ -22,8 +22,10 @@ const ChildStatsItem = (props) => {
 	const [showAddStat,setShowAddStat] = useState(false);
 
 	const onDelete = async() =>{
-		await deleteStats(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteStats(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken)
+		}
 	}
 
 	const onEdit = async() =>{

@@ -19,9 +19,9 @@ const TaskList = (props) => {
       refreshTask(config,'Bearer '+user.accessToken,props.task,showActive);
     }, [showActive]);
 
-    const refreshTask = async(backend_url,bearerToken,task,showActive) =>{
-      await props.refreshFunction(backend_url,bearerToken)
-      const record = await getTasks(backend_url,bearerToken,props.task,showActive);
+    const refreshTask = async(backend_url,bearerToken,task,showCurrentActive) =>{
+      // await props.refreshFunction(backend_url,bearerToken)
+      const record = await getTasks(backend_url,bearerToken,task,showCurrentActive);
       setRecords(record);
       setShowAddTask(false);
     }

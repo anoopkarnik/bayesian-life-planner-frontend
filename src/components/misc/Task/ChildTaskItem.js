@@ -5,6 +5,7 @@ import {MdDone} from 'react-icons/md'
 import {FiExternalLink} from 'react-icons/fi';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import { completeTask, deleteTask, getSubTasks } from '../../api/TaskAPI';
 import TaskDescription from './TaskDescription';
 import AddChildTaskForm from './AddChildTaskForm';
@@ -24,15 +25,18 @@ const ChildTaskItem = (props) => {
 	var dueDateTime = new Date(props.record.dueDate).getTime()
 	var currentTime = new Date().getTime()
 	const daysLeft = (dueDateTime-currentTime)/one_day
+	const {showActive} = useContext(ActiveContext);
 
 	const onDelete = async() =>{
-		await deleteTask(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteTask(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.taskTypeName,showActive)
+		}
 	}
 
 	const onComplete = async() => {
 		await completeTask(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.taskTypeName,showActive)
 	}
 
 	const onShowDescription = async() =>{
@@ -59,11 +63,11 @@ const ChildTaskItem = (props) => {
   return (
 	<div>
     <li style={daysLeft<=0?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
-		<div>{props.record.taskResponses.length>0?<>
-				{showChildTasks?
+		<div>
+				{/* {showChildTasks?
 					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
 					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
-				}</>:<>&emsp;</>}
+				}</>:<>&emsp;</>} */}
 				{props.record.name}
 		</div>
 		<div>

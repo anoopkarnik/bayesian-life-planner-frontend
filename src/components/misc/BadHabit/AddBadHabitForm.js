@@ -3,6 +3,7 @@ import { UserContext } from '../../../context/UserContext';
 import { createRootBadHabit } from '../../api/BadHabitAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 
 
 const AddBadHabitForm = (props) => {
@@ -12,6 +13,7 @@ const AddBadHabitForm = (props) => {
 	const {user, setUser} = useContext(UserContext);
 	const {config} = useContext(ConfigContext);
 	const [active, setActive] = useState(true);
+	const {showActive} = useContext(ActiveContext);
 	const handleRadio= async(event) =>{
 		const active = event.target.value === 'true' ? true: false;
 		console.log('handle', active);
@@ -22,7 +24,7 @@ const AddBadHabitForm = (props) => {
 
 		await createRootBadHabit(config, 'Bearer '+user.accessToken,name,
 		startDate,props.name,active);
-		await props.refreshFunction(config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.name,showActive);
 	}
 
 	const onStartDateChange = async(date) =>{

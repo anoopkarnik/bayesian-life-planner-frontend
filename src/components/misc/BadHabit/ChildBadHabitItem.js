@@ -9,6 +9,7 @@ import { ConfigContext } from '../../../context/ConfigContext';
 import {  carriedOutBadHabit, deleteBadHabit} from '../../api/BadHabitAPI';
 import BadHabitDescription from './BadHabitDescription';
 import AddChildBadHabitForm from './AddChildBadHabitForm';
+import { ActiveContext } from '../../../context/ActiveContext';
 
 const ChildBadHabitItem = (props) => {
 
@@ -22,17 +23,20 @@ const ChildBadHabitItem = (props) => {
 	const MINUTE = SECOND*60;
 	const HOUR = MINUTE*60;
 	const DAY = HOUR*24
+	const {showActive} = useContext(ActiveContext);
 
 	const [time,setTime]= useState(Date.now() - Date.parse(props.record.updatedAt))
 
 	const onDelete = async() =>{
-		await deleteBadHabit(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteBadHabit(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.badHabitTypeName,showActive)
+		}
 	}
 
 	const onComplete = async() => {
 		await carriedOutBadHabit(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.badHabitTypeName,showActive)
 		setTime(Date.now() - Date.parse(props.record.updatedAt));
 	}
 

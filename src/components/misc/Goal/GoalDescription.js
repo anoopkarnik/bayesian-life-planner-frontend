@@ -9,6 +9,7 @@ import RuleList from "./RuleList";
 import { getAllCompletedRules,getAllWorkRules } from '../../api/RuleAPI';
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
+import { ActiveContext } from '../../../context/ActiveContext';
 
 const GoalDescription = (props) => {
   
@@ -48,6 +49,7 @@ const GoalDescription = (props) => {
       {value:'false',label:'False'},
       {value:null,label:null}
     ]
+    const {showActive} = useContext(ActiveContext);
     if(startDate!==null){
       const total_completion_time = new Date(dueDate) - new Date(startDate)
       const time_left = new Date(dueDate) - new Date()

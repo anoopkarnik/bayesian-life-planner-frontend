@@ -5,6 +5,7 @@ import {MdDone} from 'react-icons/md'
 import {ImPlus} from 'react-icons/im'
 import {FiExternalLink} from 'react-icons/fi';
 import { UserContext } from '../../../context/UserContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import { completeHabit, deleteHabit} from '../../api/HabitAPI';
 import HabitDescription from './HabitDescription';
@@ -26,20 +27,23 @@ const HabitItem = (props) => {
 	var dueDateTime = new Date(props.record.dueDate).getTime()
 	var currentTime = new Date().getTime()
 	const daysLeft = (dueDateTime-currentTime)/one_day
+	const {showActive} = useContext(ActiveContext);
 
 	const onDelete = async() =>{
-		await deleteHabit(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteHabit(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.habitTypeName,showActive)
+		}
 	}
 
 	const onComplete = async() => {
 		await completeHabit(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive)
 	}
 
 	const onRefresh = async() =>{
 		setShowAddHabit(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.habitTypeName,showActive)
 	}
 
 	const onShowDescription = async() =>{
@@ -108,7 +112,7 @@ const HabitItem = (props) => {
 			</ul>:
 		null}
 		{showAddHabit?
-			<AddChildHabitForm refreshFunction={onRefresh} 
+			<AddChildHabitForm refreshFunction={onRefresh}
      			name={props.record.name} type={props.record.habitTypeName} 
 				open={onshowAddHabit} hide={onHideAddHabit}
        		/>:

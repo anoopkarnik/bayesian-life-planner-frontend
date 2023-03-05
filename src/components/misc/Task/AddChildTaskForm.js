@@ -3,6 +3,7 @@ import { UserContext } from '../../../context/UserContext';
 import { createChildTask } from '../../api/TaskAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -26,6 +27,7 @@ const AddChildTaskForm = (props) => {
 		console.log('handle', active);
 		setActive(active);
 	  }
+	
 	const [scheduleTypes,setScheduleTypes] = useState(['onetime','daily','weekly',
 'monthly','yearly']);
 	const weekDays = [
@@ -37,14 +39,14 @@ const AddChildTaskForm = (props) => {
 		{value:'SATURDAY',label:'S'},
 		{value:'SUNDAY',label:'S'},
 	]
-
+	const {showActive} = useContext(ActiveContext);
 	const onSubmit =async () =>{
 		console.log(weekDays);
 
 		await createChildTask(config, 'Bearer '+user.accessToken,name,
 		startDate,timeTaken,dueDate,every,scheduleType,props.type,daysOfWeek,props.name
 		,active);
-		await props.refreshFunction(config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.type,showActive);
 	}
 
 	

@@ -6,6 +6,7 @@ import {ImPlus} from 'react-icons/im'
 import {FiExternalLink} from 'react-icons/fi';
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import { completeHabit, deleteHabit} from '../../api/HabitAPI';
 import HabitDescription from './HabitDescription';
 import AddChildHabitForm from './AddChildHabitForm';
@@ -19,6 +20,7 @@ const ChildHabitItem = (props) => {
 	const [showAddHabit, setShowAddHabit] = useState(false);
 	const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
+	const {showActive} = useContext(ActiveContext);
 	const urgent ={backgroundColor:"#F2A10F"}
 	const medium ={backgroundColor:"#FFFF99"}
 	const low ={backgroundColor:"#FFF"}
@@ -27,13 +29,15 @@ const ChildHabitItem = (props) => {
 	const daysLeft = (dueDateTime-currentTime)/one_day
 
 	const onDelete = async() =>{
-		await deleteHabit(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteHabit(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.habitTypeName,showActive)
+		}
 	}
 
 	const onComplete = async() => {
 		await completeHabit(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive)
 	}
 
 	const onShowDescription = async() =>{

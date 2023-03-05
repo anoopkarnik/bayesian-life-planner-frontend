@@ -19,9 +19,9 @@ const HabitList = (props) => {
       refreshHabit(config,'Bearer '+user.accessToken,props.habit,showActive)
     }, [showActive]);
 
-    const refreshHabit = async(backend_url,bearerToken,habit,showActive) =>{
+    const refreshHabit = async(backend_url,bearerToken,habit,showCurrentActive) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getHabits(config,bearerToken,props.habit,showActive);
+      const record = await getHabits(config,bearerToken,habit,showCurrentActive);
       setRecords(record);
       setShowAddHabit(false)
 
@@ -39,7 +39,7 @@ const HabitList = (props) => {
           refreshFunction={refreshHabit}/>
       ))}</div>
        <h3 onClick={()=>{setShowAddHabit(!showAddHabit)}} className='mt-3 text-center'><div className='btn btn-secondary btn-lg'>Add Habit</div></h3>
-      {showAddHabit?<AddHabitForm refreshFunction={refreshHabit} 
+      {showAddHabit?<AddHabitForm refreshFunction={refreshHabit}
       name={props.habit}
        />:null}</>:null}
     </ul>

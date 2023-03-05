@@ -20,9 +20,9 @@ const BadHabitList = (props) => {
       showActive)
     }, [showActive]);
 
-    const refreshBadHabit = async(backend_url,bearerToken,habit,showActive) =>{
+    const refreshBadHabit = async(backend_url,bearerToken,badHabit,showCurrentActive) =>{
       // await props.refreshFunction(backend_url,bearerToken,habit)
-      const record = await getBadHabits(config,bearerToken,props.badHabit,showActive);
+      const record = await getBadHabits(config,bearerToken,badHabit,showCurrentActive);
       setRecords(record);
       setShowAddBadHabit(false)
 

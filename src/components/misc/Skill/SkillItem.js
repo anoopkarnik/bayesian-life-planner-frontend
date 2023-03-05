@@ -11,6 +11,7 @@ import SkillDescription from './SkillDescription';
 import ChildSkillItem from './ChildSkillItem';
 import AddChildSkillForm from './AddChildSkillForm';
 import { completeSkill } from '../../api/SkillAPI';
+import { ActiveContext } from '../../../context/ActiveContext';
 
 
 const SkillItem = (props) => {
@@ -22,15 +23,18 @@ const SkillItem = (props) => {
     const {config} = useContext(ConfigContext);
 	const [showChildSkills, setShowChildSkills] = useState(false);
 	const [showAddSkill, setShowAddSkill] = useState(false);
+	const {showActive} = useContext(ActiveContext);
 
 	const onDelete = async() =>{
-		await deleteSkill(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		if (window.confirm('Are you sure you wish to delete this item?')){
+			await deleteSkill(config,'Bearer '+user.accessToken,props.record.id)
+			await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.skillTypeName,showActive)
+		}
 	}
 
 	const onRefresh = async() =>{
 		setShowAddSkill(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken)
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.skillTypeName,showActive)
 	}
 
 	const onShowDescription = async() =>{
@@ -54,7 +58,7 @@ const SkillItem = (props) => {
 
 	const onComplete = async() => {
 		await completeSkill(config,'Bearer '+user.accessToken,props.record.id)
-		await props.refreshFunction(config,'Bearer '+ user.accessToken)
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.skillTypeName,showActive)
 	}
 
    

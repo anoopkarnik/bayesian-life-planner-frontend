@@ -3,6 +3,7 @@ import { UserContext } from '../../../context/UserContext';
 import { createChildHabit } from '../../api/HabitAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
+import { ActiveContext } from '../../../context/ActiveContext';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -11,7 +12,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 const AddChildHabitForm = (props) => {
 
 	const [name, setName] = useState('');
-	const [timeTaken, setTimeTaken] = useState('');
+	const [timeOfDay, setTimeOfDay] = useState('');
 	const [dueDate, setDueDate] = useState(new Date());
 	const [startDate, setStartDate] = useState(new Date());
 	const [every,setEvery] = useState(1);
@@ -21,6 +22,7 @@ const AddChildHabitForm = (props) => {
 	const {user, setUser} = useContext(UserContext);
 	const {config} = useContext(ConfigContext);
 	const [active, setActive] = useState(true);
+	const {showActive} = useContext(ActiveContext);
 	const handleRadio= async(event) =>{
 		const active = event.target.value === 'true' ? true: false;
 		console.log('handle', active);
@@ -39,9 +41,9 @@ const AddChildHabitForm = (props) => {
 		console.log(weekDays);
 
 		await createChildHabit(config, 'Bearer '+user.accessToken,name,
-		startDate,timeTaken,dueDate,every,scheduleType,props.type,daysOfWeek,props.name
+		startDate,timeOfDay,dueDate,every,scheduleType,props.type,daysOfWeek,props.name
 		,active);
-		await props.refreshFunction(config,'Bearer '+user.accessToken);
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.type,showActive);
 	}
 
 	
@@ -89,8 +91,8 @@ const AddChildHabitForm = (props) => {
 				</div>
 				<div className='col-sm'>
 					<input required='required' Name='text' className='form-control'
-					id='time taken(in mins)' placeholder='time taken(in mins)' value={timeTaken} 
-					onChange={(event) => setTimeTaken(event.target.value)}></input>
+					id='time of day (24 hr clock)' placeholder='time of day (24 hr clock)' value={timeOfDay} 
+					onChange={(event) => setTimeOfDay(event.target.value)}></input>
 				</div>
 			</div>
 			<div className='row'>

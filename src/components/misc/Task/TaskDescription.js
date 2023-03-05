@@ -8,6 +8,7 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
+import { modifyTaskSchedule } from "../../api/TaskAPI";
 
 const TaskDescription = (props) => {
 
@@ -26,6 +27,7 @@ const TaskDescription = (props) => {
       }
     const [description,setDescription] = useState(props.record.description);
     const [isEditing,setIsEditing] = useState(false);
+    const [isScheduleEditing, setIsScheduleEditing] = useState(false);
     const {user, setUser} = useContext(UserContext);
 	  const {config} = useContext(ConfigContext);
     const [name,setName] = useState(props.record.name);
@@ -35,11 +37,46 @@ const TaskDescription = (props) => {
     const [completed,setCompleted] = useState(props.record.completed);
     const [dueDate,setDueDate] = useState(props.record.dueDate);
     const [timeTaken,setTimeTaken] = useState(props.record.timeTaken);
+    const [scheduleType,setScheduleType] = useState(props.record.scheduleType);
+    const [every,setEvery] = useState(1);
+    const [daysOfWeek,setDaysOfWeek] = useState([]);
+    const [showDays, setShowDays] = useState(false);
     const options = [
       {value:'true' ,label:'True'},
       {value:'false',label:'False'},
       {value:null,label:null}
     ]
+    const [scheduleTypes,setScheduleTypes] = useState(['onetime','daily','weekly',
+    'monthly','yearly']);
+    const weekDays = [
+      {value:'MONDAY',label:'M'},
+      {value:'TUESDAY',label:'T'},
+      {value:'WEDNESDAY',label:'W'},
+      {value:'THURSDAY',label:'T'},
+      {value:'FRIDAY',label:'F'},
+      {value:'SATURDAY',label:'S'},
+      {value:'SUNDAY',label:'S'},
+    ]
+    const handleScheduleTypeChange = async(event) =>{
+      console.log(event.target.value)
+      setScheduleType(event.target.value);
+      if(event.target.value==="weekly"){
+        setShowDays(true);
+      }
+      else{
+        setShowDays(false);
+      }
+    }
+  
+    const onhandleWeekDayChange = (e) =>{
+      const {value,checked} = e.target;
+      if(checked){
+        setDaysOfWeek((prev) => [...prev,value])
+      }
+      else{
+        setDaysOfWeek((prev)=> prev.filter((x)=> x!==value));
+      }
+    }
 
     const onUpdate = async() =>{
         // await props.refreshFunction(config,'Bearer '+ user.accessToken)
@@ -48,6 +85,13 @@ const TaskDescription = (props) => {
         dueDate,timeTaken);
         setIsEditing(false);
     };
+
+    const onUpdateScheduleType = async() =>{
+      // await props.refreshFunction(config,'Bearer '+ user.accessToken)
+      await modifyTaskSchedule(config, 'Bearer '+user.accessToken,
+      props.record.id,scheduleType,every,daysOfWeek);
+      setIsScheduleEditing(false);
+  };
 
   return (
     <div>
@@ -65,6 +109,9 @@ const TaskDescription = (props) => {
         <b>Task Type</b> - {props.record.taskTypeName} <br/>
         <b>Created Date</b> - {formatDate(new Date(props.record.createdAt))} <br/>
         <b>Updated Date</b> - {formatDate(new Date(props.record.updatedAt))} <br/>
+        <b>Schedule Type</b> - {scheduleType} <br/>
+        <b>Every </b> - {props.record.every} <br/>
+        <b>Week Days</b> - {props.record.daysOfWeek.length==0?"All days":String(props.record.daysOfWeek)} <br/>
         <b>Name</b> - {isEditing?
           <input value={name} onChange={(event)=>setName(event.target.value)}>
           </input>:<>{name}</>} <br/>
@@ -116,6 +163,40 @@ const TaskDescription = (props) => {
                 <>{description}</>
 			    }
           <br/>
+        <button className='btn btn-secondary mt-3' 
+                onClick={()=>setIsScheduleEditing(!isScheduleEditing)}>Edit Schedule</button>
+        &emsp;
+        <button onClick={onUpdateScheduleType} className='btn btn-secondary mt-3'>Update</button><br/><br/>
+        {isScheduleEditing?<>
+          <div className='row'>
+				    <div className='col-sm'>
+              <select required='required' onChange={handleScheduleTypeChange} className='form-control'>
+						   <option value="" selected disabled hidden> Choose Schedule Type</option>
+                        {scheduleTypes.map((schedule)=>(
+                        <option value={schedule}>{schedule}</option>   
+                        ))}
+              </select>
+            </div>
+				    <div className='col-sm'>
+					    <input required='required' Name='text' className='form-control'
+					      id='every' placeholder='every' value={every} 
+					      onChange={(event) => setEvery(event.target.value)}></input>
+				    </div>
+			    </div>
+          {showDays?<>
+			      <div className='row'>
+				      <div className='col-sm'>
+					      {weekDays.map((x,i)=>(
+						      <label key={i}>
+							    <input type="checkbox" name="day" value={x.value} 
+							      onChange={onhandleWeekDayChange}/>
+							      {' '}
+							    {x.label}
+						      </label>
+					      ))}
+				      </div>
+			      </div></>:null}
+            </>:null}
       </SlidingPane>
     </div>
   );
