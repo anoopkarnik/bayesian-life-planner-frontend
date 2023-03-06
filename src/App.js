@@ -19,7 +19,7 @@ import GoalPage from './components/pages/GoalPage';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Switch } from '@mui/material';
-
+import ProfilePage from './components/pages/ProfilePage';
 
 
 function App() {
@@ -42,6 +42,7 @@ function App() {
           </FormGroup>
             <Routes>
               <Route path="/" element={<SigninPage/>}/>
+              <Route path="/profile" element={<ProfilePage/>}/>
               <Route path="/task" element={<TaskPage/>}/>
               <Route path="/habit" element={<HabitPage/>}/>
               <Route path="/badHabit" element={<BadHabitPage/>}/>

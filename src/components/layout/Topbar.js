@@ -15,6 +15,10 @@ const Topbar = () => {
     window.location.href = '/';
   }
 
+  const onProfile = async() =>{
+    window.location.href ='/profile';
+  }
+
   return (
     <div className='row'>
       <div className='col-sm'></div>
@@ -22,7 +26,7 @@ const Topbar = () => {
         <h1 className='mt-3 text-center'>Bayesian Life Planner</h1>
       </div>
       <div className='col-sm text-end'>
-        <div><h2> {user.name}  <CgProfile/><AiOutlineLogout onClick={logout} data-toggle="tooltip" data-placement="top" title="Logout/Go to Signin Page"/></h2></div>
+        <div><h2> {user.name}  <CgProfile onClick={onProfile}/><AiOutlineLogout onClick={logout} data-toggle="tooltip" data-placement="top" title="Logout/Go to Signin Page"/></h2></div>
       </div>
     </div>
   )

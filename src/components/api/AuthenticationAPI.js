@@ -21,3 +21,15 @@ export const signin = async(backend_url,name,password) =>{
   const data = await res.json()
   return data
 }
+
+export const modifyPassword = async(backend_url,bearerToken,name,
+  oldPassword,newPassword)=>{
+  await fetch(backend_url+'/auth/changePassword', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({name,oldPassword,newPassword}),
+    })
+}

@@ -53,7 +53,7 @@ const GoalDescription = (props) => {
     if(startDate!==null){
       const total_completion_time = new Date(dueDate) - new Date(startDate)
       const time_left = new Date(dueDate) - new Date()
-      var expected_level = time_left*100/total_completion_time;
+      var expected_level = (total_completion_time-time_left)*100/total_completion_time;
     }
     else{
       var expected_level=0

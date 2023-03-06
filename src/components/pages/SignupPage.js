@@ -57,6 +57,7 @@ const SignupPage = (props) => {
 					<input
 						required='required'
 						Name='text'
+						type="password"
 						className='form-control'
 						id='password'
 						placeholder='Password'

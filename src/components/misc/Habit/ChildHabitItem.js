@@ -24,9 +24,11 @@ const ChildHabitItem = (props) => {
 	const urgent ={backgroundColor:"#F2A10F"}
 	const medium ={backgroundColor:"#FFFF99"}
 	const low ={backgroundColor:"#FFF"}
-	var dueDateTime = new Date(props.record.dueDate).getTime()
-	var currentTime = new Date().getTime()
-	const daysLeft = (dueDateTime-currentTime)/one_day
+	var dueDateTime = new Date(props.record.dueDate)
+	var dueDateTime2 = new Date(dueDateTime.getFullYear(),dueDateTime.getMonth(),dueDateTime.getDate()).getTime()
+	var currentTime = new Date()
+	var currentTime2 = new Date(currentTime.getFullYear(),currentTime.getMonth(),currentTime.getDate()).getTime()
+	const daysLeft = (dueDateTime2-currentTime2)/one_day
 
 	const onDelete = async() =>{
 		if (window.confirm('Are you sure you wish to delete this item?')){
