@@ -13,8 +13,8 @@ const RuleList = (props) => {
 
     const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
-    const [completedRecords, setCompletedRecords] = useState(props.completedRecords);
-    const [workRecords, setWorkRecords] = useState(props.workRecords);
+    const [completedRecords, setCompletedRecords] = useState([]);
+    const [workRecords, setWorkRecords] = useState([]);
     const [showCompletedRule, setShowCompletedRule] = useState(false);
     const [showAddCompletedRule,setShowAddCompletedRule] = useState(false);
     const [showWorkRule, setShowWorkRule] = useState(false);
@@ -22,9 +22,9 @@ const RuleList = (props) => {
 
     const refreshGoalDescription = async(backend_url,bearerToken,id) => {
       const completedRecord = await getAllCompletedRules(config,'Bearer '+user.accessToken,
-      props.record.id);
+      props.id);
       const workRecord = await getAllWorkRules(config,'Bearer '+user.accessToken,
-      props.record.id);
+      props.id);
       setCompletedRecords(completedRecord);
       setWorkRecords(workRecord);
       setShowAddCompletedRule(false);
@@ -33,7 +33,7 @@ const RuleList = (props) => {
 
     useEffect(() => {
       refreshGoalDescription(config,'Bearer '+user.accessToken,
-      props.record.id);
+      props.id);
     }, []);
 
     
@@ -57,7 +57,7 @@ const RuleList = (props) => {
           <div className='btn btn-secondary btn-lg'>Add Completion Rule</div></h3>
       {showAddCompletedRule?<AddCompletedRuleForm 
       refreshFunction={refreshGoalDescription} 
-      id={props.record.id}
+      id={props.id}
        />:null}</>:null}
     </ul>
     <ul className='list-group'>
@@ -77,7 +77,7 @@ const RuleList = (props) => {
         className='mt-3 text-center'>
           <div className='btn btn-secondary btn-lg'>Add Work Rule</div></h3>
       {showAddWorkRule?<AddWorkRuleForm refreshFunction={refreshGoalDescription} 
-      id={props.record.id}
+      id={props.id}
        />:null}</>:null}
     </ul>
     </div>

@@ -1,6 +1,5 @@
 import React, { useState,useContext,useEffect } from 'react';
-import { UserContext } from '../../../context/UserContext';
-import { createRootHabit } from '../../api/HabitAPI';
+import { UserContext } from '../../../context/UserContext';import { createRootHabit } from '../../api/HabitAPI';
 import DatePicker from "react-datepicker";
 import { ConfigContext } from '../../../context/ConfigContext';
 import { ActiveContext } from '../../../context/ActiveContext';

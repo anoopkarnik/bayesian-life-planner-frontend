@@ -106,14 +106,14 @@ export const modifyHabitParams= async(backend_url,bearerToken,id,
 }
 
 export const modifyHabitSchedule= async(backend_url,bearerToken,id,
-  scheduleType,every,daysOfWeek)=>{
+  oldScheduleType,scheduleType,every,daysOfWeek)=>{
   await fetch(backend_url+'/api/habit/modifyScheduleType', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,
+      body: JSON.stringify({id,oldScheduleType,
         scheduleType,every,daysOfWeek}),
     })
 }

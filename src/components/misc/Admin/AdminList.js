@@ -22,7 +22,7 @@ const AdminList = (props) => {
     <ul className='list-group'>
       <h3>{props.name}</h3>
       <div>
-      {props.records.map((record) => (
+      {props.records?.map((record) => (
           <AdminItem name={props.name} record={record} 
           createFunction={props.createFunction} 
           deleteFunction={props.deleteFunction} 

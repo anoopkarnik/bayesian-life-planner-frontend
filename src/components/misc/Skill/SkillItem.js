@@ -107,7 +107,7 @@ const SkillItem = (props) => {
 		null}
 		{showAddSkill?
 			<AddChildSkillForm refreshFunction={onRefresh} 
-     			name={props.record.name} type={props.record.skillTypeName} open={onshowAddSkill} hide={onHideAddSkill}
+     			name={props.record.name} type={props.record.skillTypeName}
        		/>:
 		null}
 	</div>

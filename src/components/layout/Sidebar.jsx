@@ -1,8 +1,8 @@
 import React from 'react';
 import {AiOutlineTransaction,AiFillShopping} from "react-icons/ai";
-import {MdAccountBalance,MdAddTask,MdAlarmAdd} from "react-icons/md";
-import {BsFillJournalBookmarkFill,BsFilePersonFill} from "react-icons/bs";
-import {FaBars, FaMoneyBill, FaAdn} from "react-icons/fa";
+import {MdAccountBalance,MdAccountBalanceWallet,MdAddTask,MdAlarmAdd} from "react-icons/md";
+import {BsFillJournalBookmarkFill,BsFilePersonFill, BsBookshelf, BsHddRack} from "react-icons/bs";
+import {FaBars, FaMoneyBill, FaAdn, FaMoneyBillWave} from "react-icons/fa";
 import {GiSkills,GiStairsGoal} from "react-icons/gi"
 import { NavLink} from 'react-router-dom';
 import { useState } from 'react';
@@ -47,6 +47,26 @@ const Sidebar = ({children}) => {
       path:"/goals",
       name:"Goals",
       icon:<GiStairsGoal/>
+    },
+    {
+      path:"/transactions",
+      name:"Transactions",
+      icon:<FaMoneyBillWave/>
+    },
+    {
+      path:"/accounts",
+      name:"Accounts",
+      icon:<MdAccountBalanceWallet/>
+    },
+    {
+      path:"/budget",
+      name:"Budget",
+      icon:<BsHddRack/>
+    },
+    {
+      path:"/funds",
+      name:"Funds",
+      icon:<BsBookshelf/>
     },
     {
       path:"/admin",

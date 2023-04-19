@@ -7,7 +7,7 @@ import { getTotalTasks,getTotalHabits,createTaskType,
   editStatsType,deleteStatsType,getTotalSkills,createSkillType,
   editSkillType,deleteSkillType, getTotalGoals,createGoalType,
   editGoalType,deleteGoalType, getTotalBadHabits,editBadHabitType,
-  createBadHabitType,deleteBadHabitType
+  createBadHabitType,deleteBadHabitType, getTotalAccounts, getTotalCategories, getTotalSubCategories, getTotalExpenses, createAccountType, deleteAccountType, editAccountType, createCategoryType, deleteCategoryType, editCategoryType, createSubCategoryType, deleteSubCategoryType, editSubCategoryType, createExpenseType, deleteExpenseType, editExpenseType
  } from '../api/AdminAPI';
 import AdminList from '../misc/Admin/AdminList';
 import { UserContext } from '../../context/UserContext';
@@ -22,6 +22,10 @@ const AdminPage = (props) => {
     const [statsOptions, setStatsOptions] = useState([]);
     const [skillOptions,setSkillOptions] = useState([]);
     const [goalOptions,setGoalOptions] = useState([]);
+    const [accountOptions,setAccountOptions] = useState([]);
+    const [categoryOptions,setCategoryOptions] = useState([]);
+    const [subCategoryOptions,setSubCategoryOptions] = useState([]);
+    const [expenseOptions,setExpenseOptions] = useState([]);
     const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
 
@@ -38,6 +42,10 @@ const AdminPage = (props) => {
       const {skill,skillOptions} = await getTotalSkills(backend_url,bearerToken);
       const {goal,goalOptions} = await getTotalGoals(backend_url,bearerToken);
       const {badHabits, badHabitOptions} = await getTotalBadHabits(backend_url,bearerToken);
+      const {account,accountOptions} = await getTotalAccounts(backend_url,bearerToken);
+      const {categories,categoryOptions} = await getTotalCategories(backend_url,bearerToken);
+      const {subCategories,subCategoryOptions} = await getTotalSubCategories(backend_url,bearerToken);
+      const {expenses,expenseOptions} = await getTotalExpenses(backend_url,bearerToken);
       setTaskOptions(taskOptions);  
       setHabitOptions(habitOptions);
       setJournalOptions(journalOptions);
@@ -45,6 +53,10 @@ const AdminPage = (props) => {
       setSkillOptions(skillOptions);
       setGoalOptions(goalOptions);
       setBadHabitOptions(badHabitOptions);
+      setAccountOptions(accountOptions);
+      setCategoryOptions(categoryOptions);
+      setSubCategoryOptions(subCategoryOptions);
+      setExpenseOptions(expenseOptions);
     }
 
 
@@ -95,6 +107,34 @@ const AdminPage = (props) => {
           refreshFunction={refreshAdminPage} 
           deleteFunction={deleteBadHabitType} 
           editFunction={editBadHabitType}/>
+				</div>
+        <div className='col-sm'>
+					<AdminList name="Account Types" records={accountOptions} 
+          createFunction={createAccountType} 
+          refreshFunction={refreshAdminPage} 
+          deleteFunction={deleteAccountType} 
+          editFunction={editAccountType}/>
+				</div>
+        <div className='col-sm'>
+					<AdminList name="Category Types" records={categoryOptions} 
+          createFunction={createCategoryType} 
+          refreshFunction={refreshAdminPage} 
+          deleteFunction={deleteCategoryType} 
+          editFunction={editCategoryType}/>
+				</div>
+        <div className='col-sm'>
+					<AdminList name="Sub Category Types" records={subCategoryOptions} 
+          createFunction={createSubCategoryType} 
+          refreshFunction={refreshAdminPage} 
+          deleteFunction={deleteSubCategoryType} 
+          editFunction={editSubCategoryType}/>
+				</div>
+        <div className='col-sm'>
+					<AdminList name="Expense Types" records={expenseOptions} 
+          createFunction={createExpenseType} 
+          refreshFunction={refreshAdminPage} 
+          deleteFunction={deleteExpenseType} 
+          editFunction={editExpenseType}/>
 				</div>
 		  </div>
     </div>

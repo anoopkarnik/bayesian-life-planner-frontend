@@ -142,6 +142,100 @@ export const getTotalBadHabits = async(backend_url,bearerToken) =>{
   }  
   return {badHabits:names,badHabitOptions:options}
 }
+
+export const getTotalAccounts= async(backend_url,bearerToken) =>{
+  const res = await fetch(backend_url+'/api/commons/accounts',{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+  if(res.status===200 | res.status===201){
+    const data = await res.json()
+    var names = new Array();
+    var options = new Array();
+    for(var j =0;j<data.length;j++){
+      names.push(data[j]['name'])
+      options.push(data[j])
+  }
+  }
+  else{
+    var names = new Array();
+    var options = new Array();
+  }  
+  return {accounts:names,accountOptions:options}
+}
+
+export const getTotalCategories= async(backend_url,bearerToken) =>{
+  const res = await fetch(backend_url+'/api/commons/categories',{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+  if(res.status===200 | res.status===201){
+    const data = await res.json()
+    var names = new Array();
+    var options = new Array();
+    for(var j =0;j<data.length;j++){
+      names.push(data[j]['name'])
+      options.push(data[j])
+  }
+  }
+  else{
+    var names = new Array();
+    var options = new Array();
+  }  
+  return {categories:names,categoryOptions:options}
+}
+
+export const getTotalSubCategories= async(backend_url,bearerToken) =>{
+  const res = await fetch(backend_url+'/api/commons/subCategories',{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+  if(res.status===200 | res.status===201){
+    const data = await res.json()
+    var names = new Array();
+    var options = new Array();
+    for(var j =0;j<data.length;j++){
+      names.push(data[j]['name'])
+      options.push(data[j])
+  }
+  }
+  else{
+    var names = new Array();
+    var options = new Array();
+  }  
+  return {subCategories:names,subCategoryOptions:options}
+}
+
+export const getTotalExpenses= async(backend_url,bearerToken) =>{
+  const res = await fetch(backend_url+'/api/commons/expenses',{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+  if(res.status===200 | res.status===201){
+    const data = await res.json()
+    var names = new Array();
+    var options = new Array();
+    for(var j =0;j<data.length;j++){
+      names.push(data[j]['name'])
+      options.push(data[j])
+  }
+  }
+  else{
+    var names = new Array();
+    var options = new Array();
+  }  
+  return {expenses:names,expenseOptions:options}
+}
+
+
 export const createTaskType = async(backend_url,bearerToken,name) =>{
     const res = await fetch(backend_url+'/api/commons/task', {
       method: 'POST',
@@ -226,6 +320,54 @@ export const createBadHabitType = async(backend_url,bearerToken,name) =>{
   const data = await res.json()
   return data
 }
+export const createAccountType = async(backend_url,bearerToken,name) =>{
+  const res = await fetch(backend_url+'/api/commons/accounts', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization':bearerToken
+    },
+    body: JSON.stringify({name}),
+  })
+  const data = await res.json()
+  return data
+}
+export const createCategoryType = async(backend_url,bearerToken,name) =>{
+  const res = await fetch(backend_url+'/api/commons/categories', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization':bearerToken
+    },
+    body: JSON.stringify({name}),
+  })
+  const data = await res.json()
+  return data
+}
+export const createSubCategoryType = async(backend_url,bearerToken,name) =>{
+  const res = await fetch(backend_url+'/api/commons/subCategories', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization':bearerToken
+    },
+    body: JSON.stringify({name}),
+  })
+  const data = await res.json()
+  return data
+}
+export const createExpenseType = async(backend_url,bearerToken,name) =>{
+  const res = await fetch(backend_url+'/api/commons/expenses', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization':bearerToken
+    },
+    body: JSON.stringify({name}),
+  })
+  const data = await res.json()
+  return data
+}
 
 export const deleteTaskType= async(backend_url,bearerToken,id) =>{
     await axios.delete(backend_url+'/api/commons/task?id='+id,{
@@ -259,6 +401,30 @@ export const deleteGoalType= async(backend_url,bearerToken,id) =>{
 }
 export const deleteBadHabitType= async(backend_url,bearerToken,id) =>{
   await axios.delete(backend_url+'/api/commons/badHabit?id='+id,{
+    headers:{Authorization:bearerToken}
+  })
+}
+
+export const deleteAccountType= async(backend_url,bearerToken,id) =>{
+  await axios.delete(backend_url+'/api/commons/accounts?id='+id,{
+    headers:{Authorization:bearerToken}
+  })
+}
+
+export const deleteCategoryType= async(backend_url,bearerToken,id) =>{
+  await axios.delete(backend_url+'/api/commons/categories?id='+id,{
+    headers:{Authorization:bearerToken}
+  })
+}
+
+export const deleteSubCategoryType= async(backend_url,bearerToken,id) =>{
+  await axios.delete(backend_url+'/api/commons/subCategories?id='+id,{
+    headers:{Authorization:bearerToken}
+  })
+}
+
+export const deleteExpenseType= async(backend_url,bearerToken,id) =>{
+  await axios.delete(backend_url+'/api/commons/expenses?id='+id,{
     headers:{Authorization:bearerToken}
   })
 }
@@ -313,6 +479,38 @@ export const editGoalType = async(backend_url,bearerToken,id,name) =>{
 }
 export const editBadHabitType = async(backend_url,bearerToken,id,name) =>{
   await fetch(backend_url+'/api/commons/badHabit?id='+id+'&name='+name, {
+    method: 'PATCH',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+}
+export const editAccountType = async(backend_url,bearerToken,id,name) =>{
+  await fetch(backend_url+'/api/commons/accounts?id='+id+'&name='+name, {
+    method: 'PATCH',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+}
+export const editCategoryType = async(backend_url,bearerToken,id,name) =>{
+  await fetch(backend_url+'/api/commons/categories?id='+id+'&name='+name, {
+    method: 'PATCH',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+}
+export const editSubCategoryType = async(backend_url,bearerToken,id,name) =>{
+  await fetch(backend_url+'/api/commons/subCategories?id='+id+'&name='+name, {
+    method: 'PATCH',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+}
+export const editExpenseType = async(backend_url,bearerToken,id,name) =>{
+  await fetch(backend_url+'/api/commons/expenses?id='+id+'&name='+name, {
     method: 'PATCH',
     headers:{
       'Authorization':bearerToken

@@ -97,7 +97,7 @@ const HabitDescription = (props) => {
     const onUpdateScheduleType = async() =>{
       // await props.refreshFunction(config,'Bearer '+ user.accessToken)
       await modifyHabitSchedule(config, 'Bearer '+user.accessToken,
-      props.record.id,scheduleType,every,daysOfWeek);
+      props.record.id,props.record.scheduleType,scheduleType,every,daysOfWeek);
       setIsScheduleEditing(false);
   };
 

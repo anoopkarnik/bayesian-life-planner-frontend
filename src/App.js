@@ -20,11 +20,15 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Switch } from '@mui/material';
 import ProfilePage from './components/pages/ProfilePage';
+import AccountPage from './components/pages/AccountPage';
+import TransactionPage from './components/pages/TransactionPage';
+import FundsPage from './components/pages/FundsPage';
+import BudgetsPage from './components/pages/BudgetsPage';
 
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
-	const [config,setConfig] = useState('http://localhost:8083')
+	const [config,setConfig] = useState('http://localhost:8083');
   const [showActive,setShowActive] = useState(true);
 
 	const setUserInfo = (data) =>{
@@ -50,6 +54,10 @@ function App() {
               <Route path="/stats" element={<StatsPage/>}/>
               <Route path="/skills" element={<SkillPage/>}/>
               <Route path="/goals" element={<GoalPage/>}/>
+              <Route path="/transactions" element={<TransactionPage/>}/>
+              <Route path="/accounts" element={<AccountPage/>}/>
+              <Route path="/budget" element={<BudgetsPage/>}/>
+              <Route path="/funds" element={<FundsPage/>}/>
               <Route path="/signup" element={<SignupPage/>}/>
               <Route path="/admin" element={<AdminPage/>}/>
             </Routes>
