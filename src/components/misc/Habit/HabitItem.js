@@ -11,6 +11,7 @@ import { completeHabit, deleteHabit} from '../../api/HabitAPI';
 import HabitDescription from './HabitDescription';
 import ChildHabitItem from '../Habit/ChildHabitItem';
 import AddChildHabitForm from '../Habit/AddChildHabitForm';
+import Popup from 'reactjs-popup';
 
 const HabitItem = (props) => {
 
@@ -21,9 +22,9 @@ const HabitItem = (props) => {
 	const [showAddHabit,setShowAddHabit] = useState(false);
 	const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
-	const urgent ={backgroundColor:"#F2A10F"}
-	const medium ={backgroundColor:"#FFFF99"}
-	const low ={backgroundColor:"#FFF"}
+	const urgent ={backgroundColor:"#F2A10F",border:"None"}
+	const medium ={backgroundColor:"#FFFF99",border:"None"}
+	const low ={backgroundColor:"#FFF",border:"None"}
 	var dueDateTime = new Date(props.record.dueDate)
 	var dueDateTime2 = new Date(dueDateTime.getFullYear(),dueDateTime.getMonth(),dueDateTime.getDate()).getTime()
 	var currentTime = new Date()
@@ -39,7 +40,17 @@ const HabitItem = (props) => {
 	}
 
 	const onComplete = async() => {
-		await completeHabit(config,'Bearer '+user.accessToken,props.record.id)
+		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Complete')
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive)
+	}
+
+	const onAtomicComplete = async() => {
+		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Atomic')
+		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive)
+	}
+
+	const onConditionalComplete = async() => {
+		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Condition')
 		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive)
 	}
 
@@ -73,15 +84,24 @@ const HabitItem = (props) => {
   return (
 	<div>
     <li style={daysLeft<1?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
-		<div>{props.record.habitResponses.length>0?<>
+		<div>
+			{/* {props.record.habitResponses.length>0?<>
 				{showChildHabits?
 					<AiOutlineMinusCircle size='1em' onClick={onShow}/>:
 					<AiOutlinePlusCircle size='1em' onClick={onShow}/>
-				}</>:<>&emsp;</>}
+				}</>:<>&emsp;</>} */}
 				{props.record.name}
 		</div>
 			{props.record.streak}
-			<ImPlus size='0.9em' onClick={onComplete}/>
+			<Popup trigger={<button style={daysLeft<1?urgent:daysLeft<7?medium:low}><ImPlus size='0.8em'/></button>}>
+				<div className='p-3 mb-2 bg-light'>
+					<div className='badge-primary badge-pill mr-3'> Select completion Type</div>
+					<div onClick={onComplete} className='btn btn-secondary'>Complete</div>&ensp;
+					<div onClick={onAtomicComplete} className='btn btn-secondary'>Atomic</div>&ensp;
+					<div onClick={onConditionalComplete} className='btn btn-secondary'>Conditional</div>
+				</div>
+			</Popup>
+
 			{props.record.totalTimes}
 		<div>
 			<span className='badge-primary badge-pill mr-3'>
@@ -91,9 +111,9 @@ const HabitItem = (props) => {
 			<TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>
 			<FiExternalLink size='1em' onClick={onShowDescription}/>
 			&nbsp;&nbsp;
-			<div onClick={()=>{setShowAddHabit(!showAddHabit)}} 
+			{/* <div onClick={()=>{setShowAddHabit(!showAddHabit)}} 
 				className='btn btn-sm'>
-				<AiOutlinePlusCircle size='1.5em'/></div>
+				<AiOutlinePlusCircle size='1.5em'/></div> */}
 			{
 				showDescription?<HabitDescription refreshFunction={props.refreshFunction}
 				open={showDescription} hide={onHideDescription} 
@@ -101,7 +121,7 @@ const HabitItem = (props) => {
 			}
 		</div>
     </li>
-	{showChildHabits?
+	{/* {showChildHabits?
 			<ul >
 				{props.record.habitResponses.map((record)=>(
 					<li>
@@ -118,7 +138,7 @@ const HabitItem = (props) => {
      			name={props.record.name} type={props.record.habitTypeName} 
 				open={onshowAddHabit} hide={onHideAddHabit}
        		/>:
-		null}
+		null} */}
 	</div>
   )
 }

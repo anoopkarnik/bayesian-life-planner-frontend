@@ -81,8 +81,8 @@ export const createChildHabit= async(backend_url,bearerToken,name,startDate,
       }  
  }
 
-export const completeHabit = async(backend_url,bearerToken,id)=>{
-    await fetch(backend_url+'/api/habit?id='+id, {
+export const completeHabit = async(backend_url,bearerToken,id,completionType)=>{
+    await fetch(backend_url+'/api/habit?id='+id+'&completion='+completionType, {
         method: 'PATCH',
         headers:{
           'Authorization':bearerToken
