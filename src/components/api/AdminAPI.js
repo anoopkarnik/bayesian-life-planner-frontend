@@ -493,6 +493,7 @@ export const editAccountType = async(backend_url,bearerToken,id,name) =>{
     }
   })
 }
+
 export const editCategoryType = async(backend_url,bearerToken,id,name) =>{
   await fetch(backend_url+'/api/commons/categories?id='+id+'&name='+name, {
     method: 'PATCH',

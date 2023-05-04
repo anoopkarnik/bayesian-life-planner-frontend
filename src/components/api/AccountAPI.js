@@ -66,7 +66,8 @@ export const updateBalance = async(id,backend_url,bearerToken,balance) =>{
 
 export const modifyAccountParams= async(backend_url,bearerToken,id,
   createdAt,updatedAt,name,startDate,accountTypeName,description,
-  balance,liquidity,freeLiquidity,active,hidden,completed,userId)=>{
+  balance,liquidity,freeLiquidity,active,hidden,completed,userId,
+  nomineeName,maturityDate,stockCode,schemeCode)=>{
   await fetch(backend_url+'/api/accounts/modifyParams', {
       method: 'PATCH',
       headers:{
@@ -75,6 +76,18 @@ export const modifyAccountParams= async(backend_url,bearerToken,id,
       },
       body: JSON.stringify({id,
         createdAt,updatedAt,name,startDate,accountTypeName,description,
-        balance,liquidity,freeLiquidity,active,hidden,completed,userId}),
+        balance,liquidity,freeLiquidity,active,hidden,completed,userId,
+        nomineeName,maturityDate,stockCode,schemeCode}),
     })
+}
+
+export const modifyAccountTypeParams= async(backend_url,bearerToken,id,description) =>{
+  await fetch(backend_url+'/api/commons/accounts/modifyParams', {
+    method: 'PATCH',
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization':bearerToken
+    },
+    body: JSON.stringify({id,description}),
+  })
 }

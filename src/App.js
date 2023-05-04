@@ -28,7 +28,7 @@ import BudgetsPage from './components/pages/BudgetsPage';
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
-	const [config,setConfig] = useState('http://localhost:8083');
+	const [config,setConfig] = useState('https://bayesian-life-planner-backend.anoopkarnik.net');
   const [showActive,setShowActive] = useState(true);
 
 	const setUserInfo = (data) =>{

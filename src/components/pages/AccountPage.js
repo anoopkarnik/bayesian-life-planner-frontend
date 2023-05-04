@@ -32,7 +32,7 @@ const AccountPage = (props) => {
     const refreshAccountPage = async(backend_url,bearerToken) =>{
       const {accounts,accountOptions} = await getTotalAccounts(backend_url,bearerToken);
       const accountBalances = await getTotalAccountBalances(backend_url,bearerToken)
-      setAccounts(accounts);
+      setAccounts(accountOptions);
       setAccountOptions(accountBalances);
     }
 
@@ -47,9 +47,9 @@ const AccountPage = (props) => {
         <div>
           {chunkArray(accounts, 3).map(accounts =>
             <div className="row mt-3">
-              {accounts.map(account =>
+              {accounts.map(record =>
                 <div className="col-sm">
-                  <AccountList account={account} refreshFunction={refreshAccountPage}/>
+                  <AccountList record={record} refreshFunction={refreshAccountPage}/>
                 </div>
               )}  
             </div>    

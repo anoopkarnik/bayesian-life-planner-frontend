@@ -41,6 +41,10 @@ const AccountDescription = (props) => {
     const [freeLiquidity,setFreeLiquidity] = useState(props.record.freeLiquidity);
     const [balance,setBalance] = useState(props.record.balance)
     const [accountTypeName,setAccountTypeName] = useState(props.record.accountTypeName);
+    const [nomineeName, setNomineeName] = useState(props.record.nomineeName);
+    const [maturityDate, setMaturityDate] = useState(props.record.maturityDate);
+    const [stockCode, setStockCode] = useState(props.record.stockCode);
+    const [schemeCode, setSchemeCode] = useState(props.record.schemeCode);
     const options = [
       {value:'true' ,label:'True'},
       {value:'false',label:'False'},
@@ -52,7 +56,8 @@ const AccountDescription = (props) => {
         await modifyAccountParams(config, 'Bearer '+user.accessToken,props.record.id,
         props.record.createdAt,props.record.updatedAt,name,startDate,
         accountTypeName,description,balance,liquidity,freeLiquidity,
-        active,hidden,completed,user.id);
+        active,hidden,completed,user.id,nomineeName,maturityDate,stockCode,
+        schemeCode);
         setIsEditing(false);
     };
 
@@ -128,6 +133,20 @@ const AccountDescription = (props) => {
           ))}
           </select>
         :String(completed)} <br/>
+        <b>Nominee Name</b> - {isEditing?
+          <input value={nomineeName} onChange={(event)=>setNomineeName(event.target.value)}>
+          </input>:<>{nomineeName}</>} <br/>
+        <b>Maturity Date</b> - {isEditing?
+          <DatePicker selected={new Date(maturityDate)}  
+          className='form-control'
+          onChange={(date)=>setMaturityDate(date)}/>:
+          formatDate(new Date(startDate))} <br/>
+        <b>Stock Code</b> - {isEditing?
+          <input value={stockCode} onChange={(event)=>setStockCode(event.target.value)}>
+          </input>:<>{stockCode}</>} <br/>
+        <b>Scheme Code</b> - {isEditing?
+          <input value={schemeCode} onChange={(event)=>setSchemeCode(event.target.value)}>
+          </input>:<>{schemeCode}</>} <br/>
         <b>Description</b>
         {isEditing?
 				<textarea rows="15" cols="30" required='required' Name='text' id='description' placeholder='Please add the description' value={description} 

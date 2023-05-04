@@ -39,13 +39,6 @@ const AddChildBadHabitForm = (props) => {
 					id='name' placeholder='Name' value={name} 
 					onChange={(event) => setName(event.target.value)}></input>
 				</div>
-				<div className='col-sm'> 
-					<label for='startDate'></label>
-						<DatePicker selected={startDate}  className='form-control'
-						onChange={onStartDateChange}/>
-                	</div>
-			</div>
-			<div className='row'>
 				<div className='col-sm' onChange={(event) => setActive(event.target.value)}>
         			Active <br/>
 					<label>
