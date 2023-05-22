@@ -7,6 +7,7 @@ import {GiSkills,GiStairsGoal} from "react-icons/gi"
 import { NavLink} from 'react-router-dom';
 import { useState } from 'react';
 import {BiCalendarMinus,BiLibrary} from "react-icons/bi";
+import { BsGearWideConnected } from 'react-icons/bs';
 
 
 const Sidebar = ({children}) => {
@@ -67,6 +68,16 @@ const Sidebar = ({children}) => {
       path:"/funds",
       name:"Funds",
       icon:<BsBookshelf/>
+    },
+    {
+      path:"/criteria",
+      name:"Criteria",
+      icon:<BsHddRack/>
+    },
+    {
+      path:"/ruleEngine",
+      name:"Rule Engine",
+      icon:<BsGearWideConnected/>
     },
     {
       path:"/admin",

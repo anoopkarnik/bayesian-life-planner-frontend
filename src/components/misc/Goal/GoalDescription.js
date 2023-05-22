@@ -5,12 +5,13 @@ import "react-sliding-pane/dist/react-sliding-pane.css";
 import { modifyGoalParams } from "../../api/GoalAPI";
 import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
-import RuleList from "./RuleList";
-import { getAllCompletedRules,getAllWorkRules } from '../../api/RuleAPI';
+import { getRule } from "../../api/GoalAPI";
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
 import { ActiveContext } from '../../../context/ActiveContext';
-
+import RuleItem from "./RuleItem";
+import AddCompletedRuleForm from "./AddCompletedRuleForm";
+import AddWorkRuleForm from "./AddWorkRuleForm";
 const GoalDescription = (props) => {
   
 
@@ -34,9 +35,10 @@ const GoalDescription = (props) => {
     const {user, setUser} = useContext(UserContext);
 	  const {config} = useContext(ConfigContext);
     const [showRules,setShowRules] = useState(false);
-    const [showAddRule,setShowAddRule] = useState(false);
-    const [completedRecords, setCompletedRecords] = useState([]);
-    const [workRecords, setWorkRecords] = useState([]);
+    const [showAddCompletedRule,setShowAddCompletedRule] = useState(false);
+    const [showAddWorkRule,setShowAddWorkRule] = useState(false);
+    const [completedRecord, setCompletedRecord] = useState({});
+    const [workRecord, setWorkRecord] = useState({});
     const [name,setName] = useState(props.record.name);
     const [startDate,setStartDate] = useState(props.record.startDate);
     const [active, setActive] =useState(props.record.active);
@@ -67,12 +69,12 @@ const GoalDescription = (props) => {
     };
 
     const refreshRules = async(backend_url,bearerToken,id) => {
-      const completedRecord = await getAllCompletedRules(config,'Bearer '+user.accessToken,
-      props.record.id);
-      const workRecord = await getAllWorkRules(config,'Bearer '+user.accessToken,
-      props.record.id);
-      setCompletedRecords(completedRecord);
-      setWorkRecords(workRecord);
+      const completedRecordTemp = await getRule(config,'Bearer '+user.accessToken,
+      props.record.id,"Completed");
+      const workRecordTemp = await getRule(config,'Bearer '+user.accessToken,
+      props.record.id,"Work");
+      setCompletedRecord(completedRecordTemp);
+      setWorkRecord(workRecordTemp);
     }
 
     useEffect(() => {
@@ -93,6 +95,27 @@ const GoalDescription = (props) => {
         onRequestClose={props.hide}
         width="500px"
       >
+      <h3 onClick={()=>{setShowAddCompletedRule(!showAddCompletedRule)}} 
+        className='mt-3 text-center'>
+        <div className='btn btn-secondary btn-lg'>Add Completion Rule</div></h3>
+          {showAddCompletedRule?<AddCompletedRuleForm 
+            refreshFunction={refreshRules} id={props.record.id}
+          />:null}
+      <h3 onClick={()=>{setShowAddWorkRule(!showAddWorkRule)}} 
+        className='mt-3 text-center'>
+        <div className='btn btn-secondary btn-lg'>Add Work Rule</div></h3>
+          {showAddWorkRule?<AddWorkRuleForm 
+            refreshFunction={refreshRules} id={props.record.id}
+          />:null}
+        <b>Completed Rule</b>
+        {completedRecord===""?null:
+          <RuleItem name={completedRecord.name} id={props.record.id} type="Completed"
+            refreshFunction={refreshRules}/>}
+        <br/>
+        <b>Work Rule </b>
+          {workRecord===""?null:
+          <RuleItem name={workRecord.name} id={props.record.id} type="Work"
+            refreshFunction={refreshRules}/>}
         <h4>Goal Success</h4>
         <b>1. Best Case Scenario </b><br/>
         Current Level = Working Level = Expected Level <br/>
@@ -159,8 +182,7 @@ const GoalDescription = (props) => {
                 <>{description}</>
 			    }
           <br/>
-        <RuleList record={props.record} completedRecords={completedRecords} 
-        workRecords={workRecords} type={props.type}/>
+      
       </SlidingPane>
     </div>
   );

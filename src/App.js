@@ -24,11 +24,13 @@ import AccountPage from './components/pages/AccountPage';
 import TransactionPage from './components/pages/TransactionPage';
 import FundsPage from './components/pages/FundsPage';
 import BudgetsPage from './components/pages/BudgetsPage';
+import RuleEnginePage from './components/pages/RuleEnginePage';
+import CriteriaPage from './components/pages/CriteriaPage';
 
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
-	const [config,setConfig] = useState('https://bayesian-life-planner-backend.anoopkarnik.net');
+	const [config,setConfig] = useState('http://localhost:8083');
   const [showActive,setShowActive] = useState(true);
 
 	const setUserInfo = (data) =>{
@@ -60,6 +62,8 @@ function App() {
               <Route path="/funds" element={<FundsPage/>}/>
               <Route path="/signup" element={<SignupPage/>}/>
               <Route path="/admin" element={<AdminPage/>}/>
+              <Route path="/criteria" element={<CriteriaPage/>}/>
+              <Route path="/ruleEngine" element={<RuleEnginePage/>}/>
             </Routes>
           </Layout>
         </UserContext.Provider>
