@@ -3,7 +3,7 @@ import {useNavigate } from 'react-router-dom';
 import { ConfigContext } from '../../context/ConfigContext';
 import { useAuth } from '../../context/UserContext';
 import { signin } from '../api/AuthenticationAPI';
-
+import { credentials } from '../../variables';
 const SigninPage = (props) => {
 
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ const SigninPage = (props) => {
 	const [isError, setIsError] = useState(false);
 	const {config} = useContext(ConfigContext);
 
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('password');
+    const [name, setName] = useState(credentials.username);
+    const [password, setPassword] = useState(credentials.password);
 	const {setUser} = useAuth();
 
     const onSubmit = async()=>{

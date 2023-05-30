@@ -37,8 +37,8 @@ const GoalDescription = (props) => {
     const [showRules,setShowRules] = useState(false);
     const [showAddCompletedRule,setShowAddCompletedRule] = useState(false);
     const [showAddWorkRule,setShowAddWorkRule] = useState(false);
-    const [completedRecord, setCompletedRecord] = useState({});
-    const [workRecord, setWorkRecord] = useState({});
+    const [completedRecord, setCompletedRecord] = useState('');
+    const [workRecord, setWorkRecord] = useState('');
     const [name,setName] = useState(props.record.name);
     const [startDate,setStartDate] = useState(props.record.startDate);
     const [active, setActive] =useState(props.record.active);
@@ -75,6 +75,8 @@ const GoalDescription = (props) => {
       props.record.id,"Work");
       setCompletedRecord(completedRecordTemp);
       setWorkRecord(workRecordTemp);
+      setShowAddCompletedRule(false);
+      setShowAddWorkRule(false);
     }
 
     useEffect(() => {
@@ -108,14 +110,15 @@ const GoalDescription = (props) => {
             refreshFunction={refreshRules} id={props.record.id}
           />:null}
         <b>Completed Rule</b>
-        {completedRecord===""?null:
+        {completedRecord.name?
           <RuleItem name={completedRecord.name} id={props.record.id} type="Completed"
-            refreshFunction={refreshRules}/>}
+            refreshFunction={refreshRules}/>:null}
         <br/>
         <b>Work Rule </b>
-          {workRecord===""?null:
+          {workRecord.name?
           <RuleItem name={workRecord.name} id={props.record.id} type="Work"
-            refreshFunction={refreshRules}/>}
+            refreshFunction={refreshRules}/>:null}
+        <br/>
         <h4>Goal Success</h4>
         <b>1. Best Case Scenario </b><br/>
         Current Level = Working Level = Expected Level <br/>

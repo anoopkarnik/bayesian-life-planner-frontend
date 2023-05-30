@@ -5,7 +5,8 @@ import { ConfigContext } from '../../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
 import Select from 'react-select'
 import { getAllTypes,getAllNames } from '../../../api/RuleEngineAPI';
-
+import { budgetOptions,accountOptions,fundOptions,skillOptions,
+statOptions,taskOptions,habitOptions,badHabitOptions } from '../../../../variables';
 
 
 const AddCriteriaForm = (props) => {
@@ -23,6 +24,8 @@ const AddCriteriaForm = (props) => {
 	const [conditionOptions, setConditionOptions] = useState([])
 	const [categoryOptions, setCategoryOptions] = useState([])
 	const [categoryNameOptions, setCategoryNameOptions] = useState([])
+	const [showCategory,setShowCategory] = useState(false);
+	const [showCategoryName, setShowCategoryName] = useState(false)
 
 	useEffect(() => {
 		refreshCriteriaForm(config, 'Bearer ' + user.accessToken, props.name)
@@ -37,69 +40,36 @@ const AddCriteriaForm = (props) => {
 	const updateConditions = async () => {
 		if (criteriaType === 'TASK') {
 			setConditionOptions(taskOptions);
+			setShowCategoryName(true)
 		}
 		else if (criteriaType === 'ACCOUNT') {
 			setConditionOptions(accountOptions);
 		}
 		else if (criteriaType === 'BAD_HABIT') {
 			setConditionOptions(badHabitOptions);
+			setShowCategoryName(true)
 		}
 		else if (criteriaType === 'BUDGET') {
 			setConditionOptions(budgetOptions);
+			setShowCategoryName(true)
 		}
 		else if (criteriaType === 'FUND') {
 			setConditionOptions(fundOptions)
 		}
 		else if (criteriaType === 'HABIT') {
 			setConditionOptions(habitOptions)
+			setShowCategoryName(true)
 		}
 		else if (criteriaType === 'SKILL') {
 			setConditionOptions(skillOptions)
+			setShowCategoryName(true)
 		}
 		else if (criteriaType === 'STAT') {
 			setConditionOptions(statOptions)
+			setShowCategoryName(true)
 		}
+		setShowCategory(true);
 	}
-	const taskOptions = [
-		{ value: 'TASK_COMPLETED', label: 'Completed' }
-	]
-	const habitOptions = [
-		{ value: 'HABIT_TOTAL_TIMES', label: 'Total Times' },
-		{ value: 'HABIT_STREAK', label: 'Streak' },
-		{ value: 'HABIT_TOTAL_TIME_SPENT', label: 'Total Time Spent' },
-		{ value: 'HABIT_TOTAL_TIME_WEEKLY', label: 'Total Times Weekly' },
-		{ value: 'HABIT_TOTAL_TIME_MONTHLY', label: 'Total Times Monthly' }
-	]
-	const badHabitOptions = [
-		{ value: 'BAD_HABIT_WEEKLY', label: 'Weekly times repeated' },
-		{ value: 'BAD_HABIT_MONTHLY', label: 'Monthly times repeated' },
-		{ value: 'BAD_HABIT_YEARLY', label: 'Yearly times repeated' },
-		{ value: 'BAD_HABIT_LAST_TIME', label: 'Last time completed' }
-	]
-
-	const statOptions = [
-		{ value: 'STAT_HIGHER_PREFERRED', label: 'Higher is acceptable' },
-		{ value: 'STAT_LOWER_PREFERRED', label: 'Lower is accepatable' }
-	]
-
-	const skillOptions = [
-		{ value: 'SKILL_COMPLETED', label: 'Skill is Completed' },
-		{ value: 'SKILL_TOTAL_TIME_SPENT', label: 'Total time spent for skill' }
-	]
-
-	const fundOptions = [
-		{ value: 'FUND_REACHED', label: 'Fund Reached' }
-	]
-
-	const accountOptions = [
-		{ value: 'ACCOUNT_REACHED', label: 'Account Reached' }
-	]
-
-	const budgetOptions = [
-		{ value: 'DELIGHT_BUDGET_MAINTAINED', label: 'Delight Budget is Maintained' },
-		{ value: 'LIVING_BUDGET_MAINTAINED', label: 'Living Budget is Maintained' },
-		{ value: 'GROWTH_BUDGET_MAINTAINED', label: 'Growth Budget is Maintained' },
-	]
 
 	const onSubmit = async () => {
 		await createCriteria(config, 'Bearer ' + user.accessToken, name, criteriaType,
@@ -135,15 +105,18 @@ const AddCriteriaForm = (props) => {
 							onChange={(event) => setCondition(event.value)} />
 					</div>
 				</div>
+
 				<div className='row'>
+					{showCategory?
 					<div className='col-sm'>
 						<Select className='form-control' options={categoryOptions}
 							onChange={onCategoryChange} />
-					</div>
+					</div>:null}
+					{showCategoryName?
 					<div className='col-sm'>
 						<Select className='form-control' options={categoryNameOptions}
 							onChange={(event) => setCategoryName(event.value)} />
-					</div>
+					</div>:null}
 				</div>
 				<div className='row'>
 					<div className='col-sm'>

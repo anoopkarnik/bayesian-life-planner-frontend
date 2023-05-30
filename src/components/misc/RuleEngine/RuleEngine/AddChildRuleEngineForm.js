@@ -5,7 +5,7 @@ import { ConfigContext } from '../../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
 import Select from 'react-select'
 import { getAllCriteria,getAllCriteriaSet,getAllRule } from '../../../api/RuleEngineAPI';
-
+import { criteriaOptions } from '../../../../variables';
 
 const AddChildRuleEngineForm = (props) => {
 
@@ -17,18 +17,6 @@ const AddChildRuleEngineForm = (props) => {
 	const [children,setChildren] = useState(props.children)
 	const [criteria,setCriteria] = useState('')
 
-	const criteriaOptions = [
-		{value:'TASK', label: 'Task'},
-		{value:'HABIT', label:'Habit'},
-		{value:'BAD_HABIT',label:'Bad Habit'},
-		{value:'SKILL',label:'Skill'},
-		{value:'STAT',label:'Stat'},
-		{value:'ACCOUNT',label:'Account'},
-		{value:'FUND',label:'Fund'},
-		{value:'BUDGET_PLAN',label:'Budget Plan'},
-		{value:'TRANSACTION',label:'Transaction'},
-		{value:'MONTHLY_BUDGET',label:'Monthly Budget'}
-	  ]
 
 	useEffect(()=>{
 		updateChildren();

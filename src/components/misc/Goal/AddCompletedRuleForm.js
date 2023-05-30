@@ -6,6 +6,7 @@ import Select from 'react-select';
 import { getAllCriteria,getAllCriteriaSet,getAllRule,
 getAllRuleSet } from '../../api/RuleEngineAPI';
 import { addCompletedRule } from '../../api/GoalAPI';
+import { ruleEngineOptions,criteriaOptions } from '../../../variables';
 
 
 const AddCompletedRuleForm = (props) => {
@@ -16,24 +17,6 @@ const AddCompletedRuleForm = (props) => {
 	const [criteriaType,setCriteriaType] = useState('')
 	const [ruleEngineReference,setRuleEngineReference] = useState('')
 	const [ruleEngineReferenceOptions,setRuleEngineReferenceOptions] = useState([])
-	const ruleEngineOptions = [
-		{label:'Criteria',value:'Criteria'},
-		{label:'Criteria Set',value:'Criteria Set'},
-		{label:'Rule', value:'Rule'},
-		{label:'Rule Set', value: 'Rule Set'}
-	]
-	const criteriaOptions = [
-		{value:'TASK', label: 'Task'},
-		{value:'HABIT', label:'Habit'},
-		{value:'BAD_HABIT',label:'Bad Habit'},
-		{value:'SKILL',label:'Skill'},
-		{value:'STAT',label:'Stat'},
-		{value:'ACCOUNT',label:'Account'},
-		{value:'FUND',label:'Fund'},
-		{value:'BUDGET_PLAN',label:'Budget Plan'},
-		{value:'TRANSACTION',label:'Transaction'},
-		{value:'MONTHLY_BUDGET',label:'Monthly Budget'}
-	  ]
 
 	const onSubmit = async() =>{
 		await addCompletedRule(config,'Bearer '+user.accessToken,
@@ -77,14 +60,23 @@ const AddCompletedRuleForm = (props) => {
 			  }
 			  setRuleEngineReferenceOptions(ruleEngineReferenceOptions);
 		}
-		props.refreshFunction(config, 'Bearer ' + user.accessToken)
+		// props.refreshFunction(config, 'Bearer ' + user.accessToken)
 		
 	}
 	
 	const updateCriteriaType = async(event) =>{
+		var ruleEngineReferenceOptions = new Array();
 		setCriteriaType(event.value)
-		const ruleEngineReferenceOptions = getAllCriteria(config, 'Bearer ' + user.accessToken,event)
+		const ruleEngineReferenceList= await getAllCriteria(config, 'Bearer ' + user.accessToken,event.value)
+		for(var j =0;j<ruleEngineReferenceList.length;j++){
+			let json = {
+				'label':ruleEngineReferenceList[j]['name'],
+				'value':ruleEngineReferenceList[j]['id']
+			}
+			ruleEngineReferenceOptions.push(json)
+		  }
 		setRuleEngineReferenceOptions(ruleEngineReferenceOptions);
+		// props.refreshFunction(config, 'Bearer ' + user.accessToken)
 	}
 
 	return (
@@ -97,7 +89,7 @@ const AddCompletedRuleForm = (props) => {
 				{ruleEngineType==='Criteria'?
 				<div className='col-sm'>
 					<Select className='form-control' options={criteriaOptions}
-					onChange={(event)=>setCriteriaType(event.value)}/>
+					onChange={updateCriteriaType}/>
 				</div>:null}
 			</div>
 			<div className='row'>

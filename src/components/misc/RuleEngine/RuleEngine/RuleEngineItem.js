@@ -52,23 +52,18 @@ const RuleEngineItem = (props) => {
 	}
 
 	const onDelete = async () => {
-		try{
-			if (window.confirm('Are you sure you wish to delete this item?')) {
-				if (props.name === "Criteria Set") {
-					await deleteCriteriaSet(config, 'Bearer ' + user.accessToken, props.record.id)
-				}
-				else if (props.name === "Rule") {
-					await deleteRule(config, 'Bearer ' + user.accessToken, props.record.id)
-				}
-				else if (props.name === "Rule Set") {
-					await deleteRuleSet(config, 'Bearer ' + user.accessToken, props.record.id)
-				}
-
-				await props.refreshFunction(config, 'Bearer ' + user.accessToken, props.record.criteriaType)
+		if (window.confirm('Are you sure you wish to delete this item?')) {
+			if (props.name === "Criteria Set") {
+				await deleteCriteriaSet(config, 'Bearer ' + user.accessToken, props.record.id)
 			}
-		}
-		catch(error){
-			alert("Something is dependent on this "+props.name)
+			else if (props.name === "Rule") {
+				await deleteRule(config, 'Bearer ' + user.accessToken, props.record.id)
+			}
+			else if (props.name === "Rule Set") {
+				await deleteRuleSet(config, 'Bearer ' + user.accessToken, props.record.id)
+			}
+
+			await props.refreshFunction(config, 'Bearer ' + user.accessToken, props.record.criteriaType)
 		}
 	}
 

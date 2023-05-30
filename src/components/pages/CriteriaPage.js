@@ -5,25 +5,13 @@ import { ConfigContext } from '../../context/ConfigContext';
 import { useAsyncError } from 'react-router-dom';
 import TopBoxData from '../utils/TopBoxData';
 import CriteriaList from '../misc/RuleEngine/Criteria/CriteriaList';
+import { criteriaOptions } from '../../variables';
 
 const CriteriaPage = (props) => {
 
 	
     const {user} = useContext(UserContext);
     const {config} = useContext(ConfigContext);
-
-    const criteriaOptions = [
-      {value:'TASK', label: 'Task'},
-      {value:'HABIT', label:'Habit'},
-      {value:'BAD_HABIT',label:'Bad Habit'},
-      {value:'SKILL',label:'Skill'},
-      {value:'STAT',label:'Stat'},
-      {value:'ACCOUNT',label:'Account'},
-      {value:'FUND',label:'Fund'},
-      {value:'BUDGET_PLAN',label:'Budget Plan'},
-      {value:'TRANSACTION',label:'Transaction'},
-      {value:'MONTHLY_BUDGET',label:'Monthly Budget'}
-    ]
 
     function chunkArray(arr, size) {
       var groupedArray = [];

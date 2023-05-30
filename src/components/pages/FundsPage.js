@@ -35,10 +35,10 @@ const refreshBudgetsPage = async(backend_url,bearerToken) =>{
           <TopBoxData name="Portfolio Amount (in Rs)" value={fundSummary.totalAmount}/>
 				</div>
         <div className='col-sm'>
-          <TopBoxData name="Amount Available to invest in funds (in Rs)" value={fundSummary.amountAvailable}/>
+          <TopBoxData name="Emergency Amount Available (in Rs)" value={fundSummary.emergencyAmountAvailable}/>
 				</div>
         <div className='col-sm'>
-          <TopBoxData name="Amount Allocated in funds (in Rs)" value={fundSummary.amountAllocated}/>
+          <TopBoxData name="Amount Available for funds (in Rs)" value={fundSummary.fundsAmountAvailable}/>
 				</div>
       </div>
       <div className='row mt-3'>
