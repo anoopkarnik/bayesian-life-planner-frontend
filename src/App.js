@@ -26,11 +26,13 @@ import FundsPage from './components/pages/FundsPage';
 import BudgetsPage from './components/pages/BudgetsPage';
 import RuleEnginePage from './components/pages/RuleEnginePage';
 import CriteriaPage from './components/pages/CriteriaPage';
+import { url } from './variables';
+import TopicPage from './components/pages/TopicPage';
 
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
-	const [config,setConfig] = useState('http://localhost:8083');
+	const [config,setConfig] = useState(url);
   const [showActive,setShowActive] = useState(true);
 
 	const setUserInfo = (data) =>{
@@ -64,6 +66,7 @@ function App() {
               <Route path="/admin" element={<AdminPage/>}/>
               <Route path="/criteria" element={<CriteriaPage/>}/>
               <Route path="/ruleEngine" element={<RuleEnginePage/>}/>
+              <Route path="/topic" element={<TopicPage/>}/>
             </Routes>
           </Layout>
         </UserContext.Provider>

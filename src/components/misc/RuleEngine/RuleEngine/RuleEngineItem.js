@@ -105,7 +105,7 @@ const RuleEngineItem = (props) => {
 						<AiOutlinePlusCircle size='1.5em' /></div>
 					{
 						showDescription ? <RuleEngineDescription refreshFunction={props.refreshFunction}
-							open={showDescription} hide={onHideDescription}
+							name={props.name} open={showDescription} hide={onHideDescription}
 							record={props.record} /> : null
 					}
 				</div>
@@ -114,7 +114,8 @@ const RuleEngineItem = (props) => {
 				<ul >
 					{children.map((record) => (
 						<li>
-							<ChildRuleEngineItem record={record}
+							<ChildRuleEngineItem record={record} name={props.name}
+								id={props.record.id} criteriaType={props.record.criteriaType}
 								refreshFunction={props.refreshFunction} />
 						</li>
 					))}

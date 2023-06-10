@@ -8,6 +8,7 @@ import { NavLink} from 'react-router-dom';
 import { useState } from 'react';
 import {BiCalendarMinus,BiLibrary} from "react-icons/bi";
 import { BsGearWideConnected } from 'react-icons/bs';
+import { ImBooks } from 'react-icons/im';
 
 
 const Sidebar = ({children}) => {
@@ -78,6 +79,11 @@ const Sidebar = ({children}) => {
       path:"/ruleEngine",
       name:"Rule Engine",
       icon:<BsGearWideConnected/>
+    },
+    {
+      path:"/topic",
+      name:"Topic",
+      icon:<ImBooks/>
     },
     {
       path:"/admin",

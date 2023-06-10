@@ -135,36 +135,36 @@ export const modifyCriteriaParams= async(backend_url,bearerToken,id,
     })
 }
 export const modifyCriteriaSetParams= async(backend_url,bearerToken,id,
-  name,criteriaIds)=>{
+  name)=>{
   await fetch(backend_url+'/api/ruleEngine/criteriaSet', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,name,criteriaIds}),
+      body: JSON.stringify({id,name}),
     })
 }
 export const modifyRuleParams= async(backend_url,bearerToken,id,
-  name,criteriaSetIds)=>{
+  name)=>{
   await fetch(backend_url+'/api/ruleEngine/rule', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,name,criteriaSetIds}),
+      body: JSON.stringify({id,name}),
     })
 }
 export const modifyRuleSetParams= async(backend_url,bearerToken,id,
-  name,ruleIds)=>{
+  name)=>{
   await fetch(backend_url+'/api/ruleEngine/ruleSet', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,name,ruleIds}),
+      body: JSON.stringify({id,name}),
     })
 }
 export const getAllTypes = async(backend_url,bearerToken,type) =>{
@@ -197,3 +197,77 @@ export const getAllNames= async(backend_url,bearerToken,type,name) =>{
     }  
     return data
 }
+
+export const removeCriteriaFromCriteriaSet= async(backend_url,bearerToken,
+  criteriaSetId,criteriaId)=>{
+  await fetch(backend_url+'/api/ruleEngine/removeCriteria', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({criteriaSetId,criteriaId}),
+    })
+}
+
+export const removeCriteriaSetFromRule= async(backend_url,bearerToken,ruleId,
+  criteriaSetId)=>{
+  await fetch(backend_url+'/api/ruleEngine/removeCriteriaSet', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({ruleId,criteriaSetId}),
+    })
+}
+
+export const removeRuleFromRuleSet= async(backend_url,bearerToken,ruleSetId,
+  ruleId)=>{
+  await fetch(backend_url+'/api/ruleEngine/removeRule', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({ruleSetId,ruleId}),
+    })
+}
+
+export const addCriteriaToCriteriaSet= async(backend_url,bearerToken,
+  criteriaSetId,criteriaId)=>{
+  await fetch(backend_url+'/api/ruleEngine/addCriteria', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({criteriaSetId,criteriaId}),
+    })
+}
+
+export const addCriteriaSetToRule= async(backend_url,bearerToken,ruleId,
+  criteriaSetId)=>{
+  await fetch(backend_url+'/api/ruleEngine/addCriteriaSet', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({ruleId,criteriaSetId}),
+    })
+}
+
+export const addRuleToRuleSet= async(backend_url,bearerToken,ruleSetId,
+  ruleId)=>{
+  await fetch(backend_url+'/api/ruleEngine/addRule', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({ruleSetId,ruleId}),
+    })
+}
+
+

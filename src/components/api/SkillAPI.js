@@ -76,3 +76,41 @@ export const completeSkill = async(backend_url,bearerToken,id) =>{
       }
     })
 }
+
+export const addTopicToSkill= async(backend_url,bearerToken,skillId,topicId)=>{
+  await fetch(backend_url+'/api/skill/updateTopic', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({skillId,topicId}),
+    })
+}
+
+export const removeTopicFromSkill= async(backend_url,bearerToken,skillId,topicId)=>{
+  await fetch(backend_url+'/api/skill/deleteTopic', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({skillId,topicId}),
+    })
+}
+
+export const getTopicsFromSkill = async(backend_url,bearerToken,skillId) =>{
+  const res = await fetch(backend_url+'/api/skill/'+skillId,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  })
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data=[];
+  }  
+  return data
+}

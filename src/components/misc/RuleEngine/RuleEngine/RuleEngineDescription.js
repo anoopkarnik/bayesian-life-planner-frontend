@@ -7,6 +7,7 @@ import { UserContext } from "../../../../context/UserContext";
 import { ConfigContext } from "../../../../context/ConfigContext";
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
+import { modifyCriteriaSetParams, modifyRuleParams, modifyRuleSetParams } from "../../../api/RuleEngineAPI";
 
 const RuleEngineDescription = (props) => {
 
@@ -54,9 +55,16 @@ const RuleEngineDescription = (props) => {
     }
 
     const onUpdate= async() =>{
-        // await props.refreshFunction(config,'Bearer '+ user.accessToken)
-        // await modifyRuleEngineParams(config, 'Bearer '+user.accessToken,props.record.id,
-        // name,criteriaType,condition,category,weightage,value,categoryName);
+        if (props.name === "Criteria Set") {
+          await modifyCriteriaSetParams(config, 'Bearer ' + user.accessToken, props.record.id,name)
+        }
+        else if (props.name === "Rule") {
+          await modifyRuleParams(config, 'Bearer ' + user.accessToken, props.record.id,name)
+        }
+        else if (props.name === "Rule Set") {
+          await modifyRuleSetParams(config, 'Bearer ' + user.accessToken, props.record.id,name)
+        }
+        await props.refreshFunction(config,'Bearer '+ user.accessToken, props.record.criteriaType)
         setIsEditing(false);
     };
 

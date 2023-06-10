@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../../../context/UserContext';
-import { createCriteriaSet,createRule,createRuleSet, modifyCriteriaSetParams, modifyRuleParams, modifyRuleSetParams } from '../../../api/RuleEngineAPI';
+import { addCriteriaToCriteriaSet, createCriteriaSet,createRule,createRuleSet, modifyCriteriaSetParams, modifyRuleParams, modifyRuleSetParams } from '../../../api/RuleEngineAPI';
 import { ConfigContext } from '../../../../context/ConfigContext';
 import SlidingPane from "react-sliding-pane";
 import Select from 'react-select'
@@ -11,7 +11,7 @@ const AddChildRuleEngineForm = (props) => {
 
 	const [name, setName] = useState(props.record.name);
 	const [childrenOptions, setChildrenOptions] = useState([])
-	const [childIds, setChildIds] = useState([]);
+	const [childId, setChildId] = useState('');
 	const { user, setUser } = useContext(UserContext);
 	const { config } = useContext(ConfigContext);
 	const [children,setChildren] = useState(props.children)
@@ -20,7 +20,6 @@ const AddChildRuleEngineForm = (props) => {
 
 	useEffect(()=>{
 		updateChildren();
-		currentChildIds();
 	},[])
 
 	const updateCriteria = async(event)=>{
@@ -64,30 +63,22 @@ const AddChildRuleEngineForm = (props) => {
 		}
 	}
 
-	const currentChildIds= ()=>{
-		const childrenIds = []
-		props.children.map((child)=>{
-			childrenIds.push(child.id)
-		})
-		setChildIds(childrenIds)
-	}
-
 	const updateChildIds = async(event)=>{
-		setChildIds(childIds=>[...childIds,event.value])
+		setChildId(event.value)
 	}
 
 	const onSubmit = async () => {
 		if (props.name==="Criteria Set"){
-			await modifyCriteriaSetParams(config, 'Bearer ' + user.accessToken, 
-			props.record.id,name,childIds);
+			await addCriteriaToCriteriaSet(config, 'Bearer ' + user.accessToken, 
+			props.record.id,childId);
 		}
 		else if(props.name==="Rule"){
 			await modifyRuleParams(config, 'Bearer ' + user.accessToken, 
-			props.record.id,name,childIds);
+			props.record.id,childId);
 		}
 		else if(props.name==="Rule Set"){
 			await modifyRuleSetParams(config, 'Bearer ' + user.accessToken,
-			props.record.id,name,childIds);
+			props.record.id,childId);
 		}
 		props.refreshFunction()
 	}

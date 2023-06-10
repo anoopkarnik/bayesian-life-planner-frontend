@@ -1,7 +1,7 @@
 
 export const url =() =>{
-    var url = 'https://bayesian-life-planner-backend.anoopkarnik.net'
-    // var url = 'http://localhost:8083'
+    // var url = 'https://bayesian-life-planner-backend.anoopkarnik.net'
+    var url = 'http://localhost:8083'
     return url
 }
 
@@ -10,7 +10,11 @@ export const credentials =() =>{
     var password = 'password'
     return {username:username,password:password}
 }
-
+export const topicTypeOptions = [
+    {label:'Paragraph',value:'TOPIC_PARAGRAPH'},
+    {label:'Items',value:'TOPIC_LIST'},
+    {label:'Urls',value:'TOPIC_URL'},
+]
 export const ruleEngineOptions= [
         {label:'Criteria',value:'Criteria'},
         {label:'Criteria Set',value:'Criteria Set'},
