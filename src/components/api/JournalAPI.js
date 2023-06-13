@@ -1,5 +1,22 @@
 import axios from 'axios';
 
+export const getJournal = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/journal/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+
 export const getJournals = async(backend_url,bearerToken,journalTypeName) =>{
     const res = await fetch(backend_url+'/api/journal?journalTypeName='+journalTypeName,{
         method: 'GET',

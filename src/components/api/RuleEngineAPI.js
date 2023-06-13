@@ -1,5 +1,70 @@
 import axios from 'axios';
 
+export const getCriteria = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/criteria/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+export const getCriteriaSet = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/criteriaSet/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+export const getRule = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/rule/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+export const getRuleSet = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/ruleSet/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+
 export const getAllCriteria = async(backend_url,bearerToken,criteriaType) =>{
   const res = await fetch(backend_url+'/api/ruleEngine/criteria?type='+criteriaType,{
       method: 'GET',

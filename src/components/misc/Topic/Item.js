@@ -18,6 +18,7 @@ const Item = (props) => {
     
     const onDelete = async() =>{
       await deleteTopicItem(config,'Bearer '+user.accessToken,props.topicId,props.itemId)
+      await props.refreshFunction(config,'Bearer '+user.accessToken,props.topicId)
     }
 
 
@@ -28,8 +29,8 @@ const Item = (props) => {
           <div className="col-sm">
 
             {props.topicType=="TOPIC_URL"?
-            <a href={props.text} target="_blank">{props.index}. {props.text}</a>:
-            <div>{props.index}. {props.text} {props.topicType}</div>}
+            <a href={props.text} target="_blank">{props.index+1}. {props.text}</a>:
+            <div>{props.index+1}. {props.text} </div>}
           </div>
           <div className="col">
             <TiDelete size='1.5em' onClick={onDelete} data-toggle="tooltip" data-placement="top" title="Delete this record"></TiDelete>

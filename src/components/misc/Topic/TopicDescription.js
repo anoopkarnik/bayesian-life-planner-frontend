@@ -1,4 +1,4 @@
-import React, { Component, useState,useContext } from "react";
+import React, { Component, useState,useContext, useEffect } from "react";
 import { render } from "react-dom";
 import SlidingPane from "react-sliding-pane";
 import "react-sliding-pane/dist/react-sliding-pane.css";
@@ -7,7 +7,7 @@ import { ConfigContext } from '../../../context/ConfigContext';
 import { ActiveContext } from '../../../context/ActiveContext';
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
-import { updateTopicParagraph,addTopicItem,deleteTopicItem } from "../../api/TopicAPI";
+import { updateTopicParagraph,addTopicItem,deleteTopicItem, getTopicDescription } from "../../api/TopicAPI";
 import { TiDelete } from "react-icons/ti";
 import Item from "./Item";
 
@@ -37,9 +37,23 @@ const TopicDescription = (props) => {
     const {showActive} = useContext(ActiveContext);
     const [item,setItem] = useState('')
     const [buttonName,setButtonName] = useState('Edit Paragraph')
+    const [record,setRecord] = useState('')
+
+    useEffect(()=>{
+      getTopic(config,'Bearer '+user.accessToken,props.record.id)
+    },[])
+
+
+    const getTopic = async(config,bearerToken,id) =>{
+      const record = await getTopicDescription(config,bearerToken,id)
+      setItems(record.itemResponses)
+      setName(record.name)
+      setParagraph(record.paragraph)
+    }
 
     const addItem = async() =>{
       await addTopicItem(config,'Bearer '+user.accessToken,props.record.id,item)
+      await getTopic(config,'Bearer '+user.accessToken,props.record.id)
     }
 
     const editParagraph = async() =>{
@@ -80,7 +94,7 @@ const TopicDescription = (props) => {
           <div>
         <b> Items</b><br/>
         {items.map((item,index)=>(
-          <Item topicId={props.record.id} itemId={item.id} text={item.text} index={index} topicType={props.record.topicTypeEnum}/>
+          <Item topicId={props.record.id} itemId={item.id} text={item.text} index={index} topicType={props.record.topicTypeEnum} refreshFunction={getTopic}/>
           ))}
           <br/>
            <input value={item} onChange={(event)=>setItem(event.target.value)}>

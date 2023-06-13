@@ -1,7 +1,7 @@
 
 export const url =() =>{
-    // var url = 'https://bayesian-life-planner-backend.anoopkarnik.net'
-    var url = 'http://localhost:8083'
+    var url = 'https://bayesian-life-planner-backend.anoopkarnik.net'
+    // var url = 'http://localhost:8083'
     return url
 }
 

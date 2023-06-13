@@ -1,5 +1,22 @@
 import axios from 'axios';
 
+export const getFund = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/funds/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+
 export const getFunds = async(backend_url,bearerToken) =>{
     const res = await fetch(backend_url+'/api/funds',{
       method: 'GET',

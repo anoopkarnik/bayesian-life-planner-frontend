@@ -1,4 +1,22 @@
 import axios from 'axios';
+
+export const getAccount = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/accounts/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+
 export const getAccounts = async(backend_url,bearerToken,accountTypeName) =>{
     const res = await fetch(backend_url+'/api/accounts?accountTypeName='+accountTypeName,{
       method: 'GET',

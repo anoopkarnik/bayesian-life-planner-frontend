@@ -1,11 +1,30 @@
 import axios from 'axios';
 
-export const getHabits = async(backend_url,bearerToken,habitTypeName,active) =>{
-    const res = await fetch(backend_url+'/api/habit?habitTypeName='+habitTypeName+'&active='+active,{
-        method: 'GET',
+export const getHabit = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/habit/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+
+export const getHabits = async(backend_url,bearerToken,habitTypeName,active,currentDate) =>{
+    const res = await fetch(backend_url+'/api/habit/get',{
+        method: 'POST',
         headers:{
+          'Content-Type': 'application/json',
           'Authorization':bearerToken
-        }
+        },
+        body: JSON.stringify({habitTypeName,active,currentDate}),
       })
       if(res.status===200 | res.status===201){
         var data = await res.json()
@@ -19,7 +38,7 @@ export const getHabits = async(backend_url,bearerToken,habitTypeName,active) =>{
 export const createRootHabit= async(backend_url,bearerToken,name,startDate,
   timeOfDay,dueDate,every,scheduleType,habitTypeName,daysOfWeek,active)=>{
     if (scheduleType=="weekly"){
-      const res = await fetch(backend_url+'/api/habit/root', {
+      const res = await fetch(backend_url+'/api/habit', {
         method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -48,45 +67,15 @@ export const createRootHabit= async(backend_url,bearerToken,name,startDate,
       
     }
 
-export const createChildHabit= async(backend_url,bearerToken,name,startDate,
-    timeOfDay,dueDate,every,scheduleType,habitTypeName,daysOfWeek,
-    parentHabitName,active)=>{
-    if (scheduleType=="weekly"){
-          const res = await fetch(backend_url+'/api/habit/child', {
-            method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization':bearerToken
-              },
-              body: JSON.stringify({name,startDate,
-                timeOfDay,dueDate,every,scheduleType,habitTypeName,
-                daysOfWeek, parentHabitName, active}),
-            })
-            const data = await res.json()
-          return data
-        }
-        else{
-          const res = await fetch(backend_url+'/api/habit/child', {
-            method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization':bearerToken
-              },
-              body: JSON.stringify({name,startDate,
-                timeOfDay,dueDate,every,scheduleType,habitTypeName,
-              parentHabitName,active}),
-            })
-            const data = await res.json()
-          return data
-      }  
- }
 
-export const completeHabit = async(backend_url,bearerToken,id,completionType)=>{
-    await fetch(backend_url+'/api/habit?id='+id+'&completion='+completionType, {
+export const completeHabit = async(backend_url,bearerToken,id,completionType,
+  currentDate)=>{
+    await fetch(backend_url+'/api/habit', {
         method: 'PATCH',
         headers:{
           'Authorization':bearerToken
-        }
+        },
+        body: JSON.stringify({id,completionType,currentDate})
       })
 }
 

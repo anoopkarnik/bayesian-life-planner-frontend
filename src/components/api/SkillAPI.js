@@ -1,5 +1,22 @@
 import axios from 'axios';
 
+export const getSkill = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/skill/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+
 export const getSkills = async(backend_url,bearerToken,skillTypeName,active) =>{
     const res = await fetch(backend_url+'/api/skill?skillTypeName='+skillTypeName+'&active='+active,{
         method: 'GET',
@@ -100,7 +117,7 @@ export const removeTopicFromSkill= async(backend_url,bearerToken,skillId,topicId
 }
 
 export const getTopicsFromSkill = async(backend_url,bearerToken,skillId) =>{
-  const res = await fetch(backend_url+'/api/skill/'+skillId,{
+  const res = await fetch(backend_url+'/api/skill/'+skillId+'/topic',{
     method: 'GET',
     headers:{
       'Authorization':bearerToken

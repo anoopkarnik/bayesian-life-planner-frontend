@@ -1,5 +1,21 @@
 import axios from 'axios';
 
+export const getTopicDescription = async(backend_url,bearerToken,topicId) =>{
+  const res = await fetch(backend_url+'/api/topic/'+topicId,{
+      method: 'GET',
+      headers:{
+        'Authorization':bearerToken
+      }
+    })
+    if(res.status===200 | res.status===201){
+      var data = await res.json()
+    }
+    else{
+      var data={};
+    }  
+    return data
+}
+
 export const getTopic = async(backend_url,bearerToken,skillTypeName) =>{
     const res = await fetch(backend_url+'/api/topic?skillTypeName='+skillTypeName,{
         method: 'GET',

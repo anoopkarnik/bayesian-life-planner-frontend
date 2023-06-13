@@ -7,7 +7,7 @@ import { UserContext } from "../../../../context/UserContext";
 import { ConfigContext } from "../../../../context/ConfigContext";
 import {AiFillEdit} from 'react-icons/ai';
 import DatePicker from "react-datepicker";
-import { modifyCriteriaParams } from "../../../api/RuleEngineAPI";
+import { getCriteria, modifyCriteriaParams } from "../../../api/RuleEngineAPI";
 
 const CriteriaDescription = (props) => {
 
@@ -24,8 +24,6 @@ const CriteriaDescription = (props) => {
     const formatted = `${dayName}, ${date} ${monthName} ${year}`
     return formatted.toString()
   }
-
-
 
     const [text,setText] = useState(props.record.text);
     const [isEditing,setIsEditing] = useState(false);
@@ -52,6 +50,7 @@ const CriteriaDescription = (props) => {
         name,criteriaType,condition,category,weightage,value,categoryName);
         setIsEditing(false);
     };
+
 
   return (
     <div>

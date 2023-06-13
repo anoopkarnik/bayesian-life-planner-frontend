@@ -53,12 +53,25 @@ const SkillDescription = (props) => {
     const [addTopicText,setAddTopicText] = useState('Show Add Topic')
 
     useEffect(()=>{
-      updateSkill()
+      getSkill()
+      updateTopics()
     },[])
 
-    const updateSkill = async() =>{
+    const updateTopics = async() =>{
       const topics = await getTopicsFromSkill(config,'Bearer '+user.accessToken,props.record.id)
       setTopics(topics)
+    }
+
+    const getSkill = async(config,bearerToken,id) =>{
+      const record = await getSkill(config,bearerToken,id)
+      setName(record.name)
+      setDescription(record.description)
+      setStartDate(record.startDate)
+      setActive(record.active)
+      setHidden(record.hidden)
+      setCompleted(record.completed)
+      setDueDate(record.dueDate)
+      setTimeTaken(record.timeTaken)
     }
 
     const onUpdate = async() =>{

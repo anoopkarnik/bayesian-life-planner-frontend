@@ -6,6 +6,7 @@ import SigninPage from './components/pages/SigninPage';
 import SignupPage from './components/pages/SignupPage';
 import { ConfigContext } from './context/ConfigContext';
 import { ActiveContext } from './context/ActiveContext';
+import { CurrentDateContext } from './context/CurrentDateContext';
 import React,{useEffect, useState} from 'react'
 import Layout from './components/layout/Layout';
 import AdminPage from './components/pages/AdminPage';
@@ -33,6 +34,7 @@ import TopicPage from './components/pages/TopicPage';
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
 	const [config,setConfig] = useState(url);
+  const [currentDate,setCurrentDate] = useState(new Date())
   const [showActive,setShowActive] = useState(true);
 
 	const setUserInfo = (data) =>{
@@ -44,6 +46,7 @@ function App() {
       <ConfigContext.Provider value={{config,setConfig}}>
         <ActiveContext.Provider value={{showActive,setShowActive}}>
         <UserContext.Provider value={{user,setUser: setUserInfo}}>
+          <CurrentDateContext.Provider value={{currentDate,setCurrentDate}}>
           <Layout>
           <FormGroup>
             <FormControlLabel control={<Switch defaultChecked onChange={()=>setShowActive(!showActive)} />} label="active" />
@@ -69,6 +72,7 @@ function App() {
               <Route path="/topic" element={<TopicPage/>}/>
             </Routes>
           </Layout>
+          </CurrentDateContext.Provider>
         </UserContext.Provider>
         </ActiveContext.Provider>
       </ConfigContext.Provider>

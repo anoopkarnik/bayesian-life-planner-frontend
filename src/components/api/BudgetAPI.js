@@ -1,4 +1,22 @@
 import axios from 'axios';
+
+export const getBudget = async(backend_url,bearerToken,id) =>{
+  const res = await fetch(backend_url+'/api/budget/'+id,{
+    method: 'GET',
+    headers:{
+      'Authorization':bearerToken
+    }
+  }
+  )
+  if(res.status===200 | res.status===201){
+    var data = await res.json()
+  }
+  else{
+    var data={};
+  }  
+  return data
+}
+
 export const getBudgetPlans = async(backend_url,bearerToken) =>{
     const res = await fetch(backend_url+'/api/budget/planAmount',{
       method: 'GET',
