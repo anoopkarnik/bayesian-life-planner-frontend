@@ -6,10 +6,16 @@ import { UserContext } from '../../../context/UserContext';
 import { ConfigContext } from '../../../context/ConfigContext';
 import { ActiveContext } from '../../../context/ActiveContext';
 import {AiFillEdit} from 'react-icons/ai';
+import { BiPlus } from "react-icons/bi";
 import DatePicker from "react-datepicker";
-import { updateTopicParagraph,addTopicItem,deleteTopicItem, getTopicDescription } from "../../api/TopicAPI";
+import { getTopicDescription ,addLinkToTopic,addSubTopicToTopic,
+removeLinkFromTopic,removeSubTopicFromTopic} from "../../api/TopicAPI";
 import { TiDelete } from "react-icons/ti";
-import Item from "./Item";
+import SubTopic from "./SubTopic";
+import LinkItem from "./LinkItem";
+import AddSubTopicForm from "./AddSubTopicForm";
+import AddLinkForm from "./AddLinkForm";
+import { modifyTopicParams } from "../../api/TopicAPI";
 
 const TopicDescription = (props) => {
 
@@ -31,13 +37,17 @@ const TopicDescription = (props) => {
     const [isEditing,setIsEditing] = useState(false);
     const {user, setUser} = useContext(UserContext);
 	  const {config} = useContext(ConfigContext);
-    const [name,setName] = useState(props.record.name);
-    const [paragraph,setParagraph] = useState(props.record.paragraph);
-    const [items,setItems] = useState(props.record.itemResponses)
+    const [name,setName] = useState('');
+    const [summary,setSummary] = useState('');
+    const [description,setDescription] = useState('');
+    const [links, setLinks] = useState([]);
+    const [subTopics,setSubTopics] = useState([])
+    const [showSubTopics,setShowSubTopics] = useState(false)
+    const [showLinks, setShowLinks] = useState(false)
+    const [showAddSubTopic,setShowAddSubTopic] = useState(false)
+    const [showAddLink,setShowAddLink] = useState(false)
+
     const {showActive} = useContext(ActiveContext);
-    const [item,setItem] = useState('')
-    const [buttonName,setButtonName] = useState('Edit Paragraph')
-    const [record,setRecord] = useState('')
 
     useEffect(()=>{
       getTopic(config,'Bearer '+user.accessToken,props.record.id)
@@ -46,28 +56,25 @@ const TopicDescription = (props) => {
 
     const getTopic = async(config,bearerToken,id) =>{
       const record = await getTopicDescription(config,bearerToken,id)
-      setItems(record.itemResponses)
       setName(record.name)
-      setParagraph(record.paragraph)
+      setSummary(record.summary)
+      setDescription(record.description)
+      setLinks(record.linkResponses)
+      setSubTopics(record.subTopicResponses)
+      setShowAddSubTopic(false)
+      setShowAddLink(false)
     }
 
-    const addItem = async() =>{
-      await addTopicItem(config,'Bearer '+user.accessToken,props.record.id,item)
-      await getTopic(config,'Bearer '+user.accessToken,props.record.id)
-    }
-
-    const editParagraph = async() =>{
-      if (isEditing===false){
-        setIsEditing(true)
-        setButtonName('Update Paragraph')
+    const onUpdate = async() =>{
+      if(isEditing){
+        await modifyTopicParams(config, 'Bearer '+user.accessToken,
+        props.record.id,name,summary,description);
+        setIsEditing(false);
       }
       else{
-        await updateTopicParagraph(config,'Bearer '+user.accessToken,props.record.id,paragraph)
-        setIsEditing(false)
-        setButtonName('Edit Paragraph')
+        setIsEditing(true);
       }
-    }
-
+  };
 
   return (
     <div>
@@ -79,32 +86,42 @@ const TopicDescription = (props) => {
         onRequestClose={props.hide}
         width="500px"
       >
+        <button className='btn btn-secondary mt-3' 
+                onClick={()=>setIsEditing(!isEditing)}>Edit Item</button>
+        &emsp;<button onClick={onUpdate} className='btn btn-secondary mt-3'>Update</button><br/><br/>
         <b>Created Date</b> - {formatDate(new Date(props.record.createdAt))} <br/>
         <b>Updated Date</b> - {formatDate(new Date(props.record.updatedAt))} <br/>
-        <b>Name</b> - <>{name}</> <br/>
-        {paragraph===null?null:<div>
-        <b>Paragraph</b> <br/> {isEditing?
-            <textarea rows="15" cols="30" required='required' Name='text' id='paragraph' placeholder='Please edit the paragraph' value={paragraph} 
-              onChange={(event) => setParagraph(event.target.value)}>
-          </textarea>:<>{paragraph}</>} <br/>
-                <button className='btn btn-secondary mt-3' 
-                      onClick={editParagraph}>{buttonName}</button> 	
-                </div>}
-          {paragraph===null?
-          <div>
-        <b> Items</b><br/>
-        {items.map((item,index)=>(
-          <Item topicId={props.record.id} itemId={item.id} text={item.text} index={index} topicType={props.record.topicTypeEnum} refreshFunction={getTopic}/>
-          ))}
-          <br/>
-           <input value={item} onChange={(event)=>setItem(event.target.value)}>
-          </input>
-          <br/>
-          <button className='btn btn-secondary mt-3' 
-                onClick={addItem}>Add Item</button> 	
-      	</div>:null}
-    
-        
+        <b>Name</b> - {isEditing?
+          <input value={name} onChange={(event)=>setName(event.target.value)}>
+          </input>:<>{name}</>} <br/>
+        <div>
+          <b>Summary</b> <br/> {isEditing?
+            <textarea rows="15" cols="30" required='required' Name='text' id='summary' placeholder='Please edit the summary' value={summary} 
+              onChange={(event) => setSummary(event.target.value)}>
+            </textarea>:<>{String(summary)}</>} <br/>
+        </div>
+        <div>
+          <b>Description</b> <br/> {isEditing?
+            <textarea rows="15" cols="30" required='required' Name='text' id='description' placeholder='Please edit the description' value={description} 
+              onChange={(event) => setDescription(event.target.value)}>
+            </textarea>:<>{description}</>} <br/>
+        </div>
+        <br/><br/><br/>
+  
+        <div>
+        <h3 onClick={()=>setShowAddSubTopic(!showAddSubTopic)} className='btn btn-secondary btn-lg'>Sub Topics&ensp;&ensp;<BiPlus size='2em' /></h3>
+          {subTopics?.map((subTopic,index)=>(
+            <SubTopic topicId={props.record.id} id={subTopic.id} record={subTopic} index={index} refreshFunction={getTopic}/>
+            ))}
+          {showAddSubTopic?<AddSubTopicForm topicId={props.record.id} refreshFunction={getTopic}/>:null}
+      	</div>
+        <div>
+          <h3 onClick={()=>setShowAddLink(!showAddLink)} className='btn btn-secondary btn-lg'>Links&ensp;&ensp;<BiPlus size='2em'/></h3>
+          {links?.map((link,index)=>(
+            <LinkItem topicId={props.record.id} id={link.id} record={link} index={index} refreshFunction={getTopic}/>
+            ))}
+            {showAddLink?<AddLinkForm topicId={props.record.id} refreshFunction={getTopic}/>:null}
+      	</div> 
       </SlidingPane>
     </div>
   );

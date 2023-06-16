@@ -33,78 +33,99 @@ export const getTopic = async(backend_url,bearerToken,skillTypeName) =>{
 }
 
 export const createTopic = async(backend_url,bearerToken,name,
-  skillTypeName,topicTypeEnum,paragraph,items)=>{
-    var res = null;
-
-    if (topicTypeEnum==="TOPIC_PARAGRAPH"){
-      res = await fetch(backend_url+'/api/topic/create', {
-        method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization':bearerToken
-          },
-          body: JSON.stringify({name,
-            skillTypeName,topicTypeEnum,paragraph}),
-        })
-      }
-    else if (topicTypeEnum==="TOPIC_URL"){
-      res = await fetch(backend_url+'/api/topic/create', {
-        method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization':bearerToken
-          },
-          body: JSON.stringify({name,
-            skillTypeName,topicTypeEnum,items}),
-        })
-      }
-      else if (topicTypeEnum==="TOPIC_LIST"){
-        res = await fetch(backend_url+'/api/topic/create', {
+  skillTypeName,description)=>{
+        await fetch(backend_url+'/api/topic/create', {
           method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization':bearerToken
             },
             body: JSON.stringify({name,
-              skillTypeName,topicTypeEnum,items}),
+              skillTypeName,description}),
           })
         }
-  }
-
-
-export const updateTopicParagraph = async(backend_url,bearerToken,id,
-  paragraph)=>{
-  await fetch(backend_url+'/api/topic/updateParagraph', {
+  
+export const addLinkToTopic = async(backend_url,bearerToken,topicId,name,url,
+  manualSummary,aiSummary,transcript)=>{
+  await fetch(backend_url+'/api/topic/addLink', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,paragraph}),
+      body: JSON.stringify({topicId,name,url,manualSummary,aiSummary,transcript}),
     })
 }
 
-export const addTopicItem= async(backend_url,bearerToken,id,
-  itemName)=>{
-  await fetch(backend_url+'/api/topic/updateItem', {
+export const addSubTopicToTopic = async(backend_url,bearerToken,topicId,name,text)=>{
+  await fetch(backend_url+'/api/topic/addSubTopic', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,itemName}),
+      body: JSON.stringify({topicId,name,text}),
     })
 }
 
-export const deleteTopicItem= async(backend_url,bearerToken,id,
-  itemId)=>{
-  await fetch(backend_url+'/api/topic/deleteItem', {
+
+export const removeLinkFromTopic = async(backend_url,bearerToken,id,
+  topicId)=>{
+  await fetch(backend_url+'/api/topic/deleteLink', {
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization':bearerToken
       },
-      body: JSON.stringify({id,itemId}),
+      body: JSON.stringify({id,topicId}),
+    })
+}
+
+export const removeSubTopicFromTopic = async(backend_url,bearerToken,id,
+  topicId)=>{
+  await fetch(backend_url+'/api/topic/deleteSubTopic', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({id,topicId}),
+    })
+}
+
+export const modifyTopicParams = async(backend_url,bearerToken,id,
+  name,summary,description)=>{
+  await fetch(backend_url+'/api/topic/modifyParams', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({id,name,summary,description}),
+    })
+}
+
+export const modifySubTopicParams = async(backend_url,bearerToken,id,
+  name,text)=>{
+  await fetch(backend_url+'/api/topic/subTopic/modifyParams', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({id,name,text}),
+    })
+}
+
+export const modifyLinkParams = async(backend_url,bearerToken,id,
+  name,url,manualSummary)=>{
+  await fetch(backend_url+'/api/topic/link/modifyParams', {
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization':bearerToken
+      },
+      body: JSON.stringify({id,name,url,manualSummary}),
     })
 }
 

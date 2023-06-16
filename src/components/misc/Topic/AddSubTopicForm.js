@@ -6,21 +6,21 @@ import { ActiveContext } from '../../../context/ActiveContext';
 import SlidingPane from "react-sliding-pane";
 import { topicTypeOptions } from '../../../variables';
 import Select from 'react-select'
+import { addSubTopicToTopic } from '../../api/TopicAPI';
 
 
 
-const AddTopicForm = (props) => {
+const AddSubTopicForm = (props) => {
 
 	const [name, setName] = useState('');
-	const [description,setDescription] = useState('')
+	const [text,setText] = useState('')
 	const {user, setUser} = useContext(UserContext);
 	const {config} = useContext(ConfigContext);
 	
 
 	const onSubmit =async () =>{
-		await createTopic(config, 'Bearer '+user.accessToken,name,
-		props.name,description);
-		await props.refreshFunction(config,'Bearer '+user.accessToken,props.name);
+		await addSubTopicToTopic(config, 'Bearer '+user.accessToken,props.topicId,name,text);
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.topicId);
 	}
 
 
@@ -38,8 +38,8 @@ const AddTopicForm = (props) => {
 					<textarea rows="15" cols="30" required='required' 
 					Name='text' 
 					className='form-control'
-					id='description' placeholder='description' value={description} 
-					onChange={(event) => setDescription(event.target.value)}/>
+					id='text' placeholder='text' value={text} 
+					onChange={(event) => setText(event.target.value)}/>
 				</div>
 			</div>
 			<div className='row'>
@@ -53,4 +53,4 @@ const AddTopicForm = (props) => {
 	);
 };
 
-export default AddTopicForm;
+export default AddSubTopicForm;

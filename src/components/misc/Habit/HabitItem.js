@@ -39,23 +39,23 @@ const HabitItem = (props) => {
 	}
 
 	const onComplete = async() => {
-		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Complete')
+		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Complete',currentDate)
 		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive,currentDate)
 	}
 
 	const onAtomicComplete = async() => {
-		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Atomic')
+		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Atomic',currentDate)
 		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive,currentDate)
 	}
 
 	const onConditionalComplete = async() => {
-		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Condition')
+		await completeHabit(config,'Bearer '+user.accessToken,props.record.id,'Condition',currentDate)
 		await props.refreshFunction(config,'Bearer '+ user.accessToken,props.record.habitTypeName,showActive,currentDate)
 	}
 
 	const onRefresh = async() =>{
 		setShowAddHabit(false);
-		await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.habitTypeName,showActive)
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.record.habitTypeName,showActive,currentDate)
 	}
 
 	const onShowDescription = async() =>{
@@ -78,12 +78,12 @@ const HabitItem = (props) => {
     
   return (
 	<div>
-    <li style={daysLeft<1?urgent:daysLeft<7?medium:low} className='list-group-item d-flex justify-content-between align-items-center'>
+    <li className='list-group-item d-flex justify-content-between align-items-center'>
 		<div>
 			{props.record.name}
 		</div>
 			{props.record.streak}
-			<Popup trigger={<button style={daysLeft<1?urgent:daysLeft<7?medium:low}><ImPlus size='0.8em'/></button>}>
+			<Popup trigger={<button><ImPlus size='0.8em'/></button>}>
 				<div className='p-3 mb-2 bg-light'>
 					<div className='badge-primary badge-pill mr-3'> Select completion Type</div>
 					<div onClick={onComplete} className='btn btn-secondary'>Complete</div>&ensp;

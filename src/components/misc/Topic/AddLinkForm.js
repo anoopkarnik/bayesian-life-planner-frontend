@@ -6,21 +6,25 @@ import { ActiveContext } from '../../../context/ActiveContext';
 import SlidingPane from "react-sliding-pane";
 import { topicTypeOptions } from '../../../variables';
 import Select from 'react-select'
+import { addLinkToTopic } from '../../api/TopicAPI';
 
 
 
-const AddTopicForm = (props) => {
+const AddLinkForm = (props) => {
 
 	const [name, setName] = useState('');
-	const [description,setDescription] = useState('')
+	const [url,setUrl] = useState('')
+	const [manualSummary, setManualSummary] = useState('')
+	const [aiSummary,setAiSummary] = useState('')
+	const [transcript,setTranscript] = useState('')
 	const {user, setUser} = useContext(UserContext);
 	const {config} = useContext(ConfigContext);
 	
 
 	const onSubmit =async () =>{
-		await createTopic(config, 'Bearer '+user.accessToken,name,
-		props.name,description);
-		await props.refreshFunction(config,'Bearer '+user.accessToken,props.name);
+		await addLinkToTopic(config, 'Bearer '+user.accessToken,props.topicId,name,url,
+		manualSummary,aiSummary,transcript);
+		await props.refreshFunction(config,'Bearer '+user.accessToken,props.topicId);
 	}
 
 
@@ -35,11 +39,18 @@ const AddTopicForm = (props) => {
 			</div>
 			<div className='row'>
 				<div className='col-sm'>
+					<input required='required' Name='url' className='form-control'
+					id='url' placeholder='url' value={url} 
+					onChange={(event) => setUrl(event.target.value)}></input>
+				</div>
+			</div>
+			<div className='row'>
+				<div className='col-sm'>
 					<textarea rows="15" cols="30" required='required' 
-					Name='text' 
+					Name='Manual Summary' 
 					className='form-control'
-					id='description' placeholder='description' value={description} 
-					onChange={(event) => setDescription(event.target.value)}/>
+					id='Manual Summary' placeholder='Manual Summary' value={manualSummary} 
+					onChange={(event) => setManualSummary(event.target.value)}/>
 				</div>
 			</div>
 			<div className='row'>
@@ -53,4 +64,4 @@ const AddTopicForm = (props) => {
 	);
 };
 
-export default AddTopicForm;
+export default AddLinkForm;

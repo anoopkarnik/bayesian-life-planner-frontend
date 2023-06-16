@@ -19,12 +19,18 @@ const HabitPage = (props) => {
     const {config} = useContext(ConfigContext);
     const {currentDate,setCurrentDate} = useContext(CurrentDateContext)
 
+    const handleDate = (date)=>{
+        let currentTime = date.getTime()
+        let currentDate = new Date(currentTime)
+        setCurrentDate(currentDate)
+    }
+
 
   return (
     <div>
         <DatePicker selected={currentDate}  
           className='form-control'
-          onChange={(date)=>setCurrentDate(date)}/>
+          onChange={handleDate}/>
       <HabitSubPage/>
     </div>
   )

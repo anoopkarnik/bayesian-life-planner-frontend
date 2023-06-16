@@ -34,7 +34,10 @@ import TopicPage from './components/pages/TopicPage';
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || "");
 	const [config,setConfig] = useState(url);
-  const [currentDate,setCurrentDate] = useState(new Date())
+  let date = new Date()
+  let currentTime = date.getTime()
+  let curDate = new Date(currentTime+5.5*60*60*1000)
+  const [currentDate,setCurrentDate] = useState(curDate)
   const [showActive,setShowActive] = useState(true);
 
 	const setUserInfo = (data) =>{
