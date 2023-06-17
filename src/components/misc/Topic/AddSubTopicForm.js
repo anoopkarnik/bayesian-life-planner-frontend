@@ -16,6 +16,7 @@ const AddSubTopicForm = (props) => {
 	const [text,setText] = useState('')
 	const {user, setUser} = useContext(UserContext);
 	const {config} = useContext(ConfigContext);
+	const [previousKey, setPreviousKey] = useState('')
 	
 
 	const onSubmit =async () =>{
@@ -23,17 +24,27 @@ const AddSubTopicForm = (props) => {
 		await props.refreshFunction(config,'Bearer '+user.accessToken,props.topicId);
 	}
 
+	const keyboardEvent = async(event) =>{
+		
+		if(event.key === 'Enter' && previousKey=== 'Control'){
+			await onSubmit()
+		  }
+		else if(event.key ==='Control' && previousKey==='Enter'){
+			await onSubmit()
+		}
+		setPreviousKey(event.key)
+	}
 
 	return (
 		<form className='text-center'>
-			<div className='row'>
+			<div className='row' >
 				<div className='col-sm'>
 					<input required='required' Name='name' className='form-control'
 					id='name' placeholder='name' value={name} 
 					onChange={(event) => setName(event.target.value)}></input>
 				</div>
 			</div>
-			<div className='row'>
+			<div className='row' onKeyDown={keyboardEvent}>
 				<div className='col-sm'>
 					<textarea rows="15" cols="30" required='required' 
 					Name='text' 
@@ -44,7 +55,7 @@ const AddSubTopicForm = (props) => {
 			</div>
 			<div className='row'>
 				<div className='col-sm text-center'>
-					<div onClick={onSubmit} type='submit' className='btn btn-secondary mt-3'>
+					<div onClick={onSubmit}  type='submit' className='btn btn-secondary mt-3'>
 						Save
 					</div>
 				</div>

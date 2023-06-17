@@ -46,7 +46,7 @@ const TopicDescription = (props) => {
     const [showLinks, setShowLinks] = useState(false)
     const [showAddSubTopic,setShowAddSubTopic] = useState(false)
     const [showAddLink,setShowAddLink] = useState(false)
-
+    const [previousKey, setPreviousKey] = useState('')
     const {showActive} = useContext(ActiveContext);
 
     useEffect(()=>{
@@ -75,16 +75,44 @@ const TopicDescription = (props) => {
         setIsEditing(true);
       }
   };
+  const keyboardEvent = async(event) =>{
+		if(event.key === 's' && previousKey=== 'Control'){
+			setShowAddSubTopic(!showAddSubTopic)
+		  }
+		else if(event.key ==='Control' && previousKey==='s'){
+			setShowAddSubTopic(!showAddSubTopic)
+		}
+    if(event.key === 'l' && previousKey=== 'Control'){
+			setShowAddLink(!showAddLink)
+		  }
+		else if(event.key ==='Control' && previousKey==='l'){
+			setShowAddLink(!showAddLink)
+		}
+    if(event.key === 'e' && previousKey=== 'Control'){
+			setIsEditing(!isEditing)
+		  }
+		else if(event.key ==='Control' && previousKey==='e'){
+			setIsEditing(!isEditing)
+		}
+    if(event.key === 'Enter' && previousKey=== 'Control'){
+			await onUpdate()
+		  }
+		else if(event.key ==='Control' && previousKey==='Enter'){
+			await onUpdate()
+		}
+    
+		setPreviousKey(event.key)
+	}
 
   return (
-    <div>
+    <div onKeyDown={keyboardEvent}>
       <SlidingPane
         isOpen={props.open}
         className='' 
         overlayClassName="blur"
         title="Topic Description"
         onRequestClose={props.hide}
-        width="500px"
+        width="500px" 
       >
         <button className='btn btn-secondary mt-3' 
                 onClick={()=>setIsEditing(!isEditing)}>Edit Item</button>
